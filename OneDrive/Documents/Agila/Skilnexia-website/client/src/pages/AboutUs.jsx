@@ -75,9 +75,9 @@ const AboutUs = () => {
     }, []);
 
     const trainers = [
-        { name: "Dr. Arvan Sharma", role: "Head of AI", exp: "15+ Years", bio: "Former DeepMind Researcher and Principal Architect at tech giants.", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" },
-        { name: "Priya Varma", role: "Full Stack CTO", exp: "12+ Years", bio: "Leading architect for high-scale microservices and cloud ecosystems.", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" },
-        { name: "James Wilson", role: "Cyber Security lead", exp: "14+ Years", bio: "Certified security master protecting Fortune 500 digital assets.", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400" }
+        { name: "Dr. Arvan Sharma", role: "Head of AI", exp: "15+ Years", bio: "Former DeepMind Researcher and Principal Architect at tech giants. Dr. Arvan leads our AI Research division and curriculum design.", img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" },
+        { name: "Priya Varma", role: "Full Stack CTO", exp: "12+ Years", bio: "Leading architect for high-scale microservices and cloud ecosystems. Priya specializes in distributed systems and React architecture.", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" },
+        { name: "James Wilson", role: "Cyber Security lead", exp: "14+ Years", bio: "Certified security master protecting Fortune 500 digital assets. James brings deep domain expertise in penetration testing.", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400" }
     ];
 
     return (
@@ -207,17 +207,18 @@ const AboutUs = () => {
                             <h2 className="text-5xl font-black text-slate-950 uppercase tracking-tight leading-none reveal-up">The Titans <br /><span className="text-primary-900">Who Train You.</span></h2>
                             <div className="space-y-8 trainers-grid">
                                 {trainers.map((t, i) => (
-                                    <div key={i} className="trainer-item flex gap-8 items-center group">
-                                        <img src={t.img} className="w-24 h-24 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-xl" alt={t.name} />
-                                        <div>
+                                    <div key={i} className="trainer-item flex gap-8 items-start group">
+                                        <img src={t.img} className="w-24 h-24 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-xl mt-1" alt={t.name} />
+                                        <div className="space-y-2">
                                             <h4 className="text-xl font-black text-slate-900 uppercase">{t.name}</h4>
                                             <p className="text-accent-600 font-black text-[10px] uppercase tracking-widest">{t.role} • {t.exp}</p>
+                                            <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-sm">{t.bio}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div className="bg-slate-950 rounded-[60px] p-16 text-white space-y-10 relative overflow-hidden shadow-3xl self-start">
+                        <div className="bg-slate-950 rounded-[60px] p-16 text-white space-y-10 relative overflow-hidden shadow-3xl">
                             <div className="absolute top-0 right-0 w-80 h-80 bg-primary-900/20 blur-[100px] rounded-full"></div>
                             <h2 className="text-4xl font-black uppercase tracking-tight relative z-10 leading-none">Elite <br /><span className="text-emerald-400">Placements.</span></h2>
                             <p className="text-slate-400 text-lg font-medium relative z-10 leading-relaxed">

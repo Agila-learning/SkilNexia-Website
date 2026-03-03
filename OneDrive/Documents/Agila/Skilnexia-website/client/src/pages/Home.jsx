@@ -126,15 +126,16 @@ const Home = () => {
             animSelectors.forEach(selector => {
                 gsap.utils.toArray(selector).forEach(el => {
                     gsap.fromTo(el,
-                        { y: 50, opacity: 0 },
+                        { y: 30, opacity: 0 },
                         {
                             y: 0,
                             opacity: 1,
-                            duration: 0.8,
+                            duration: 0.6,
                             ease: 'power2.out',
                             scrollTrigger: {
                                 trigger: el,
-                                start: 'top 95%',
+                                start: 'top 98%', // Trigger earlier to ensure visibility
+                                toggleActions: "play none none none"
                             }
                         }
                     );
