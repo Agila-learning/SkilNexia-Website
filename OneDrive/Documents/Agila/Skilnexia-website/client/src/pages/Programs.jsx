@@ -7,13 +7,15 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { COURSE_CATEGORIES as COURSES } from '../data/coursesData.jsx';
+import api from '../services/api';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Programs = () => {
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+    const [coursesList, setCoursesList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -52,11 +54,24 @@ const Programs = () => {
                 );
             });
         });
+
+        const fetchCourses = async () => {
+            try {
+                const res = await api.get('/courses');
+                setCoursesList(res.data);
+            } catch (error) {
+                console.error("Failed to fetch courses:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourses();
+
         return () => ctx.revert();
     }, []);
 
     // Filter for "Placement" oriented courses
-    const placementPrograms = COURSES.filter(c =>
+    const placementPrograms = coursesList.filter(c =>
         c && c.category && ['Development', 'Data Science', 'Cloud', 'Security'].includes(c.category)
     );
 
@@ -110,9 +125,9 @@ const Programs = () => {
             <div className="max-w-7xl mx-auto px-4 -mt-32 relative z-10 pb-32">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 programs-grid">
                     {placementPrograms.map((course) => (
-                        <div key={course.id} className="program-card group bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-3xl transition-all duration-700 border-2 border-slate-200 flex flex-col h-full hover:-translate-y-4 opacity-100">
+                        <div key={course._id} className="program-card group bg-white rounded-[60px] overflow-hidden shadow-xl hover:shadow-3xl transition-all duration-700 border-2 border-slate-200 flex flex-col h-full hover:-translate-y-4 opacity-100">
                             <div className="h-72 relative overflow-hidden bg-slate-900 mx-4 mt-4 rounded-[45px]">
-                                <img src={course.banner || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800"} alt={course.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                                <img src={course.thumbnail || course.banner || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800"} alt={course.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                                 <div className="absolute inset-0 bg-transparent"></div>
                                 <div className="absolute top-6 left-6 px-4 py-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl text-white font-black text-[9px] uppercase tracking-[0.2em] shadow-xl">
                                     {course.category}
@@ -153,7 +168,7 @@ const Programs = () => {
                                 </div>
 
                                 <div className="mt-auto pt-8 border-t border-slate-50 flex items-center justify-between gap-4">
-                                    <Link to={`/courses/${course.id}`} className="px-6 py-4 bg-slate-100 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-2">
+                                    <Link to={`/courses/${course._id}`} className="px-6 py-4 bg-slate-100 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-2">
                                         Learn More
                                     </Link>
                                     <button onClick={() => setIsRegisterOpen(true)} className="flex-grow px-8 py-4 bg-slate-950 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-primary-900 transition-all shadow-xl flex items-center justify-center gap-3 active:scale-95 group/btn">

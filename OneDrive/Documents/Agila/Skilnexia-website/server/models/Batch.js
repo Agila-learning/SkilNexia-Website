@@ -29,6 +29,10 @@ const batchSchema = new mongoose.Schema(
             type: String, // e.g., "Mon-Wed-Fri 6 PM"
             required: true,
         },
+        meetingLink: {
+            type: String,
+            default: '',
+        },
         maxSeats: {
             type: Number,
             required: true,

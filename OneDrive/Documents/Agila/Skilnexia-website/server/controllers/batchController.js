@@ -1,5 +1,7 @@
 const Batch = require('../models/Batch');
 const Course = require('../models/Course');
+const Enrollment = require('../models/Enrollment');
+const Certificate = require('../models/Certificate');
 
 // @desc    Get batches for a course
 // @route   GET /api/courses/:courseId/batches
@@ -48,7 +50,75 @@ const createBatch = async (req, res) => {
     }
 };
 
+// @desc    Update a batch (Trainer updating meeting link)
+// @route   PUT /api/courses/:courseId/batches/:batchId
+// @access  Private/Trainer or Admin
+const updateBatch = async (req, res) => {
+    try {
+        const { meetingLink } = req.body;
+        const batch = await Batch.findById(req.params.batchId);
+
+        if (!batch) {
+            return res.status(404).json({ message: 'Batch not found' });
+        }
+
+        // Must be admin or the trainer of this batch
+        if (req.user.role !== 'admin' && batch.trainer.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Not authorized to update this batch' });
+        }
+
+        if (meetingLink !== undefined) batch.meetingLink = meetingLink;
+
+        const updatedBatch = await batch.save();
+        res.json(updatedBatch);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Complete a batch (Trainer marking cohort as finished)
+// @route   PUT /api/courses/:courseId/batches/:batchId/complete
+// @access  Private/Trainer or Admin
+const completeBatch = async (req, res) => {
+    try {
+        const batch = await Batch.findById(req.params.batchId);
+
+        if (!batch) {
+            return res.status(404).json({ message: 'Batch not found' });
+        }
+
+        // Must be admin or the trainer of this batch
+        if (req.user.role !== 'admin' && batch.trainer.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Not authorized to complete this batch' });
+        }
+
+        const enrollments = await Enrollment.find({ batch: batch._id });
+
+        for (const enrollment of enrollments) {
+            if (enrollment.progress < 100) {
+                enrollment.progress = 100;
+                await enrollment.save();
+
+                const existingCert = await Certificate.findOne({ user: enrollment.student, course: batch.course });
+                if (!existingCert) {
+                    await Certificate.create({
+                        user: enrollment.student,
+                        course: batch.course,
+                        certificateId: `SKLX-${Date.now()}-${Math.floor(Math.random() * 1000)}`
+                    });
+                }
+            }
+        }
+
+        res.json({ message: 'Batch marked as completed. Certificates generated for all students.' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getBatchesByCourse,
     createBatch,
+    updateBatch,
+    completeBatch,
 };

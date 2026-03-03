@@ -22,11 +22,17 @@ const Sidebar = () => {
                     { name: 'My Batches', path: '/trainer/batches', icon: <Users size={20} /> },
                     { name: 'Lectures', path: '/trainer/lectures', icon: <Video size={20} /> },
                 ];
+            case 'hr':
+                return [
+                    { name: 'Portal Overview', path: '/hr', icon: <LayoutDashboard size={20} /> },
+                    { name: 'Candidate Referrals', path: '/hr/referrals', icon: <Users size={20} /> },
+                    { name: 'Hiring Pipeline', path: '/hr/pipeline', icon: <BookOpen size={20} /> },
+                ];
             case 'student':
             default:
                 return [
                     { name: 'My Learning', path: '/student', icon: <LayoutDashboard size={20} /> },
-                    { name: 'Browse Courses', path: '/student/courses', icon: <BookOpen size={20} /> },
+                    { name: 'Browse Courses', path: '/courses', icon: <BookOpen size={20} /> },
                     { name: 'Payments', path: '/student/payments', icon: <DollarSign size={20} /> },
                 ];
         }

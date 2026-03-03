@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { LayoutGrid, List, Search, Filter, BookOpen, Clock, Target, Briefcase, ChevronRight, Star, ArrowRight, Zap, Award } from 'lucide-react';
 import gsap from 'gsap';
-import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
+import api from '../services/api';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 import ConsultationModal from '../components/ConsultationModal.jsx';
 
@@ -16,7 +16,25 @@ const Courses = () => {
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [isExpertOpen, setIsExpertOpen] = useState(false);
 
+    const [coursesList, setCoursesList] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const res = await api.get('/courses');
+                setCoursesList(res.data);
+            } catch (error) {
+                console.error("Failed to fetch courses:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourses();
+    }, []);
+
+    useEffect(() => {
+        if (loading) return;
         window.scrollTo(0, 0);
         const ctx = gsap.context(() => {
             // Hero Reveal
@@ -49,12 +67,12 @@ const Courses = () => {
 
             gsap.utils.toArray('.course-card').forEach(el => {
                 gsap.fromTo(el,
-                    { opacity: 0, scale: 0.95 },
+                    { opacity: 0, y: 30 },
                     {
                         opacity: 1,
-                        scale: 1,
-                        duration: 0.5,
-                        ease: 'back.out(1.7)',
+                        y: 0,
+                        duration: 0.6,
+                        ease: 'power2.out',
                         scrollTrigger: {
                             trigger: el,
                             start: 'top 95%'
@@ -63,13 +81,14 @@ const Courses = () => {
                 );
             });
         });
+
         return () => ctx.revert();
-    }, [activeCategory, viewMode]);
+    }, [activeCategory, viewMode, loading]);
 
-    const categories = ['All', ...new Set(COURSE_CATEGORIES.map(c => c.category))];
+    const categories = ['All', ...new Set(coursesList.map(c => c.category).filter(Boolean))];
 
-    const filtered = COURSE_CATEGORIES.filter(c => {
-        const matchesSearch = c.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const filtered = coursesList.filter(c => {
+        const matchesSearch = c.title?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
         const matchesCat = activeCategory === 'All' || c.category === activeCategory;
         return matchesSearch && matchesCat;
     });
@@ -165,11 +184,11 @@ const Courses = () => {
 
                             <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10" : "space-y-8"}>
                                 {group.courses.map(course => (
-                                    <div key={course.id} className={`course-card group relative transition-all duration-500 opacity-100 ${viewMode === 'grid' ? 'bg-white rounded-[40px] border-2 border-slate-200 overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 flex flex-col' : 'flex bg-white rounded-[40px] border-2 border-slate-200 p-6 items-center gap-8 hover:shadow-2xl hover:border-primary-200 opacity-100'}`}>
+                                    <div key={course._id} className={`course-card group relative transition-all duration-500 opacity-100 ${viewMode === 'grid' ? 'bg-white rounded-[40px] border-2 border-slate-200 overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 flex flex-col' : 'flex bg-white rounded-[40px] border-2 border-slate-200 p-6 items-center gap-8 hover:shadow-2xl hover:border-primary-200 opacity-100'}`}>
 
                                         <div className={`relative overflow-hidden shrink-0 bg-slate-900 ${viewMode === 'grid' ? 'h-64' : 'w-80 h-48 rounded-3xl'}`}>
                                             <img
-                                                src={course.banner || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200"}
+                                                src={course.thumbnail || course.banner || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200"}
                                                 alt={course.title}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                             />
@@ -215,7 +234,7 @@ const Courses = () => {
                                             </div>
 
                                             <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between gap-4">
-                                                <Link to={`/courses/${course.id}`} className="px-6 py-4 bg-slate-100 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-2">
+                                                <Link to={`/courses/${course._id}`} className="px-6 py-4 bg-slate-100 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-2">
                                                     Roadmap
                                                 </Link>
                                                 <button onClick={() => setIsRegisterOpen(true)} className="flex-grow px-8 py-4 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary-900 transition-all shadow-xl shadow-slate-950/10 flex items-center justify-center gap-3 active:scale-95 group/btn">

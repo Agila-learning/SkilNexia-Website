@@ -4,17 +4,29 @@ const Payment = require('../models/Payment');
 const Enrollment = require('../models/Enrollment');
 const Course = require('../models/Course');
 const Batch = require('../models/Batch');
+const Lead = require('../models/Lead');
 
 // @desc    Create Razorpay order
 // @route   POST /api/payments/create-order
 // @access  Private (Student)
 const createOrder = async (req, res) => {
     try {
-        const { batchId } = req.body;
+        const { batchId, leadId } = req.body;
 
-        const batch = await Batch.findById(batchId).populate('course');
+        let batch;
+        if (batchId) {
+            batch = await Batch.findById(batchId).populate('course');
+        } else if (leadId) {
+            const lead = await Lead.findById(leadId);
+            if (!lead) return res.status(404).json({ message: 'Lead not found' });
+            if (lead.status !== 'Payment Pending') {
+                return res.status(400).json({ message: 'Lead is not ready for payment' });
+            }
+            batch = await Batch.findOne({ course: lead.courseId });
+        }
+
         if (!batch) {
-            return res.status(404).json({ message: 'Batch not found' });
+            return res.status(404).json({ message: 'No batch available for this course' });
         }
 
         // Check if seats are available
@@ -33,11 +45,11 @@ const createOrder = async (req, res) => {
         const order = await razorpay.orders.create(options);
 
         // Create pending enrollment
-        let enrollment = await Enrollment.findOne({ student: req.user._id, batch: batchId });
+        let enrollment = await Enrollment.findOne({ student: req.user._id, batch: batch._id });
         if (!enrollment) {
             enrollment = await Enrollment.create({
                 student: req.user._id,
-                batch: batchId,
+                batch: batch._id,
                 paymentStatus: 'pending'
             });
         }
@@ -67,7 +79,7 @@ const createOrder = async (req, res) => {
 // @access  Private
 const verifyPayment = async (req, res) => {
     try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, enrollmentId } = req.body;
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, enrollmentId, leadId } = req.body;
 
         const sign = razorpay_order_id + '|' + razorpay_payment_id;
         const expectedSign = crypto
@@ -102,6 +114,11 @@ const verifyPayment = async (req, res) => {
                     batch.enrolledStudents.push(req.user._id);
                     await batch.save();
                 }
+
+                // If paid from Lead, update Lead status
+                if (leadId) {
+                    await Lead.findByIdAndUpdate(leadId, { status: 'Converted' });
+                }
             }
 
             return res.json({ message: 'Payment verified successfully', success: true });
@@ -113,7 +130,58 @@ const verifyPayment = async (req, res) => {
     }
 };
 
+// @desc    Get Razorpay Key
+// @route   GET /api/payments/razorpay-key
+// @access  Public
+const getRazorpayKey = (req, res) => {
+    res.json({ key: process.env.RAZORPAY_KEY_ID });
+};
+
+// @desc    Get user's payments
+// @route   GET /api/payments/my
+// @access  Private/Student
+const getMyPayments = async (req, res) => {
+    try {
+        const payments = await Payment.find({ student: req.user._id })
+            .populate({
+                path: 'enrollment',
+                populate: {
+                    path: 'batch',
+                    populate: { path: 'course', select: 'title thumbnail' }
+                }
+            })
+            .sort('-createdAt');
+        res.json(payments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get all payments
+// @route   GET /api/payments
+// @access  Private/Admin
+const getAllPayments = async (req, res) => {
+    try {
+        const payments = await Payment.find({})
+            .populate('student', 'name email phone')
+            .populate({
+                path: 'enrollment',
+                populate: {
+                    path: 'batch',
+                    populate: { path: 'course', select: 'title' }
+                }
+            })
+            .sort('-createdAt');
+        res.json(payments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     createOrder,
     verifyPayment,
+    getRazorpayKey,
+    getMyPayments,
+    getAllPayments,
 };

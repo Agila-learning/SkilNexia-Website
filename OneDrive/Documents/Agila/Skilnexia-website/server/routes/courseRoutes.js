@@ -5,13 +5,17 @@ const {
     getCourseById,
     createCourse,
     updateCourse,
-    deleteCourse
+    deleteCourse,
+    getTrainerDashboard
 } = require('../controllers/courseController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
 router.route('/')
     .get(getCourses)
     .post(protect, authorize('admin', 'hr'), createCourse);
+
+router.route('/trainer/dashboard')
+    .get(protect, authorize('trainer', 'admin'), getTrainerDashboard);
 
 router.route('/:id')
     .get(getCourseById)

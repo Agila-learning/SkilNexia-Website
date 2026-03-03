@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const cors = require('cors');
@@ -20,25 +19,34 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 5000;
 
+// Simplified CORS for development
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'https://fic-career-portal.forgeindiaconnect.com'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+}));
+
 // Security Middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false, // Allow images/resources to be loaded from other origins
+}));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-});
-app.use('/api/', limiter);
+// Rate limiting - Temporarily disabled to debug crash
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+// });
+// app.use('/api/', limiter);
 
-// Data sanitization against NoSQL query injection
-app.use(mongoSanitize());
+// Data sanitization against NoSQL query injection - Disabled due to Express 5 compatibility
+// app.use(mongoSanitize());
 
-// Prevent HTTP Parameter Pollution
-app.use(hpp());
+// Prevent HTTP Parameter Pollution - Disabled due to Express 5 compatibility issues
+// app.use(hpp());
 
 // Middleware
 app.use(express.json());
-app.use(cors());
 
 // Database Connection
 mongoose
@@ -49,6 +57,7 @@ mongoose
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/courses', require('./routes/courseRoutes'));
+app.use('/api/leads', require('./routes/leadRoutes'));
 app.use('/api/courses/:courseId/batches', require('./routes/batchRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));

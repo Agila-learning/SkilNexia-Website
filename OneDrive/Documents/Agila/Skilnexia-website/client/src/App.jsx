@@ -8,6 +8,8 @@ import DashboardLayout from './layouts/DashboardLayout';
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import TrainerDashboard from './pages/TrainerDashboard';
+import StudentPayments from './pages/StudentPayments';
+import AdminPayments from './pages/AdminPayments';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Placements from './pages/Placements';
@@ -24,8 +26,16 @@ import Compliance from './pages/Compliance';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 
+import HRDashboard from './pages/HRDashboard';
+
 // Placeholders for Pages
-const HRDashboard = () => <div className="p-8 animate-fade-in"><h1 className="text-2xl font-bold text-white mb-2">Company Overview</h1></div>;
+const DashboardPlaceholder = ({ title }) => (
+  <div className="p-8 animate-fade-in flex flex-col items-center justify-center min-h-[60vh] text-center">
+    <h1 className="text-3xl font-black text-slate-900 tracking-tight uppercase mb-4">{title}</h1>
+    <p className="text-slate-500 max-w-lg mb-8">This module is currently being provisioned. End-to-end data pipelines for this section will be available in the next release cycle.</p>
+    <div className="w-24 h-1 bg-accent-500 rounded-full animate-pulse"></div>
+  </div>
+);
 
 // Route Guards
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -86,6 +96,10 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<AdminDashboard />} />
+                <Route path="courses" element={<DashboardPlaceholder title="Admin Courses" />} />
+                <Route path="users" element={<DashboardPlaceholder title="User Management" />} />
+                <Route path="payments" element={<AdminPayments />} />
+                <Route path="settings" element={<DashboardPlaceholder title="System Settings" />} />
               </Route>
 
               <Route path="/trainer" element={
@@ -94,6 +108,8 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<TrainerDashboard />} />
+                <Route path="batches" element={<DashboardPlaceholder title="My Batches" />} />
+                <Route path="lectures" element={<DashboardPlaceholder title="Lecture Recordings" />} />
               </Route>
 
               <Route path="/student" element={
@@ -102,6 +118,7 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<StudentDashboard />} />
+                <Route path="payments" element={<StudentPayments />} />
               </Route>
 
               <Route path="/hr" element={
@@ -110,6 +127,8 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<HRDashboard />} />
+                <Route path="referrals" element={<DashboardPlaceholder title="Candidate Referrals" />} />
+                <Route path="pipeline" element={<DashboardPlaceholder title="Hiring Pipeline" />} />
               </Route>
 
             </Routes>

@@ -136,10 +136,52 @@ const deleteCourse = async (req, res) => {
     }
 };
 
+// @desc    Get trainer dashboard data
+// @route   GET /api/courses/trainer/dashboard
+// @access  Private/Trainer
+const getTrainerDashboard = async (req, res) => {
+    try {
+        const Batch = require('../models/Batch');
+        const Enrollment = require('../models/Enrollment');
+
+        const batches = await Batch.find({ trainer: req.user._id }).populate('course', 'title thumbnail');
+        const batchIds = batches.map(b => b._id);
+        const enrollments = await Enrollment.find({ batch: { $in: batchIds } });
+
+        const totalMentees = enrollments.length;
+        const activeCohorts = batches.filter(b => b.endDate >= new Date() || !b.endDate).length;
+
+        let lecturesUploaded = 0;
+        let totalMinutesMentored = 0;
+
+        batches.forEach(b => {
+            if (b.lectures) {
+                lecturesUploaded += b.lectures.length;
+                b.lectures.forEach(l => {
+                    totalMinutesMentored += (l.duration || 0);
+                });
+            }
+        });
+
+        res.json({
+            stats: {
+                totalMentees,
+                activeCohorts,
+                lecturesUploaded,
+                hoursMentored: Math.round(totalMinutesMentored / 60)
+            },
+            batches: batches
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getCourses,
     getCourseById,
     createCourse,
     updateCourse,
     deleteCourse,
+    getTrainerDashboard,
 };

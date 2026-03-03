@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, BookOpen, Code, Database, Cpu, Globe, Shield, Zap, Search, ArrowRight } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, ChevronDown, BookOpen, Code, Database, Cpu, Globe, Shield, Zap, Search, ArrowRight, LayoutDashboard } from 'lucide-react';
 import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
+import { useAuth } from '../context/AuthContext';
 import gsap from 'gsap';
 
 const Navbar = () => {
@@ -9,6 +10,8 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [showCoursesMenu, setShowCoursesMenu] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     // Group categories for Mega Menu
     const categories = Array.from(new Set(COURSE_CATEGORIES.map(c => c.category))).slice(0, 6);
@@ -157,18 +160,29 @@ const Navbar = () => {
 
                     {/* Desktop Auth Actions */}
                     <div className="hidden lg:flex items-center gap-6 nav-auth-reveal">
-                        <Link
-                            to="/login"
-                            className="text-[13px] font-black uppercase tracking-tighter text-slate-500 hover:text-slate-950 transition-colors"
-                        >
-                            Sign In
-                        </Link>
-                        <Link
-                            to="/register"
-                            className="px-8 py-4 bg-slate-950 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center gap-2 group hover:bg-primary-900 transition-all shadow-xl active:scale-95"
-                        >
-                            Join Free <Zap size={14} className="fill-white group-hover:scale-125 transition-transform" />
-                        </Link>
+                        {user ? (
+                            <Link
+                                to={`/${user.role === 'admin' ? 'admin' : user.role === 'trainer' ? 'trainer' : user.role === 'hr' ? 'hr' : 'student'}`}
+                                className="px-8 py-3.5 bg-slate-950 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center gap-2 group hover:bg-primary-900 transition-all shadow-xl active:scale-95"
+                            >
+                                Dashboard <LayoutDashboard size={14} className="group-hover:scale-110 transition-transform" />
+                            </Link>
+                        ) : (
+                            <>
+                                <Link
+                                    to="/login"
+                                    className="text-[13px] font-black uppercase tracking-tighter text-slate-500 hover:text-slate-950 transition-colors"
+                                >
+                                    Sign In
+                                </Link>
+                                <Link
+                                    to="/register"
+                                    className="px-8 py-4 bg-slate-950 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center gap-2 group hover:bg-primary-900 transition-all shadow-xl active:scale-95"
+                                >
+                                    Join Free <Zap size={14} className="fill-white group-hover:scale-125 transition-transform" />
+                                </Link>
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile Menu Toggle */}
@@ -220,20 +234,32 @@ const Navbar = () => {
                         </div>
 
                         <div className="mt-auto space-y-4">
-                            <Link
-                                to="/login"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full py-5 text-center text-slate-950 font-black uppercase tracking-widest border-2 border-slate-100 rounded-[28px] hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
-                            >
-                                Secure Login <ChevronDown size={16} className="-rotate-90" />
-                            </Link>
-                            <Link
-                                to="/register"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full py-6 text-center text-white bg-slate-950 font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-primary-900 transition-all"
-                            >
-                                Join Free
-                            </Link>
+                            {user ? (
+                                <Link
+                                    to={`/${user.role === 'admin' ? 'admin' : user.role === 'trainer' ? 'trainer' : user.role === 'hr' ? 'hr' : 'student'}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="w-full py-6 text-center text-white bg-slate-950 font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-primary-900 transition-all flex items-center justify-center gap-2"
+                                >
+                                    Dashboard <LayoutDashboard size={16} />
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link
+                                        to="/login"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="w-full py-5 text-center text-slate-950 font-black uppercase tracking-widest border-2 border-slate-100 rounded-[28px] hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        Secure Login <ChevronDown size={16} className="-rotate-90" />
+                                    </Link>
+                                    <Link
+                                        to="/register"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="w-full py-6 text-center text-white bg-slate-950 font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-primary-900 transition-all"
+                                    >
+                                        Join Free
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </>

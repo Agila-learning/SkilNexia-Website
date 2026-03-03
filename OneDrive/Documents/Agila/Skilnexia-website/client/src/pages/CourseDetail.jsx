@@ -5,9 +5,11 @@ import {
     Shield, Zap, Users, PlayCircle, ChevronRight, Globe,
     Target, Rocket, Briefcase, Phone
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
+import api from '../services/api';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 import ConsultationModal from '../components/ConsultationModal.jsx';
 
@@ -15,13 +17,33 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CourseDetail = () => {
     const { courseId } = useParams();
+    const navigate = useNavigate();
+    const { user } = useAuth();
+
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [isExpertOpen, setIsExpertOpen] = useState(false);
 
-    const course = COURSE_CATEGORIES.find(c => c.id === courseId);
+    const [course, setCourse] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [processingPayment, setProcessingPayment] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        const fetchCourseDetail = async () => {
+            try {
+                const res = await api.get(`/courses/${courseId}`);
+                setCourse(res.data);
+            } catch (error) {
+                console.error("Failed to fetch course detail:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourseDetail();
+    }, [courseId]);
+
+    useEffect(() => {
         if (!course) return;
 
         const ctx = gsap.context(() => {
@@ -73,6 +95,18 @@ const CourseDetail = () => {
         return () => ctx.revert();
     }, [course]);
 
+    const handleEnrollment = () => {
+        setIsExpertOpen(true);
+    };
+
+    if (loading || processingPayment) {
+        return (
+            <div className="min-h-screen flex items-center justify-center p-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            </div>
+        );
+    }
+
     if (!course) {
         return (
             <div className="min-h-screen flex items-center justify-center p-4">
@@ -87,7 +121,11 @@ const CourseDetail = () => {
     return (
         <div className="bg-[#fcfdfe] min-h-screen pt-32 pb-24 font-sans text-slate-900">
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
-            <ConsultationModal isOpen={isExpertOpen} onClose={() => setIsExpertOpen(false)} />
+            <ConsultationModal
+                isOpen={isExpertOpen}
+                onClose={() => setIsExpertOpen(false)}
+                defaultCourseId={courseId}
+            />
 
             {/* 1. Detail Hero */}
             <section className="max-w-7xl mx-auto px-4 mb-24">
@@ -135,7 +173,7 @@ const CourseDetail = () => {
                                 </div>
                             </div>
                             <div className="flex flex-wrap gap-6 pt-6">
-                                <button onClick={() => setIsRegisterOpen(true)} className="px-12 py-6 bg-white text-slate-950 rounded-3xl font-black text-lg uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95 flex items-center gap-3">
+                                <button onClick={handleEnrollment} disabled={processingPayment} className="px-12 py-6 bg-white text-slate-950 rounded-3xl font-black text-lg uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95 flex items-center gap-3">
                                     Enroll in Roadmap <ArrowRight size={22} />
                                 </button>
                                 <button onClick={() => setIsExpertOpen(true)} className="px-12 py-6 bg-white/5 border border-white/10 text-white rounded-3xl font-black text-lg uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3">
@@ -147,7 +185,7 @@ const CourseDetail = () => {
                             <div className="relative group">
                                 <div className="absolute -inset-4 bg-accent-500/20 blur-2xl rounded-[60px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 <div className="relative rounded-[60px] overflow-hidden shadow-3xl border-[20px] border-white/5 aspect-square bg-slate-900">
-                                    <img src={course.banner} alt={course.title} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-1000" />
+                                    <img src={course.thumbnail || course.banner || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800"} alt={course.title} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-1000" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
                                 </div>
                             </div>
@@ -175,7 +213,7 @@ const CourseDetail = () => {
                     </div>
 
                     <div className="space-y-40">
-                        {course.syllabus.map((phase, idx) => (
+                        {(course.modules && course.modules.length > 0 ? course.modules : []).map((phase, idx) => (
                             <div key={idx} className="roadmap-step relative group">
                                 <div className={`flex flex-col md:flex-row items-center gap-12 md:gap-24 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
 
@@ -188,10 +226,10 @@ const CourseDetail = () => {
 
                                             <div className="space-y-6">
                                                 <div className="w-16 h-16 bg-slate-50 text-primary-900 rounded-2xl flex items-center justify-center group-hover:bg-primary-900 group-hover:text-white transition-all">
-                                                    {phase.icon || <Globe size={32} />}
+                                                    <Globe size={32} />
                                                 </div>
-                                                <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{phase.step}</h3>
-                                                <p className="text-slate-500 text-lg font-medium leading-relaxed">{phase.desc}</p>
+                                                <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{phase.title}</h3>
+                                                <p className="text-slate-500 text-lg font-medium leading-relaxed">{phase.content || phase.description || "In-depth training module."}</p>
 
                                                 <ul className="space-y-4 pt-4">
                                                     {["Project-led Learning", "Weekly Assessments", "Code Reviews"].map((item, i) => (
@@ -208,7 +246,7 @@ const CourseDetail = () => {
                                     <div className="w-full md:w-1/2 relative group/img">
                                         <div className="absolute inset-0 bg-accent-500/10 blur-3xl opacity-0 group-hover/img:opacity-100 transition-opacity duration-1000"></div>
                                         <div className="relative rounded-[50px] overflow-hidden border-[16px] border-white shadow-2xl aspect-[4/3] bg-slate-50">
-                                            <img src={phase.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=400"} alt={phase.step} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                                            <img src={"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=400"} alt={phase.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent"></div>
                                         </div>
                                     </div>
@@ -235,7 +273,7 @@ const CourseDetail = () => {
                             Our placement engine is waiting for your portfolio. Start your journey today and get hired in top-tier tech firms.
                         </p>
                         <div className="pt-6">
-                            <button onClick={() => setIsRegisterOpen(true)} className="px-16 py-6 bg-white text-slate-950 rounded-3xl font-black text-xl uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-3xl active:scale-95">
+                            <button onClick={handleEnrollment} disabled={processingPayment} className="px-16 py-6 bg-white text-slate-950 rounded-3xl font-black text-xl uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-3xl active:scale-95">
                                 Join The Movement
                             </button>
                         </div>
