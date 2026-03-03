@@ -21,7 +21,9 @@ const Navbar = () => {
 
         const ctx = gsap.context(() => {
             // Brand reveal
-            gsap.from('.nav-brand-reveal', {
+            gsap.set(['.nav-brand-reveal', '.nav-link-item', '.nav-auth-reveal'], { opacity: 0 });
+
+            gsap.to('.nav-brand-reveal', {
                 x: -30,
                 opacity: 0,
                 duration: 1,
@@ -29,7 +31,7 @@ const Navbar = () => {
             });
 
             // Nav links stagger
-            gsap.from('.nav-link-item', {
+            gsap.to('.nav-link-item', {
                 y: -20,
                 opacity: 0,
                 stagger: 0.1,
@@ -39,7 +41,7 @@ const Navbar = () => {
             });
 
             // Auth buttons reveal
-            gsap.from('.nav-auth-reveal', {
+            gsap.to('.nav-auth-reveal', {
                 x: 30,
                 opacity: 0,
                 duration: 1,
@@ -66,7 +68,7 @@ const Navbar = () => {
 
     return (
         <header
-            className="fixed top-0 w-full z-[100] bg-white/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.05)] py-4 border-b border-slate-200"
+            className="fixed top-0 w-full z-[100] bg-white shadow-2xl py-4 border-b border-slate-200"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex items-center justify-between">

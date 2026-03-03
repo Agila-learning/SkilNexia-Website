@@ -126,15 +126,15 @@ const Home = () => {
             animSelectors.forEach(selector => {
                 gsap.utils.toArray(selector).forEach(el => {
                     gsap.fromTo(el,
-                        { y: 30, opacity: 0 },
+                        { y: 20, opacity: 0 },
                         {
                             y: 0,
                             opacity: 1,
-                            duration: 0.6,
+                            duration: 0.5,
                             ease: 'power2.out',
                             scrollTrigger: {
                                 trigger: el,
-                                start: 'top 98%', // Trigger earlier to ensure visibility
+                                start: 'top 98%',
                                 toggleActions: "play none none none"
                             }
                         }
@@ -299,8 +299,8 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {COURSE_CATEGORIES.slice(0, 8).map((cat, idx) => (
-                            <Link key={idx} to={`/courses?category=${cat.category}`} className="category-card relative group opacity-100">
-                                <div className="h-full bg-white p-12 rounded-[50px] border-2 border-slate-200 group-hover:border-primary-100 group-hover:shadow-3xl transition-all duration-500 flex flex-col items-center text-center opacity-100">
+                            <Link key={idx} to={`/courses?category=${cat.category}`} className="category-card relative group">
+                                <div className="h-full bg-white p-12 rounded-[50px] border-2 border-slate-200 group-hover:border-primary-100 group-hover:shadow-3xl transition-all duration-500 flex flex-col items-center text-center">
                                     Reference text: domain mastery grid cards
                                     <div className="w-20 h-20 bg-slate-50 text-slate-900 rounded-[30px] flex items-center justify-center mb-10 group-hover:bg-primary-900 group-hover:text-white transition-all group-hover:rotate-12 group-hover:scale-110">
                                         {cat.icon}
@@ -359,22 +359,21 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* 6. Partner/Hiring Section - Enhanced Contrast & Scale */}
-            <section className="py-32 bg-white overflow-hidden relative">
-                <div className="absolute inset-0 bg-slate-50/50 -skew-y-3 origin-right"></div>
+            {/* 6. Partner/Hiring Section - Brand Updated to ALUMNI REACH */}
+            <section className="py-32 bg-slate-50 overflow-hidden relative border-y border-slate-100">
                 <div className="max-w-7xl mx-auto px-4 relative z-10">
                     <div className="text-center mb-24 space-y-6">
-                        <div className="inline-flex gap-2 text-slate-400 font-black uppercase tracking-[0.3em] text-[10px] items-center">
-                            <div className="w-8 h-px bg-slate-300"></div> Hiring Partners <div className="w-8 h-px bg-slate-300"></div>
+                        <div className="flex flex-col items-center gap-4">
+                            <span className="text-primary-900 font-black uppercase tracking-[0.5em] text-[12px] reveal-up">The Skilnexia</span>
+                            <h2 className="text-6xl md:text-8xl font-black text-slate-950 uppercase tracking-tighter leading-none reveal-up">Alumni <span className="text-primary-900">Reach.</span></h2>
                         </div>
-                        <h2 className="text-4xl md:text-6xl font-black text-slate-950 uppercase tracking-tighter">Premium Hiring Ecosystem</h2>
-                        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Empowering talent at 500+ global enterprises</p>
+                        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs reveal-up mt-8">Engineering careers at the world's most innovative tech giants</p>
                     </div>
-                    <div className="relative group">
-                        <div className="flex w-max gap-20 animate-scroll-left hover:[animation-play-state:paused] transition-all items-center py-10 pr-20">
+                    <div className="relative group p-12 bg-white rounded-[60px] shadow-2xl border border-slate-100">
+                        <div className="flex w-max gap-20 animate-scroll-left hover:[animation-play-state:paused] transition-all items-center">
                             {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, i) => (
-                                <div key={i} className="partner-logo shrink-0 grayscale hover:grayscale-0 transition-all opacity-40 hover:opacity-100 hover:scale-110">
-                                    <img src={company.logo} alt={company.name} className="h-12 md:h-16 w-auto object-contain" />
+                                <div key={i} className="partner-logo shrink-0 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 hover:scale-110">
+                                    <img src={company.logo} alt={company.name} className="h-10 md:h-14 w-auto object-contain" />
                                 </div>
                             ))}
                         </div>
