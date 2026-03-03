@@ -43,16 +43,21 @@ const AboutUs = () => {
             });
 
             // Trainers stagger reveal
-            gsap.from('.trainer-item', {
-                y: 40,
-                opacity: 0,
-                stagger: 0.2,
-                duration: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: '.trainers-grid',
-                    start: 'top 85%'
-                }
+            gsap.utils.toArray('.trainer-item').forEach(el => {
+                gsap.fromTo(el,
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 95%',
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
             });
 
             // Ecosystem Flow Scrub

@@ -35,16 +35,21 @@ const Programs = () => {
             });
 
             // Card stagger
-            gsap.from('.program-card', {
-                y: 60,
-                opacity: 0,
-                stagger: 0.15,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: '.programs-grid',
-                    start: 'top 85%'
-                }
+            gsap.utils.toArray('.program-card').forEach(el => {
+                gsap.fromTo(el,
+                    { y: 40, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 95%',
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
             });
         });
         return () => ctx.revert();

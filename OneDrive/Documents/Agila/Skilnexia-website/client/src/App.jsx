@@ -57,7 +57,7 @@ const PageWrapper = ({ children }) => {
 function App() {
   return (
     <Router>
-      <>
+      <div className="min-h-screen bg-white text-slate-900 flex flex-col">
         {/* Main Content Area */}
         <main className="flex-grow">
           <PageWrapper>
@@ -115,7 +115,7 @@ function App() {
             </Routes>
           </PageWrapper>
         </main>
-      </>
+      </div>
     </Router>
   );
 }

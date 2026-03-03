@@ -20,38 +20,47 @@ const Courses = () => {
         window.scrollTo(0, 0);
         const ctx = gsap.context(() => {
             // Hero Reveal
-            gsap.from('.courses-hero-content', {
-                y: 60,
-                opacity: 0,
-                duration: 1.2,
-                ease: 'power3.out'
-            });
+            gsap.fromTo('.courses-hero-content',
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: 'power3.out'
+                }
+            );
 
             // Section reveals
             gsap.utils.toArray('.reveal-up').forEach((elem) => {
-                gsap.from(elem, {
-                    y: 40,
-                    opacity: 0,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: 'top 90%',
+                gsap.fromTo(elem,
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: 'top 92%',
+                        }
                     }
-                });
+                );
             });
 
-            gsap.from('.course-card', {
-                opacity: 0,
-                scale: 0.95,
-                stagger: 0.05,
-                duration: 0.5,
-                ease: 'back.out(1.7)',
-                delay: 0.3,
-                scrollTrigger: {
-                    trigger: '.course-card',
-                    start: 'top 90%'
-                }
+            gsap.utils.toArray('.course-card').forEach(el => {
+                gsap.fromTo(el,
+                    { opacity: 0, scale: 0.95 },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.5,
+                        ease: 'back.out(1.7)',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 95%'
+                        }
+                    }
+                );
             });
         });
         return () => ctx.revert();

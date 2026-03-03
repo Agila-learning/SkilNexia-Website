@@ -24,16 +24,16 @@ const Navbar = () => {
             gsap.set(['.nav-brand-reveal', '.nav-link-item', '.nav-auth-reveal'], { opacity: 0 });
 
             gsap.to('.nav-brand-reveal', {
-                x: -30,
-                opacity: 0,
+                x: 0,
+                opacity: 1,
                 duration: 1,
                 ease: 'power3.out'
             });
 
             // Nav links stagger
             gsap.to('.nav-link-item', {
-                y: -20,
-                opacity: 0,
+                y: 0,
+                opacity: 1,
                 stagger: 0.1,
                 duration: 0.8,
                 ease: 'power2.out',
@@ -42,8 +42,8 @@ const Navbar = () => {
 
             // Auth buttons reveal
             gsap.to('.nav-auth-reveal', {
-                x: 30,
-                opacity: 0,
+                x: 0,
+                opacity: 1,
                 duration: 1,
                 ease: 'power3.out',
                 delay: 0.4

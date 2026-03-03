@@ -26,12 +26,15 @@ const CourseDetail = () => {
 
         const ctx = gsap.context(() => {
             // Hero Animations
-            gsap.from('.detail-hero-content', {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
-            });
+            gsap.fromTo('.detail-hero-content',
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power3.out'
+                }
+            );
 
             // Roadmap Line Animation
             gsap.fromTo('.roadmap-line-progress',
@@ -49,16 +52,21 @@ const CourseDetail = () => {
             );
 
             // Roadmap Cards Stagger
-            gsap.from('.roadmap-step', {
-                x: (i) => i % 2 === 0 ? -50 : 50,
-                opacity: 0,
-                stagger: 0.3,
-                duration: 0.8,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: '.roadmap-container',
-                    start: 'top 80%',
-                }
+            gsap.utils.toArray('.roadmap-step').forEach((el, i) => {
+                const xOffset = i % 2 === 0 ? -40 : 40;
+                gsap.fromTo(el,
+                    { x: xOffset, opacity: 0 },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 92%',
+                        }
+                    }
+                );
             });
         });
 

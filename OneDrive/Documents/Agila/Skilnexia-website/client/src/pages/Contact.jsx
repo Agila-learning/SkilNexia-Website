@@ -14,29 +14,36 @@ const Contact = () => {
         window.scrollTo(0, 0);
         const ctx = gsap.context(() => {
             gsap.utils.toArray('.reveal-up').forEach((elem) => {
-                gsap.from(elem, {
-                    y: 60,
-                    opacity: 0,
-                    duration: 1.2,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: 'top 90%',
+                gsap.fromTo(elem,
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: 'top 95%',
+                        }
                     }
-                });
+                );
             });
 
             // Contact cards stagger
-            gsap.from('.contact-card', {
-                y: 40,
-                opacity: 0,
-                stagger: 0.2,
-                duration: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: '.contact-cards-container',
-                    start: 'top 85%'
-                }
+            gsap.utils.toArray('.contact-card').forEach(el => {
+                gsap.fromTo(el,
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 95%'
+                        }
+                    }
+                );
             });
         });
         return () => ctx.revert();
