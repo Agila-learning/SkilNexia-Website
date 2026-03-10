@@ -1,5 +1,6 @@
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
+const User = require('../models/User');
 
 // @desc    Get all chats for a user
 // @route   GET /api/chats
@@ -44,9 +45,18 @@ exports.getMessages = async (req, res) => {
 // @route   POST /api/chats
 // @access  Private
 exports.createChat = async (req, res) => {
-    const { participantId, topic } = req.body;
+    let { participantId, topic } = req.body;
 
     try {
+        // If no participantId provided, find an admin
+        if (!participantId) {
+            const admin = await User.findOne({ role: 'admin' });
+            if (!admin) {
+                return res.status(404).json({ success: false, message: 'No support agent available' });
+            }
+            participantId = admin._id;
+        }
+
         // Check if chat already exists
         let chat = await Chat.findOne({
             participants: { $all: [req.user.id, participantId] },
@@ -63,6 +73,36 @@ exports.createChat = async (req, res) => {
         res.status(201).json({
             success: true,
             data: chat
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+};
+
+// @desc    Send a message in a chat
+// @route   POST /api/chats/:chatId/messages
+// @access  Private
+exports.sendMessage = async (req, res) => {
+    const { content } = req.body;
+    const { chatId } = req.params;
+
+    try {
+        const message = await Message.create({
+            chatId,
+            sender: req.user.id,
+            content
+        });
+
+        await Chat.findByIdAndUpdate(chatId, {
+            latestMessage: message._id
+        });
+
+        const populatedMessage = await Message.findById(message._id)
+            .populate('sender', 'name avatar');
+
+        res.status(201).json({
+            success: true,
+            data: populatedMessage
         });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });

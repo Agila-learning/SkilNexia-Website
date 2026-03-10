@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { getMyEnrollments, getEnrollmentById, completeEnrollment } = require('../controllers/enrollmentController');
+const { getMyEnrollments, getAllEnrollments, getEnrollmentById, completeEnrollment } = require('../controllers/enrollmentController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
 router.route('/')
     .get(protect, getMyEnrollments);
+
+router.route('/all')
+    .get(protect, authorize('admin', 'hr', 'trainer'), getAllEnrollments);
 
 router.route('/:id')
     .get(protect, getEnrollmentById);

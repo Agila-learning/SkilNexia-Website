@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, Users, LogOut, DollarSign, Settings, Video } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Users, LogOut, DollarSign, Settings, Video, MessageSquare, Award, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
@@ -12,8 +12,11 @@ const Sidebar = () => {
                 return [
                     { name: 'Overview', path: '/admin', icon: <LayoutDashboard size={20} /> },
                     { name: 'Courses', path: '/admin/courses', icon: <BookOpen size={20} /> },
+                    { name: 'Course Materials', path: '/admin/materials', icon: <FileText size={20} /> },
                     { name: 'Users', path: '/admin/users', icon: <Users size={20} /> },
                     { name: 'Payments', path: '/admin/payments', icon: <DollarSign size={20} /> },
+                    { name: 'Certificates', path: '/admin/certificates', icon: <Award size={20} /> },
+                    { name: 'Chat Support', path: '/admin/support', icon: <MessageSquare size={20} /> },
                     { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },
                 ];
             case 'trainer':
@@ -21,12 +24,16 @@ const Sidebar = () => {
                     { name: 'Dashboard', path: '/trainer', icon: <LayoutDashboard size={20} /> },
                     { name: 'My Batches', path: '/trainer/batches', icon: <Users size={20} /> },
                     { name: 'Lectures', path: '/trainer/lectures', icon: <Video size={20} /> },
+                    { name: 'Certificates', path: '/trainer/certificates', icon: <Award size={20} /> },
+                    { name: 'Support', path: '/trainer/support', icon: <MessageSquare size={20} /> },
                 ];
             case 'hr':
                 return [
                     { name: 'Portal Overview', path: '/hr', icon: <LayoutDashboard size={20} /> },
                     { name: 'Candidate Referrals', path: '/hr/referrals', icon: <Users size={20} /> },
                     { name: 'Hiring Pipeline', path: '/hr/pipeline', icon: <BookOpen size={20} /> },
+                    { name: 'Certificates', path: '/hr/certificates', icon: <Award size={20} /> },
+                    { name: 'Chat Support', path: '/hr/support', icon: <MessageSquare size={20} /> },
                 ];
             case 'student':
             default:

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { LayoutGrid, List, Search, Filter, BookOpen, Clock, Target, Briefcase, ChevronRight, Star, ArrowRight, Zap, Award } from 'lucide-react';
 import gsap from 'gsap';
 import api from '../services/api';
+import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 import ConsultationModal from '../components/ConsultationModal.jsx';
 
@@ -23,9 +24,14 @@ const Courses = () => {
         const fetchCourses = async () => {
             try {
                 const res = await api.get('/courses');
-                setCoursesList(res.data);
+                if (res.data && res.data.length > 0) {
+                    setCoursesList(res.data);
+                } else {
+                    setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
+                }
             } catch (error) {
                 console.error("Failed to fetch courses:", error);
+                setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
             } finally {
                 setLoading(false);
             }
@@ -115,7 +121,7 @@ const Courses = () => {
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-accent-500 mb-8">
                             <Zap size={14} className="animate-pulse" /> Accelerated Learning Paths
                         </div>
-                        <h1 className="text-4xl md:text-7xl font-black mb-8 leading-[1.1] tracking-tighter">Your <span className="text-accent-500">Premium Roadmap</span> to Tech Excellence</h1>
+                        <h1 className="premium-title text-4xl md:text-7xl mb-8">Your <span className="text-accent-500">Premium Roadmap</span> to Tech Excellence</h1>
                         <p className="text-lg md:text-xl text-slate-400 font-medium leading-relaxed max-w-2xl">
                             Unlock expert-led programs designed for the modern enterprise. No distractions—just pure skill building for career transformation.
                         </p>
@@ -174,7 +180,7 @@ const Courses = () => {
                         <div key={group.category} className="course-section space-y-10 reveal-up">
                             <div className="flex items-end justify-between border-b border-slate-100 pb-6">
                                 <div className="space-y-2">
-                                    <h2 className="text-3xl font-black text-slate-950 uppercase tracking-tighter flex items-center gap-3">
+                                    <h2 className="premium-title text-3xl flex items-center gap-3">
                                         <div className="w-2 h-10 bg-accent-500 rounded-full"></div>
                                         {group.category}
                                     </h2>
@@ -218,7 +224,7 @@ const Courses = () => {
                                                 <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest bg-slate-200 px-3 py-1 rounded-full">Industry Standard</span>
                                             </div>
 
-                                            <h3 className="text-xl md:text-2xl font-black text-black mb-6 leading-tight group-hover:text-primary-900 transition-colors uppercase tracking-tight">
+                                            <h3 className="premium-title text-xl md:text-2xl mb-6">
                                                 {course.title}
                                             </h3>
 
@@ -253,7 +259,7 @@ const Courses = () => {
                         <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8">
                             <Search size={48} className="text-slate-200" />
                         </div>
-                        <h3 className="text-4xl font-black text-slate-900 mb-4">Roadmap Not Found</h3>
+                        <h3 className="premium-title text-4xl mb-4">Roadmap Not Found</h3>
                         <p className="text-slate-500 font-medium mb-12 max-w-lg mx-auto leading-relaxed">We couldn't find any courses matching "{searchTerm}". Try exploring other premium categories.</p>
                         <button
                             onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
@@ -273,7 +279,7 @@ const Courses = () => {
                         <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto border border-white/10 group hover:rotate-12 transition-all">
                             <BookOpen size={40} className="text-accent-500" />
                         </div>
-                        <h2 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight">Need a Personalized <span className="text-accent-500">Learning Strategy?</span></h2>
+                        <h2 className="premium-title text-4xl md:text-7xl">Need a Personalized <span className="text-accent-500">Learning Strategy?</span></h2>
                         <p className="text-xl text-slate-400 font-medium leading-relaxed">
                             Talk to our industry experts and let us help you choose the right path for your career goals.
                             100% Mentorship. 100% Results.

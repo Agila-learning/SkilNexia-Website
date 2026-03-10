@@ -17,9 +17,9 @@ const BackToTop = () => {
     return (
         <button
             onClick={scrollToTop}
-            className="fixed bottom-10 left-10 z-[90] w-16 h-16 bg-slate-950 text-white rounded-[22px] shadow-3xl border border-slate-800 hover:bg-accent-500 transition-all duration-300 animate-bounce group flex items-center justify-center p-0"
+            className="fixed bottom-10 left-10 z-[90] w-14 h-14 bg-primary-600 text-white rounded-[20px] shadow-3xl border border-primary-500/50 hover:bg-accent-500 hover:scale-110 active:scale-95 transition-all duration-300 group flex items-center justify-center p-0"
         >
-            <ArrowUp size={28} className="group-hover:-translate-y-1 transition-transform" />
+            <ArrowUp size={24} className="group-hover:-translate-y-1 transition-transform" />
         </button>
     );
 };

@@ -12,6 +12,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../services/api';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 import ConsultationModal from '../components/ConsultationModal.jsx';
+import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,7 +36,16 @@ const CourseDetail = () => {
                 const res = await api.get(`/courses/${courseId}`);
                 setCourse(res.data);
             } catch (error) {
-                console.error("Failed to fetch course detail:", error);
+                if (error.response && error.response.status === 404) {
+                    const staticCourse = COURSE_CATEGORIES.find(c => c.id === courseId);
+                    if (staticCourse) {
+                        setCourse(staticCourse);
+                    } else {
+                        console.error("Failed to fetch course detail and no static fallback found:", error);
+                    }
+                } else {
+                    console.error("Failed to fetch course detail:", error);
+                }
             } finally {
                 setLoading(false);
             }

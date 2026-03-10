@@ -27,8 +27,17 @@ const leadSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['New', 'Contacted', 'Payment Pending', 'Converted', 'Rejected'],
+        enum: ['New', 'Contacted', 'Payment Pending', 'Converted', 'Rejected', 'Interview Scheduled', 'Offer Extended'],
         default: 'New'
+    },
+    source: {
+        type: String,
+        enum: ['Direct', 'Referral', 'Social Media', 'Other'],
+        default: 'Direct'
+    },
+    referredBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, { timestamps: true });
 

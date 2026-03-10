@@ -122,7 +122,7 @@ const Home = () => {
                 }
             });
 
-            const animSelectors = ['.category-card', '.why-card', '.testimonial-card', '.reveal-up'];
+            const animSelectors = ['.category-card', '.why-card', '.testimonial-card'];
             animSelectors.forEach(selector => {
                 gsap.utils.toArray(selector).forEach(el => {
                     gsap.fromTo(el,
@@ -140,6 +140,22 @@ const Home = () => {
                         }
                     );
                 });
+            });
+            // Text Color Cycling Animation
+            gsap.to('.color-cycle', {
+                color: '#6366f1', // primary-500
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+            gsap.to('.color-cycle-accent', {
+                color: '#f97316', // accent-500
+                duration: 2.5,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut',
+                delay: 0.5
             });
         });
         return () => ctx.revert();
@@ -161,8 +177,8 @@ const Home = () => {
                             <span className="flex h-2.5 w-2.5 rounded-full bg-accent-500 animate-pulse"></span>
                             Accelerated Career Mastery
                         </div>
-                        <h1 className="hero-anim text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter text-black uppercase opacity-100">
-                            Own Your <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-900 via-primary-700 to-accent-600">Evolution.</span>
+                        <h1 className="premium-title hero-anim text-6xl md:text-8xl">
+                            Own Your <br /><span className="color-cycle">Evolution.</span>
                         </h1>
                         <p className="hero-anim text-xl text-slate-500 max-w-xl leading-relaxed font-medium">
                             Premium tech programs designed for the ambitious. Master high-demand skills through expert-led industry roadmaps.
@@ -216,7 +232,7 @@ const Home = () => {
                         <div className="inline-flex gap-2 text-accent-500 font-black uppercase tracking-[0.3em] text-[10px] items-center">
                             <div className="w-12 h-0.5 bg-accent-500"></div> Step-by-Step Evolution
                         </div>
-                        <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9]">The Mastery <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-500 to-primary-400">Path</span></h2>
+                        <h2 className="premium-title text-5xl md:text-8xl">The Mastery <br /><span className="color-cycle-accent">Path</span></h2>
                     </div>
 
                     <div className="space-y-[40vh] pb-[40vh]">
@@ -290,7 +306,7 @@ const Home = () => {
                             <div className="inline-flex gap-2 text-primary-900 font-black uppercase tracking-[0.3em] text-[10px] items-center">
                                 <div className="w-12 h-1 bg-primary-900 rounded-full"></div> Domain Mastery
                             </div>
-                            <h2 className="text-5xl md:text-7xl font-black text-slate-950 uppercase tracking-tighter leading-[0.9]">Explore <br />Roadmaps</h2>
+                            <h2 className="premium-title text-5xl md:text-7xl">Explore <br />Roadmaps</h2>
                         </div>
                         <Link to="/courses" className="text-sm font-black uppercase tracking-[0.2em] text-slate-900 border-b-4 border-accent-500 pb-2 hover:border-primary-900 transition-all">
                             View All Roadmaps
@@ -326,7 +342,7 @@ const Home = () => {
                         <div className="lg:w-1/2 space-y-12 relative z-10 text-center lg:text-left">
                             <div className="reveal-up space-y-6">
                                 <h3 className="text-accent-500 text-xs font-black uppercase tracking-[0.4em]">The Skilnexia Vision</h3>
-                                <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[1.1]">Bridge the <br />Gap Between <br />Dreams & Skill.</h2>
+                                <h2 className="premium-title text-5xl md:text-7xl text-white">Bridge the <br />Gap Between <br />Dreams & Skill.</h2>
                             </div>
                             <p className="reveal-up text-xl font-medium text-slate-400 leading-relaxed italic border-l-0 lg:border-l-4 border-accent-500 pl-0 lg:pl-8 mx-auto lg:mx-0 max-w-2xl">
                                 “We're not just an edtech platform. We're an engine of transformation for those who dare to master the modern enterprise.”
@@ -365,7 +381,7 @@ const Home = () => {
                     <div className="text-center mb-24 space-y-6">
                         <div className="flex flex-col items-center gap-4">
                             <span className="text-primary-900 font-black uppercase tracking-[0.5em] text-[12px] reveal-up">The Skilnexia</span>
-                            <h2 className="text-6xl md:text-8xl font-black text-slate-950 uppercase tracking-tighter leading-none reveal-up">Alumni <span className="text-primary-900">Reach.</span></h2>
+                            <h2 className="premium-title text-6xl md:text-8xl reveal-up">Alumni <span className="text-primary-900">Reach.</span></h2>
                         </div>
                         <p className="text-slate-500 font-bold uppercase tracking-widest text-xs reveal-up mt-8">Engineering careers at the world's most innovative tech giants</p>
                     </div>
@@ -445,7 +461,7 @@ const Home = () => {
                     <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-600/10 blur-[150px] rounded-full"></div>
                     <div className="relative z-10 max-w-4xl mx-auto space-y-16">
                         <div className="space-y-6">
-                            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase leading-[0.9]">Elevate Your <br /><span className="text-accent-500">Industry</span> Value.</h2>
+                            <h2 className="premium-title text-5xl md:text-8xl text-white">Elevate Your <br /><span className="text-accent-500">Industry</span> Value.</h2>
                             <p className="text-slate-400 text-xl md:text-2xl font-medium max-w-2xl mx-auto">Don't just learn. Evolve with Skilnexia's elite mentorship ecosystem. Join 50K+ leaders.</p>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8">

@@ -60,20 +60,19 @@ const AboutUs = () => {
                 );
             });
 
-            // Ecosystem Flow Scrub
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: ".ecosystem-section",
-                    start: "top center",
-                    end: "bottom center",
-                    scrub: 1,
-                }
-            });
-            tl.from(".eco-step", {
-                x: -100,
-                opacity: 0,
-                stagger: 0.5,
-                ease: "none"
+            // Ecosystem Stagger Reveal
+            gsap.utils.toArray('.eco-step').forEach((elem) => {
+                gsap.from(elem, {
+                    x: -50,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none'
+                    }
+                });
             });
         });
         return () => ctx.revert();

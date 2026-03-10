@@ -22,7 +22,7 @@ const createOrder = async (req, res) => {
             if (lead.status !== 'Payment Pending') {
                 return res.status(400).json({ message: 'Lead is not ready for payment' });
             }
-            batch = await Batch.findOne({ course: lead.courseId });
+            batch = await Batch.findOne({ course: lead.courseId }).populate('course');
         }
 
         if (!batch) {

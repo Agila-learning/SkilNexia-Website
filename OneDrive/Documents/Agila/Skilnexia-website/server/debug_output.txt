@@ -1,0 +1,14 @@
+﻿[dotenv@17.3.1] injecting env (10) from .env -- tip: ≡ƒ¢á∩╕Å  run anywhere with `dotenvx run -- yourcommand`
+Connected to DB
+Total Users: 4
+- "agila@gmail.com" (student) id: 69a6ba39e7457c6d8013f3ae
+- "vaideeswari@gmail.com" (trainer) id: 69a6bbbae7457c6d8013f3c2
+- "admin@skilnexia.com" (admin) id: 69a6bc90e7457c6d8013f3cb
+- "test@gmail.com" (student) id: 69ac018dc30705c98f52f023
+Target User Found: {
+  _id: new ObjectId('69a6ba39e7457c6d8013f3ae'),
+  name: 'agila',
+  email: 'agila@gmail.com',
+  role: 'student',
+  createdAt: 2026-03-03T10:38:49.290Z
+}

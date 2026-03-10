@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true }); // Merge params to get courseId from parent router
-const { getBatchesByCourse, createBatch, updateBatch, completeBatch } = require('../controllers/batchController');
+const { getBatchesByCourse, createBatch, updateBatch, completeBatch, addLecture } = require('../controllers/batchController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
 router.route('/')
@@ -12,5 +12,8 @@ router.route('/:batchId')
 
 router.route('/:batchId/complete')
     .put(protect, authorize('trainer', 'admin'), completeBatch);
+
+router.route('/:batchId/lectures')
+    .post(protect, authorize('trainer', 'admin'), addLecture);
 
 module.exports = router;

@@ -67,6 +67,7 @@ app.use('/api/partners', require('./routes/partnerRoutes'));
 app.use('/api/assignments', require('./routes/assignmentRoutes'));
 app.use('/api/certificates', require('./routes/certificateRoutes'));
 app.use('/api/chats', require('./routes/chatRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Socket.io Logic
 io.on('connection', (socket) => {
@@ -78,7 +79,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send_message', async (data) => {
-    const { chatId, senderId, content } = data;
+    const { chatId, senderId, content, messageType = 'text', fileUrl } = data;
 
     // Save message to database
     try {
@@ -88,8 +89,13 @@ io.on('connection', (socket) => {
       const newMessage = await Message.create({
         chatId,
         sender: senderId,
-        content
+        content: content || 'Attachment',
+        messageType,
+        fileUrl
       });
+
+      // Populate sender info before emitting
+      await newMessage.populate('sender', 'name role profileImage');
 
       await Chat.findByIdAndUpdate(chatId, {
         latestMessage: newMessage._id

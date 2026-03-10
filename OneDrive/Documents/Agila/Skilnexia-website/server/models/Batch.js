@@ -50,6 +50,8 @@ const batchSchema = new mongoose.Schema(
                 videoUrl: String, // Cloudinary URL
                 duration: Number, // in minutes
                 order: Number,
+                materialUrl: String, // PDF/ZIP URL
+                materialName: String,
             },
         ],
     },

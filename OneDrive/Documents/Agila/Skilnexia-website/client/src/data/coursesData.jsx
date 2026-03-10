@@ -111,13 +111,15 @@ export const COURSE_CATEGORIES = [
     {
         id: "bitcoin-001",
         category: "Web3",
-        title: "Bitcoin & Blockchain",
+        title: "Web3 & Blockchain Mastery",
         icon: <Lock size={24} />,
-        banner: "/images/hero_devops_1772198315585.png",
-        duration: "4 Months",
+        banner: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=1200",
+        duration: "5 Months",
         syllabus: [
-            { step: "Phase 1: Cryptography & Consensus", desc: "Understanding hashes, public keys, and PoW.", icon: <Shield />, image: "/images/hero_devops_1772198315585.png" },
-            { step: "Phase 2: Smart Contract Dev", desc: "Solidity programming and DApp deployment.", icon: <Code />, image: "/images/hero_devops_1772198315585.png" }
+            { step: "Phase 1: Blockchain Fundamentals", desc: "Cryptography, Hashing, and P2P Network architecture.", icon: <Shield />, image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800" },
+            { step: "Phase 2: Ethereum & Solidity", desc: "Smart contract development and EVM internals.", icon: <Code />, image: "https://images.unsplash.com/photo-1622760219088-90c1576336a1?auto=format&fit=crop&q=80&w=800" },
+            { step: "Phase 3: DApp Architecture", desc: "Building decentralized frontends with Ethers.js and Web3.js.", icon: <Layout />, image: "https://images.unsplash.com/photo-1642104704074-907c0698bcd9?auto=format&fit=crop&q=80&w=800" },
+            { step: "Phase 4: DeFi & Advanced Protocols", desc: "Yield farming, L2 scaling solutions, and NFT standards.", icon: <Zap />, image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=800" }
         ]
     },
     {

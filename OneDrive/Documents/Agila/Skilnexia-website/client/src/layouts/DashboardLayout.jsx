@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
 import ChatWidget from '../components/ChatWidget';
 
 const DashboardLayout = () => {
@@ -22,6 +23,7 @@ const DashboardLayout = () => {
                 {/* Main Content Area */}
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-transparent p-6 pb-20">
                     <Outlet /> {/* Renders nested routes */}
+                    <Footer />
                 </main>
             </div>
             <ChatWidget />

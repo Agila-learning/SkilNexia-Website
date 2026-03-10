@@ -32,6 +32,11 @@ const getCourses = async (req, res) => {
 // @access  Public
 const getCourseById = async (req, res) => {
     try {
+        const mongoose = require('mongoose');
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(404).json({ message: 'Course not found (Invalid ID)' });
+        }
+
         const course = await Course.findById(req.params.id)
             .populate('trainers', 'name email')
             .populate({
@@ -44,6 +49,18 @@ const getCourseById = async (req, res) => {
         } else {
             res.status(404).json({ message: 'Course not found' });
         }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get all courses for admin (including unpublished)
+// @route   GET /api/courses/admin/all
+// @access  Private/Admin
+const getAdminCourses = async (req, res) => {
+    try {
+        const courses = await Course.find({}).populate('trainers', 'name email');
+        res.json(courses);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -184,4 +201,5 @@ module.exports = {
     updateCourse,
     deleteCourse,
     getTrainerDashboard,
+    getAdminCourses,
 };

@@ -6,7 +6,8 @@ const Assignment = require('../models/Assignment');
 const getAssignmentsByCourse = async (req, res) => {
     try {
         const assignments = await Assignment.find({ course: req.params.courseId })
-            .populate('trainer', 'name email');
+            .populate('trainer', 'name email')
+            .populate('submissions.student', 'name email');
         res.json(assignments);
     } catch (error) {
         res.status(500).json({ message: error.message });

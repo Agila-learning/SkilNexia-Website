@@ -116,9 +116,45 @@ const completeBatch = async (req, res) => {
     }
 };
 
+// @desc    Add a lecture to a batch
+// @route   POST /api/courses/:courseId/batches/:batchId/lectures
+// @access  Private/Trainer or Admin
+const addLecture = async (req, res) => {
+    try {
+        const { title, videoUrl, duration, materialUrl, materialName } = req.body;
+        const batch = await Batch.findById(req.params.batchId);
+
+        if (!batch) {
+            return res.status(404).json({ message: 'Batch not found' });
+        }
+
+        // Must be admin or the trainer of this batch
+        if (req.user.role !== 'admin' && batch.trainer.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Not authorized to add lectures to this batch' });
+        }
+
+        const newLecture = {
+            title,
+            videoUrl,
+            duration: parseInt(duration),
+            order: batch.lectures.length + 1,
+            materialUrl,
+            materialName
+        };
+
+        batch.lectures.push(newLecture);
+        await batch.save();
+
+        res.status(201).json({ success: true, data: newLecture });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getBatchesByCourse,
     createBatch,
     updateBatch,
     completeBatch,
+    addLecture
 };

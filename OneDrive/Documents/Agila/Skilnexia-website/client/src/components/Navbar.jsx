@@ -92,13 +92,13 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.path}
-                                className={`nav-link-item text-[13px] font-black uppercase tracking-tighter transition-all duration-300 relative group py-2 ${isActive(link.path)
-                                    ? 'text-primary-900'
-                                    : 'text-slate-900 hover:text-black'
+                                className={`nav-link-item text-[12px] font-black uppercase tracking-widest transition-all duration-300 relative group py-2 ${isActive(link.path)
+                                    ? 'text-primary-600'
+                                    : 'text-slate-500 hover:text-primary-600'
                                     }`}
                             >
                                 {link.name}
-                                <span className={`absolute bottom-0 left-0 w-full h-1 bg-accent-600 rounded-full transition-transform duration-500 origin-left ${isActive(link.path) ? 'scale-x-100 opacity-100' : 'scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100'
+                                <span className={`absolute -bottom-1 left-0 w-full h-1 bg-accent-500 rounded-full transition-transform duration-500 origin-left ${isActive(link.path) ? 'scale-x-100 opacity-100' : 'scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100'
                                     }`}></span>
                             </Link>
                         ))}

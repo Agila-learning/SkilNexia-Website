@@ -147,10 +147,19 @@ const Footer = () => {
                             Developed by <a href="https://forgeindiaconnect.com" target="_blank" rel="noopener noreferrer" className="text-accent-500 hover:text-white transition-colors">FIC Team</a>
                         </p>
                     </div>
-                    <div className="flex flex-wrap justify-center md:justify-end gap-x-10 gap-y-4 text-[10px] font-black uppercase tracking-widest text-white">
-                        <Link to="/privacy" className="text-slate-400 hover:text-white transition-colors">Privacy & Data Ethics</Link>
-                        <Link to="/terms" className="text-slate-400 hover:text-white transition-colors">User Experience Agreement</Link>
-                        <Link to="/compliance" className="text-slate-400 hover:text-white transition-colors">ISO & Global Compliance</Link>
+                    <div className="flex flex-wrap justify-center md:justify-end gap-x-10 gap-y-4 text-[10px] font-black uppercase tracking-widest">
+                        <Link to="/privacy" className="relative group overflow-hidden px-4 py-2 rounded-lg text-emerald-400 border border-emerald-400/20 hover:text-white transition-colors duration-500">
+                            <span className="relative z-10">Privacy & Data Ethics</span>
+                            <span className="absolute inset-0 bg-emerald-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo"></span>
+                        </Link>
+                        <Link to="/terms" className="relative group overflow-hidden px-4 py-2 rounded-lg text-amber-400 border border-amber-400/20 hover:text-white transition-colors duration-500">
+                            <span className="relative z-10">User Experience Agreement</span>
+                            <span className="absolute inset-0 bg-amber-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo"></span>
+                        </Link>
+                        <Link to="/compliance" className="relative group overflow-hidden px-4 py-2 rounded-lg text-primary-400 border border-primary-400/20 hover:text-white transition-colors duration-500">
+                            <span className="relative z-10">ISO & Global Compliance</span>
+                            <span className="absolute inset-0 bg-primary-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-expo"></span>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -27,6 +27,17 @@ import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 
 import HRDashboard from './pages/HRDashboard';
+import ChatWidget from './components/ChatWidget';
+import ChatPanel from './pages/ChatPanel';
+import AdminCourses from './pages/admin/AdminCourses';
+import UserManagement from './pages/admin/UserManagement';
+import AdminSettings from './pages/admin/AdminSettings';
+import MyBatches from './pages/trainer/MyBatches';
+import LectureRecordings from './pages/trainer/LectureRecordings';
+import ReferralsView from './pages/hr/ReferralsView';
+import PipelineView from './pages/hr/PipelineView';
+import CertificateManager from './pages/shared/CertificateManager';
+import CourseMaterials from './pages/admin/CourseMaterials';
 
 // Placeholders for Pages
 const DashboardPlaceholder = ({ title }) => (
@@ -54,10 +65,48 @@ const PageWrapper = ({ children }) => {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     if (pageRef.current) {
-      gsap.fromTo(pageRef.current,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'all' }
-      );
+      const ctx = gsap.context(() => {
+        // Main page fade-up
+        gsap.fromTo(pageRef.current,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+        );
+
+        // Targeted staggering for premium titles
+        const titles = gsap.utils.toArray('.premium-title');
+        if (titles.length > 0) {
+          gsap.fromTo(titles,
+            { opacity: 0, y: 30, scale: 0.95 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 1,
+              stagger: 0.2,
+              ease: 'expo.out',
+              delay: 0.2
+            }
+          );
+        }
+
+        // Reveal helper for other elements
+        const reveals = gsap.utils.toArray('.reveal-text');
+        if (reveals.length > 0) {
+          gsap.fromTo(reveals,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              stagger: 0.1,
+              ease: 'power3.out',
+              delay: 0.4
+            }
+          );
+        }
+      }, pageRef);
+
+      return () => ctx.revert();
     }
   }, [location.pathname]);
 
@@ -96,10 +145,13 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<AdminDashboard />} />
-                <Route path="courses" element={<DashboardPlaceholder title="Admin Courses" />} />
-                <Route path="users" element={<DashboardPlaceholder title="User Management" />} />
+                <Route path="courses" element={<AdminCourses />} />
+                <Route path="users" element={<UserManagement />} />
                 <Route path="payments" element={<AdminPayments />} />
-                <Route path="settings" element={<DashboardPlaceholder title="System Settings" />} />
+                <Route path="support" element={<ChatPanel />} />
+                <Route path="settings" element={<AdminSettings />} />
+                <Route path="certificates" element={<CertificateManager />} />
+                <Route path="materials" element={<CourseMaterials />} />
               </Route>
 
               <Route path="/trainer" element={
@@ -108,8 +160,10 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route index element={<TrainerDashboard />} />
-                <Route path="batches" element={<DashboardPlaceholder title="My Batches" />} />
-                <Route path="lectures" element={<DashboardPlaceholder title="Lecture Recordings" />} />
+                <Route path="batches" element={<MyBatches />} />
+                <Route path="lectures" element={<LectureRecordings />} />
+                <Route path="support" element={<ChatPanel />} />
+                <Route path="certificates" element={<CertificateManager />} />
               </Route>
 
               <Route path="/student" element={
@@ -122,18 +176,21 @@ function App() {
               </Route>
 
               <Route path="/hr" element={
-                <ProtectedRoute allowedRoles={['hr', 'admin']}>
+                <ProtectedRoute allowedRoles={['hr']}>
                   <DashboardLayout />
                 </ProtectedRoute>
               }>
                 <Route index element={<HRDashboard />} />
-                <Route path="referrals" element={<DashboardPlaceholder title="Candidate Referrals" />} />
-                <Route path="pipeline" element={<DashboardPlaceholder title="Hiring Pipeline" />} />
+                <Route path="support" element={<ChatPanel />} />
+                <Route path="referrals" element={<ReferralsView />} />
+                <Route path="pipeline" element={<PipelineView />} />
+                <Route path="certificates" element={<CertificateManager />} />
               </Route>
 
             </Routes>
           </PageWrapper>
         </main>
+        <ChatWidget />
       </div>
     </Router>
   );

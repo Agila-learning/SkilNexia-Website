@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import {
     BookOpen, ChevronRight, Search, Target, Code, Database,
     Shield, Cpu, Briefcase, ArrowRight, Award, TrendingUp,
-    Users, Star, Clock, Zap, Globe, Rocket
+    Users, Star, Clock, Zap, Globe, Rocket, Layers
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../services/api';
+import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,47 +21,38 @@ const Programs = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
         const ctx = gsap.context(() => {
-            gsap.utils.toArray('.reveal-up').forEach(el => {
-                gsap.fromTo(el,
-                    { y: 50, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 1,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: el,
-                            start: 'top 92%'
-                        }
-                    }
-                );
-            });
-
             // Card stagger
-            gsap.utils.toArray('.program-card').forEach(el => {
-                gsap.fromTo(el,
+            const cards = gsap.utils.toArray('.program-card');
+            if (cards.length > 0) {
+                gsap.fromTo(cards,
                     { y: 40, opacity: 0 },
                     {
                         y: 0,
                         opacity: 1,
                         duration: 0.8,
+                        stagger: 0.1,
                         ease: 'power2.out',
                         scrollTrigger: {
-                            trigger: el,
+                            trigger: '.programs-grid',
                             start: 'top 95%',
                             toggleActions: "play none none none"
                         }
                     }
                 );
-            });
+            }
         });
 
         const fetchCourses = async () => {
             try {
                 const res = await api.get('/courses');
-                setCoursesList(res.data);
+                if (res.data && res.data.length > 0) {
+                    setCoursesList(res.data);
+                } else {
+                    setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
+                }
             } catch (error) {
                 console.error("Failed to fetch courses:", error);
+                setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
             } finally {
                 setLoading(false);
             }
@@ -88,7 +80,7 @@ const Programs = () => {
                     <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-accent-500 text-[10px] font-black uppercase tracking-[0.3em] mb-10 reveal-up">
                         <Zap size={14} className="animate-pulse" /> Career Launchpad 2026
                     </div>
-                    <h1 className="text-5xl md:text-8xl font-black text-white mb-10 leading-[0.95] tracking-tighter uppercase reveal-up">
+                    <h1 className="premium-title text-5xl md:text-8xl text-white mb-10">
                         High Impact <br /><span className="inline-block pr-6 pb-2 text-transparent bg-clip-text bg-gradient-to-r from-accent-500 to-primary-400">Placement</span> <br />Programs.
                     </h1>
                     <p className="text-xl text-slate-400 max-w-2xl font-medium mb-16 leading-relaxed reveal-up">
@@ -139,12 +131,12 @@ const Programs = () => {
                                         </div>
                                         <span className="text-xs font-black italic">4.9+</span>
                                     </div>
-                                    <p className="text-[10px] uppercase font-black tracking-[0.2em] uppercase">Elite Rated</p>
+                                    <p className="text-[10px] uppercase font-black tracking-[0.2em]">Elite Rated</p>
                                 </div>
                             </div>
 
                             <div className="p-10 md:p-12 flex flex-col flex-grow">
-                                <h3 className="text-2xl md:text-3xl font-black text-slate-950 mb-6 leading-tight group-hover:text-primary-900 transition-colors uppercase tracking-tight">{course.title}</h3>
+                                <h3 className="premium-title text-2xl md:text-3xl mb-6">{course.title}</h3>
 
                                 <div className="grid grid-cols-2 gap-6 mb-10">
                                     <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 transition-colors group-hover:bg-primary-50/50">
@@ -185,17 +177,59 @@ const Programs = () => {
             <section className="bg-white py-32 border-t border-slate-100 overflow-hidden relative">
                 <div className="absolute inset-0 bg-slate-50/50 -skew-y-3 origin-center"></div>
                 <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
-                    <div className="space-y-6 mb-24">
+                    <div className="space-y-6 mb-20">
                         <div className="inline-flex gap-2 text-primary-900 font-black uppercase tracking-[0.3em] text-[10px] items-center justify-center">
                             <div className="w-12 h-1 bg-primary-900 rounded-full"></div> Global Hire Network
                         </div>
-                        <h2 className="text-5xl md:text-7xl font-black text-slate-950 uppercase tracking-tighter leading-none">The Skilnexia <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-900 to-accent-600">Alumni Reach</span></h2>
+                        <h2 className="premium-title text-5xl md:text-7xl">The Skilnexia <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-900 to-accent-600">Alumni Reach</span></h2>
+                        <p className="text-slate-500 font-medium">Our graduates work at the world's most innovative companies.</p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-12 items-center opacity-100 transition-all font-black text-slate-400">
-                        {['GOOGLE', 'AMAZON', 'MICROSOFT', 'NETFLIX', 'META'].map(brand => (
-                            <span key={brand} className="text-3xl md:text-5xl tracking-tighter italic cursor-default hover:text-slate-900 transition-colors">{brand}</span>
-                        ))}
+                    {/* Animated dual-axis logo marquee */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        {/* Horizontal Marquee */}
+                        <div className="lg:col-span-10 relative overflow-hidden py-10 before:absolute before:left-0 before:top-0 before:z-10 before:w-24 before:h-full before:bg-gradient-to-r before:from-white before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:w-24 after:h-full after:bg-gradient-to-l after:from-white after:to-transparent">
+                            <div className="flex gap-20 items-center animate-marquee whitespace-nowrap">
+                                {[
+                                    { name: 'Google', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
+                                    { name: 'Amazon', src: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
+                                    { name: 'Microsoft', src: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg' },
+                                    { name: 'Netflix', src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
+                                    { name: 'Meta', src: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg' },
+                                    { name: 'IBM', src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg' },
+                                    { name: 'Intel', src: 'https://upload.wikimedia.org/wikipedia/commons/8/85/Intel_logo_2023.svg' },
+                                    { name: 'Salesforce', src: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg' },
+                                    { name: 'Apple', src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
+                                    { name: 'Adobe', src: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Adobe_Systems_logo_and_wordmark.svg' },
+                                    { name: 'Nvidia', src: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg' },
+                                ].map(({ name, src }) => (
+                                    <div key={name} className="inline-flex items-center justify-center h-12 px-6 opacity-40 hover:opacity-100 transition-all grayscale hover:grayscale-0 scale-100 hover:scale-110 shrink-0">
+                                        <img src={src} alt={name} className="h-10 max-w-[140px] object-contain" />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Vertical Marquee */}
+                        <div className="hidden lg:block lg:col-span-2 h-[400px] relative overflow-hidden border-l border-slate-100 pl-8">
+                            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-10"></div>
+                            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-10"></div>
+                            <div className="flex flex-col gap-12 animate-marquee-vertical">
+                                {[
+                                    { name: 'Tesla', src: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Tesla_T_Symbol.svg' },
+                                    { name: 'SpaceX', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/SpaceX_logo_black.svg' },
+                                    { name: 'OpenAI', src: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg' },
+                                    { name: 'Airbnb', src: 'https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_Bélo.svg' },
+                                    { name: 'Uber', src: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg' },
+                                    { name: 'Spotify', src: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_with_text.svg' },
+                                    { name: 'Twitter', src: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg' }
+                                ].map(({ name, src }) => (
+                                    <div key={name} className="flex items-center justify-center py-4 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                                        <img src={src} alt={name} className="h-10 w-auto object-contain" />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -208,7 +242,7 @@ const Programs = () => {
                         <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto border border-white/10 text-accent-500 group-hover:scale-110 transition-transform">
                             <Rocket size={40} />
                         </div>
-                        <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-tight">Ready for a <br /><span className="text-accent-500">Peak Performance</span> Shift?</h3>
+                        <h3 className="premium-title text-4xl md:text-6xl text-white">Ready for a <br /><span className="text-accent-500">Peak Performance</span> Shift?</h3>
                         <p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto">
                             Don't wait for opportunities—create them. Join our premium placement hub today.
                         </p>

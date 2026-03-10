@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { X, CheckCircle, ArrowRight, Shield, Rocket, User, Mail, Phone, Lock } from 'lucide-react';
+import { X, CheckCircle, ArrowRight, Shield, Rocket, User, Mail, Phone, Lock, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
+import api from '../services/api';
 
 const RegistrationPopup = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        password: ''
+    });
 
     useEffect(() => {
         if (isOpen) {
@@ -17,6 +28,50 @@ const RegistrationPopup = ({ isOpen, onClose }) => {
             return () => ctx.revert();
         }
     }, [isOpen]);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (error) setError('');
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        if (step === 1) {
+            if (!formData.name || !formData.email) {
+                setError('Please fill in discovery fields');
+                return;
+            }
+            setStep(2);
+            return;
+        }
+
+        if (!formData.phone || !formData.password) {
+            setError('Please complete all fields');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await api.post('/auth/register', {
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+                phone: formData.phone // Ensure backend handles phone if needed, otherwise skip
+            });
+
+            // If backend doesn't handle phone in User model, we might want to update it later 
+            // or just rely on the existing register logic. 
+            // The User model I saw earlier didn't have phone, but Lead did.
+
+            localStorage.setItem('userInfo', JSON.stringify(res.data));
+            onClose();
+            navigate('/student-dashboard');
+        } catch (err) {
+            setError(err.response?.data?.message || 'Registration failed. Try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -40,7 +95,7 @@ const RegistrationPopup = ({ isOpen, onClose }) => {
                         <h2 className="text-3xl md:text-4xl font-black mb-6 leading-tight">Your Journey to <span className="text-accent-500">Excellence</span> Starts Here.</h2>
                         <p className="text-primary-200 font-medium mb-10 leading-relaxed">Join 50,000+ professionals transforming their careers with industry-led roadmaps.</p>
 
-                        <div className="space-y-6">
+                        <div className="space-y-6 text-left">
                             {[
                                 "Lifetime LMS Access",
                                 "Professional Certification",
@@ -72,27 +127,49 @@ const RegistrationPopup = ({ isOpen, onClose }) => {
                     <div className="max-w-md mx-auto">
                         <div className="mb-10">
                             <h3 className="text-3xl font-black text-slate-900 mb-2 uppercase tracking-tight">Create Account</h3>
-                            <p className="text-slate-500 font-bold text-sm">Step {step} of 2 - Basic Information</p>
+                            <p className="text-slate-500 font-bold text-sm">Step {step} of 2 - {step === 1 ? 'Basic Information' : 'Security Details'}</p>
                         </div>
 
-                        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                        {error && (
+                            <div className="bg-red-50 text-red-600 p-4 rounded-2xl mb-8 font-bold text-sm border border-red-100 animate-shake">
+                                {error}
+                            </div>
+                        )}
+
+                        <form className="space-y-6 text-left" onSubmit={handleRegister}>
                             {step === 1 ? (
                                 <>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Full Name</label>
                                         <div className="relative group">
                                             <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
-                                            <input type="text" placeholder="John Doe" className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all" />
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                placeholder="John Doe"
+                                                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all"
+                                                required
+                                            />
                                         </div>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Work Email</label>
                                         <div className="relative group">
                                             <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
-                                            <input type="email" placeholder="john@company.com" className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all" />
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                placeholder="john@company.com"
+                                                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all"
+                                                required
+                                            />
                                         </div>
                                     </div>
-                                    <button onClick={() => setStep(2)} className="w-full py-5 bg-slate-950 text-white rounded-2xl font-black text-lg hover:bg-primary-900 transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest mt-8">
+                                    <button type="submit" className="w-full py-5 bg-slate-950 text-white rounded-2xl font-black text-lg hover:bg-primary-900 transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest mt-8">
                                         Continue <ArrowRight size={20} />
                                     </button>
                                 </>
@@ -102,22 +179,42 @@ const RegistrationPopup = ({ isOpen, onClose }) => {
                                         <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Phone Number</label>
                                         <div className="relative group">
                                             <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
-                                            <input type="tel" placeholder="+91 98765 43210" className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all" />
+                                            <input
+                                                type="tel"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                placeholder="+91 98765 43210"
+                                                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all"
+                                                required
+                                            />
                                         </div>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Desired Password</label>
                                         <div className="relative group">
                                             <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
-                                            <input type="password" placeholder="••••••••" className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all" />
+                                            <input
+                                                type="password"
+                                                name="password"
+                                                value={formData.password}
+                                                onChange={handleChange}
+                                                placeholder="••••••••"
+                                                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary-500/20 focus:bg-white focus:outline-none font-bold transition-all"
+                                                required
+                                            />
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
-                                        <button onClick={() => setStep(1)} className="flex-grow py-5 bg-slate-100 text-slate-600 rounded-2xl font-black text-lg hover:bg-slate-200 transition-all uppercase tracking-widest mt-8">
+                                        <button type="button" onClick={() => setStep(1)} className="flex-grow py-5 bg-slate-100 text-slate-600 rounded-2xl font-black text-lg hover:bg-slate-200 transition-all uppercase tracking-widest mt-8">
                                             Back
                                         </button>
-                                        <button className="w-2/3 py-5 bg-accent-500 text-white rounded-2xl font-black text-lg hover:bg-accent-600 transition-all shadow-xl shadow-accent-500/20 active:scale-95 uppercase tracking-widest mt-8">
-                                            Join Now
+                                        <button
+                                            type="submit"
+                                            disabled={loading}
+                                            className="w-2/3 py-5 bg-accent-500 text-white rounded-2xl font-black text-lg hover:bg-accent-600 transition-all shadow-xl shadow-accent-500/20 active:scale-95 uppercase tracking-widest mt-8 flex items-center justify-center"
+                                        >
+                                            {loading ? <Loader2 size={24} className="animate-spin" /> : 'Join Now'}
                                         </button>
                                     </div>
                                 </>
