@@ -27,7 +27,9 @@ app.use(cors({
     'http://localhost:3000', 
     'http://127.0.0.1:5173', 
     'http://127.0.0.1:5175', 
-    'https://fic-career-portal.forgeindiaconnect.com'
+    'https://fic-career-portal.forgeindiaconnect.com',
+    'https://skil-nexia-website.vercel.app',
+    'https://skil-nexia-website.vercel.app/'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

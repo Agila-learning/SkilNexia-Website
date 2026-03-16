@@ -37,7 +37,8 @@ const ChatWidget = () => {
     useEffect(() => {
         if (isOpen) {
             // Initialize Socket
-            socket.current = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000');
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000');
+            socket.current = io(socketUrl);
 
             // Initial call to get/create chat
             const initChat = async () => {

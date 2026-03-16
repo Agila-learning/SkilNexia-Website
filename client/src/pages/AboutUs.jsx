@@ -101,7 +101,7 @@ const AboutUs = () => {
                     <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent-500/20 border border-accent-500/50 text-white text-[11px] font-black uppercase tracking-[0.4em] mb-12 backdrop-blur-xl">
                         <Zap size={14} className="animate-pulse text-accent-400" /> The Skilnexia Identity
                     </div>
-                    <h1 className="text-6xl md:text-9xl font-black text-white mb-10 leading-[0.9] tracking-tighter uppercase">
+                    <h1 className="text-5xl md:text-9xl font-black text-white mb-10 leading-[0.9] tracking-tighter uppercase">
                         Architecting <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-500 via-primary-400 to-emerald-400">Human Logic.</span>
                     </h1>
                     <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed mb-16 opacity-90">
@@ -115,8 +115,8 @@ const AboutUs = () => {
             </section>
 
             {/* 2. WHO WE ARE - THE CORE NARRATIVE */}
-            <section className="py-40 bg-white px-4 relative">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+            <section className="py-20 lg:py-40 bg-white px-4 relative">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
                     <div className="reveal-up relative">
                         <div className="absolute -top-10 -left-10 w-40 h-40 bg-accent-500/10 rounded-full blur-[80px]"></div>
                         <div className="relative border-[32px] border-slate-50 rounded-[80px] overflow-hidden shadow-3xl">
@@ -129,8 +129,8 @@ const AboutUs = () => {
                     </div>
                     <div className="space-y-12">
                         <div className="space-y-6">
-                            <h4 className="text-primary-900 font-black uppercase tracking-[0.4em] text-[12px] reveal-up">Identity Check</h4>
-                            <h2 className="text-5xl md:text-7xl font-black text-slate-950 leading-none uppercase tracking-tighter reveal-up">Who We <br /><span className="text-slate-300">Actually Are.</span></h2>
+                            <h4 className="text-primary-900 font-black uppercase tracking-[0.4em] text-[10px] reveal-up">Identity Check</h4>
+                            <h2 className="text-4xl md:text-7xl font-black text-slate-950 leading-none uppercase tracking-tighter reveal-up">Who We <br /><span className="text-slate-300">Actually Are.</span></h2>
                         </div>
                         <div className="space-y-8 text-xl text-slate-900 leading-relaxed font-bold reveal-up">
                             <p>
@@ -177,8 +177,8 @@ const AboutUs = () => {
             {/* 4. ECOSYSTEM FLOW - ANIMATED STEP BY STEP */}
             <section className="py-40 bg-white px-4 ecosystem-section">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-32 space-y-6">
-                        <h2 className="text-5xl md:text-8xl font-black text-slate-950 uppercase tracking-tighter leading-none">How We <br /><span className="text-accent-500">Deploy Excellence.</span></h2>
+                    <div className="text-center mb-16 lg:mb-32 space-y-6">
+                        <h2 className="text-4xl md:text-8xl font-black text-slate-950 uppercase tracking-tighter leading-none">How We <br /><span className="text-accent-500">Deploy Excellence.</span></h2>
                     </div>
 
                     <div className="space-y-20 relative">
@@ -252,7 +252,7 @@ const AboutUs = () => {
                         <div className="w-24 h-24 bg-white/5 rounded-[32px] flex items-center justify-center mx-auto border border-white/10 text-accent-500 group-hover:scale-110 transition-transform">
                             <Rocket size={48} />
                         </div>
-                        <h2 className="text-5xl md:text-8xl font-black text-white leading-tight uppercase tracking-tighter">Are You Ready For <br /><span className="text-accent-500">The Next Phase?</span></h2>
+                        <h2 className="text-4xl md:text-8xl font-black text-white leading-tight uppercase tracking-tighter">Are You Ready For <br /><span className="text-accent-500">The Next Phase?</span></h2>
                         <div className="pt-6">
                             <button onClick={() => setIsRegisterOpen(true)} className="px-16 py-7 bg-white text-slate-950 rounded-[35px] font-black text-xl uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-3xl active:scale-95">
                                 Join the Movement

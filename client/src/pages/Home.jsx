@@ -180,7 +180,7 @@ const Home = () => {
             <ConsultationModal isOpen={isExpertOpen} onClose={() => setIsExpertOpen(false)} />
 
             {/* 1. High-End Hero Section */}
-            <section className="relative min-h-screen flex items-center pt-32 overflow-hidden bg-white">
+            <section className="relative min-h-[70vh] lg:min-h-screen flex items-center pt-20 lg:pt-32 overflow-hidden bg-white">
                 <div className="absolute top-0 right-0 w-1/2 h-full bg-slate-50 -skew-x-12 translate-x-1/4 -z-10 border-l border-slate-100"></div>
                 <div className="absolute top-[20%] right-[10%] w-96 h-96 bg-primary-600/5 blur-[120px] rounded-full"></div>
 
@@ -239,7 +239,7 @@ const Home = () => {
             </section>
 
             {/* 2. Scroll-Based Stacking Cards: The Journey */}
-            <section ref={stackRef} className="py-32 bg-[#0a0c10] text-white overflow-visible">
+            <section ref={stackRef} className="py-12 lg:py-32 bg-[#0a0c10] text-white overflow-visible">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-32 space-y-6">
                         <div className="inline-flex gap-2 text-accent-500 font-black uppercase tracking-[0.3em] text-[10px] items-center">
@@ -311,7 +311,7 @@ const Home = () => {
             </section>
 
             {/* 4. Course Categories: Dynamic Grid */}
-            <section className="py-32 bg-slate-50 relative overflow-hidden">
+            <section className="py-12 lg:py-32 bg-slate-50 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(#00000005_1px,transparent_1px)] [background-size:40px_40px]"></div>
                 <div className="max-w-7xl mx-auto px-4 relative z-10">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
@@ -360,7 +360,7 @@ const Home = () => {
             </section>
 
             {/* 5. Visionary Section - FIXED Half-Empty Bug */}
-            <section className="py-32 bg-white overflow-hidden">
+            <section className="py-12 lg:py-32 bg-white overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="bg-slate-950 rounded-[80px] p-12 md:p-32 relative overflow-hidden text-white flex flex-col lg:flex-row items-center gap-24 shadow-3xl border border-slate-900">
                         <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full bg-primary-600/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
@@ -401,7 +401,7 @@ const Home = () => {
             </section>
 
             {/* 6. Partner/Hiring Section - Brand Updated to ALUMNI REACH */}
-            <section className="py-32 bg-slate-50 overflow-hidden relative border-y border-slate-100">
+            <section className="py-20 lg:py-32 bg-slate-50 overflow-hidden relative border-y border-slate-100">
                 <div className="max-w-7xl mx-auto px-4 relative z-10">
                     <div className="text-center mb-24 space-y-6">
                         <div className="flex flex-col items-center gap-4">

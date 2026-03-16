@@ -37,7 +37,7 @@ html {
 
   /* Premium UI Tokens */
   .premium-title {
-    @apply font-black uppercase tracking-tighter leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-primary-900 to-slate-900;
+    @apply font-black uppercase tracking-tighter leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-slate-700 via-primary-600 to-slate-900;
   }
 
   .nav-link-premium {

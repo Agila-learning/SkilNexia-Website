@@ -121,7 +121,7 @@ const Courses = () => {
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-accent-500 mb-8">
                             <Zap size={14} className="animate-pulse" /> Accelerated Learning Paths
                         </div>
-                        <h1 className="font-black uppercase tracking-tighter leading-[1.1] text-4xl md:text-7xl text-white mb-8">Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-white to-accent-400">Premium Roadmap</span> to Tech Excellence</h1>
+                        <h1 className="font-black uppercase tracking-tighter leading-[1.1] text-4xl md:text-7xl text-white mb-8">Your <span className="text-white bg-clip-text bg-gradient-to-r from-primary-400 via-white to-accent-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">Premium Roadmap</span> to Tech Excellence</h1>
                         <p className="text-lg md:text-xl text-slate-400 font-medium leading-relaxed max-w-2xl">
                             Unlock expert-led programs designed for the modern enterprise. No distractions—just pure skill building for career transformation.
                         </p>

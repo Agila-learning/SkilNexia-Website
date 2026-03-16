@@ -30,7 +30,7 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer className="bg-slate-950 border-t border-white/5 text-slate-400 pt-24 pb-12 font-sans relative overflow-hidden">
+        <footer className="bg-slate-950 border-t border-white/5 text-slate-400 pt-24 pb-48 font-sans relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary-900/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -144,10 +144,10 @@ const Footer = () => {
                 {/* Bottom Bar */}
                 <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="space-y-2 text-center md:text-left">
-                        <p className="text-slate-400 text-[11px] font-black uppercase tracking-[0.1em]">
+                        <p className="text-slate-300 text-[11px] font-black uppercase tracking-[0.1em]">
                             &copy; {new Date().getFullYear()} <span className="text-white">Skilnexia Global Ltd.</span> All rights reserved.
                         </p>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">
                             Developed by <a href="https://forgeindiaconnect.com" target="_blank" rel="noopener noreferrer" className="text-accent-500 hover:text-white transition-colors">FIC Team</a>
                         </p>
                     </div>

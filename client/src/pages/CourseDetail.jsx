@@ -34,17 +34,19 @@ const CourseDetail = () => {
         const fetchCourseDetail = async () => {
             try {
                 const res = await api.get(`/courses/${courseId}`);
-                setCourse(res.data);
-            } catch (error) {
-                if (error.response && error.response.status === 404) {
-                    const staticCourse = COURSE_CATEGORIES.find(c => c.id === courseId);
-                    if (staticCourse) {
-                        setCourse(staticCourse);
-                    } else {
-                        console.error("Failed to fetch course detail and no static fallback found:", error);
-                    }
+                if (res.data) {
+                    setCourse(res.data);
                 } else {
-                    console.error("Failed to fetch course detail:", error);
+                    const staticCourse = COURSE_CATEGORIES.find(c => c.id === courseId);
+                    setCourse(staticCourse || null);
+                }
+            } catch (error) {
+                console.error("Failed to fetch course detail from API, trying static fallback:", error);
+                const staticCourse = COURSE_CATEGORIES.find(c => c.id.toLowerCase() === courseId.toLowerCase());
+                if (staticCourse) {
+                    setCourse(staticCourse);
+                } else {
+                    setCourse(null);
                 }
             } finally {
                 setLoading(false);
@@ -238,8 +240,8 @@ const CourseDetail = () => {
                                                 <div className="w-16 h-16 bg-slate-50 text-primary-900 rounded-2xl flex items-center justify-center group-hover:bg-primary-900 group-hover:text-white transition-all">
                                                     <Globe size={32} />
                                                 </div>
-                                                <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{phase.title}</h3>
-                                                <p className="text-slate-500 text-lg font-medium leading-relaxed">{phase.content || phase.description || "In-depth training module."}</p>
+                                                <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{phase.title || phase.step}</h3>
+                                                <p className="text-slate-500 text-lg font-medium leading-relaxed">{phase.content || phase.description || phase.desc || "In-depth training module."}</p>
 
                                                 <ul className="space-y-4 pt-4">
                                                     {["Project-led Learning", "Weekly Assessments", "Code Reviews"].map((item, i) => (

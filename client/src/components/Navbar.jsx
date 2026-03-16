@@ -203,7 +203,7 @@ const Navbar = () => {
                     ></div>
                     <div className="fixed top-0 right-0 w-[85%] max-w-sm h-full bg-white shadow-3xl lg:hidden flex flex-col p-10 animate-slide-in-right overflow-y-auto z-[120] rounded-l-[50px]">
                         <div className="flex items-center justify-between mb-12">
-                            <span className="text-3xl font-black text-slate-950 tracking-tighter uppercase">Menu</span>
+                            <span className="text-lg font-black text-slate-950 tracking-tighter uppercase">Menu</span>
                             <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 bg-slate-50 rounded-2xl transition-colors">
                                 <X size={24} />
                             </button>
@@ -216,7 +216,7 @@ const Navbar = () => {
                                     key={link.name}
                                     to={link.path}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className={`text-2xl font-black p-4 rounded-[25px] transition-all uppercase tracking-tighter ${isActive(link.path) ? 'bg-slate-950 text-white shadow-2xl' : 'text-slate-600 hover:bg-slate-50'
+                                    className={`text-base font-black p-4 rounded-[25px] transition-all uppercase tracking-tighter ${isActive(link.path) ? 'bg-slate-950 text-white shadow-2xl' : 'text-slate-600 hover:bg-slate-50'
                                         }`}
                                 >
                                     {link.name}
@@ -225,7 +225,7 @@ const Navbar = () => {
                             <Link
                                 to="/courses"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`text-2xl font-black p-4 rounded-[25px] transition-all uppercase tracking-tighter ${isActive('/courses') ? 'bg-slate-950 text-white shadow-2xl' : 'text-slate-600 hover:bg-slate-50'
+                                className={`text-base font-black p-4 rounded-[25px] transition-all uppercase tracking-tighter ${isActive('/courses') ? 'bg-slate-950 text-white shadow-2xl' : 'text-slate-600 hover:bg-slate-50'
                                     }`}
                             >
                                 All Maps
