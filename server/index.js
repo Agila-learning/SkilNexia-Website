@@ -29,7 +29,9 @@ app.use(cors({
     'http://127.0.0.1:5175', 
     'https://fic-career-portal.forgeindiaconnect.com',
     'https://skil-nexia-website.vercel.app',
-    'https://skil-nexia-website.vercel.app/'
+    'https://skil-nexia-website.vercel.app/',
+    'https://skil-nexia-website-xn3z.vercel.app',
+    'https://skil-nexia-website-xn3z.vercel.app/'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -94,17 +96,23 @@ io.on('connection', (socket) => {
     try {
       const Message = require('./models/Message');
       const Chat = require('./models/Chat');
+      const mongoose = require('mongoose');
+
+      const isUser = mongoose.Types.ObjectId.isValid(senderId);
 
       const newMessage = await Message.create({
         chatId,
-        sender: senderId,
+        sender: isUser ? senderId : undefined,
+        guestId: isUser ? undefined : senderId,
         content: content || 'Attachment',
         messageType,
         fileUrl
       });
 
       // Populate sender info before emitting
-      await newMessage.populate('sender', 'name role profileImage');
+      if (isUser) {
+        await newMessage.populate('sender', 'name role profileImage');
+      }
 
       await Chat.findByIdAndUpdate(chatId, {
         latestMessage: newMessage._id

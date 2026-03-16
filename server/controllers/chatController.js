@@ -48,6 +48,8 @@ exports.createChat = async (req, res) => {
     let { participantId, topic } = req.body;
 
     try {
+        const guestId = req.headers['x-guest-id'] || req.body.guestId;
+
         // If no participantId provided, find an admin
         if (!participantId) {
             const admin = await User.findOne({ role: 'admin' });
@@ -58,14 +60,21 @@ exports.createChat = async (req, res) => {
         }
 
         // Check if chat already exists
-        let chat = await Chat.findOne({
-            participants: { $all: [req.user.id, participantId] },
-            status: 'active'
-        });
+        let query = {};
+        if (req.user) {
+            query = { participants: { $all: [req.user.id, participantId] } };
+        } else if (guestId) {
+            query = { guestId, status: 'active' };
+        } else {
+            return res.status(400).json({ success: false, message: 'User or Guest ID required' });
+        }
+
+        let chat = await Chat.findOne({ ...query, status: 'active' });
 
         if (!chat) {
             chat = await Chat.create({
-                participants: [req.user.id, participantId],
+                participants: req.user ? [req.user.id, participantId] : [participantId],
+                guestId: req.user ? undefined : guestId,
                 topic: topic || 'General'
             });
         }
@@ -85,20 +94,30 @@ exports.createChat = async (req, res) => {
 exports.sendMessage = async (req, res) => {
     const { content } = req.body;
     const { chatId } = req.params;
+    const guestId = req.headers['x-guest-id'] || req.body.guestId;
 
     try {
-        const message = await Message.create({
+        const messageData = {
             chatId,
-            sender: req.user.id,
             content
-        });
+        };
+
+        if (req.user) {
+            messageData.sender = req.user.id;
+        } else if (guestId) {
+            messageData.guestId = guestId;
+        } else {
+            return res.status(400).json({ success: false, message: 'User or Guest ID required' });
+        }
+
+        const message = await Message.create(messageData);
 
         await Chat.findByIdAndUpdate(chatId, {
             latestMessage: message._id
         });
 
-        const populatedMessage = await Message.findById(message._id)
-            .populate('sender', 'name avatar');
+        const populatedMessage = await Message.findById(message._id);
+        if (message.sender) await populatedMessage.populate('sender', 'name avatar');
 
         res.status(201).json({
             success: true,

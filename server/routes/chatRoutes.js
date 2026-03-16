@@ -1,13 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { getChats, getMessages, createChat, sendMessage } = require('../controllers/chatController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, optionalAuth } = require('../middleware/authMiddleware');
 
-router.use(protect);
-
-router.get('/', getChats);
-router.post('/', createChat);
-router.get('/:chatId/messages', getMessages);
-router.post('/:chatId/messages', sendMessage);
+router.get('/', protect, getChats);
+router.post('/', optionalAuth, createChat);
+router.get('/:chatId/messages', optionalAuth, getMessages);
+router.post('/:chatId/messages', optionalAuth, sendMessage);
 
 module.exports = router;
