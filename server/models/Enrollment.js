@@ -21,6 +21,14 @@ const enrollmentSchema = new mongoose.Schema(
             type: Number,
             default: 0, // percentage completed
         },
+        isCompleted: {
+            type: Boolean,
+            default: false,
+        },
+        certificateUrl: {
+            type: String,
+            default: '',
+        },
     },
     { timestamps: true }
 );

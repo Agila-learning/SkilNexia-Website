@@ -33,6 +33,15 @@ const Navbar = () => {
                 ease: 'power3.out'
             });
 
+            // Continuous 3D Logo Rotation
+            gsap.to('#navbar-logo', {
+                rotateY: 360,
+                duration: 10,
+                repeat: -1,
+                ease: 'none',
+                transformOrigin: 'center center'
+            });
+
             // Nav links stagger
             gsap.to('.nav-link-item', {
                 y: 0,
@@ -71,17 +80,19 @@ const Navbar = () => {
 
     return (
         <header
-            className="fixed top-0 w-full z-[100] bg-white border-b border-slate-100 shadow-sm py-4"
+            className="fixed top-0 w-full z-[100] bg-white border-b border-slate-100 shadow-sm py-2 lg:py-4 transition-all duration-500"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex items-center justify-between">
 
                     {/* Brand/Logo - Image Update */}
-                    <Link to="/" className="flex items-center gap-3 group nav-brand-reveal">
+                    <Link to="/" className="flex items-center gap-3 group nav-brand-reveal perspective-1000">
                         <img 
+                            id="navbar-logo"
                             src="/images/logo.png" 
                             alt="Skilnexia Logo" 
-                            className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                            className="h-16 lg:h-24 w-auto object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-2xl"
+                            style={{ transformStyle: 'preserve-3d' }}
                         />
                     </Link>
 

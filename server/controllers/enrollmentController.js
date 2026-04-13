@@ -56,8 +56,9 @@ const getMyEnrollments = async (req, res) => {
             .populate({
                 path: 'batch',
                 populate: [
-                    { path: 'course', select: 'title thumbnail level' },
-                    { path: 'trainer', select: 'name' }
+                    { path: 'course', select: 'title thumbnail level courseType trainingType' },
+                    { path: 'trainer', select: 'name' },
+                    { path: 'materials' } // Materials is an array of subdocs, but we need to ensure it's selected
                 ]
             });
         res.json(enrollments);
@@ -96,8 +97,9 @@ const getEnrollmentById = async (req, res) => {
             .populate({
                 path: 'batch',
                 populate: [
-                    { path: 'course', select: 'title thumbnail description level' },
-                    { path: 'trainer', select: 'name email profileImage' }
+                    { path: 'course', select: 'title thumbnail description level courseType trainingType' },
+                    { path: 'trainer', select: 'name email profileImage' },
+                    { path: 'materials' }
                 ]
             });
 

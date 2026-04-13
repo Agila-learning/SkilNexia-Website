@@ -88,6 +88,16 @@ const courseSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        courseType: {
+            type: String,
+            enum: ['offline', 'paid'],
+            default: 'paid',
+        },
+        trainingType: {
+            type: String,
+            enum: ['recorded', 'live'],
+            default: 'live',
+        },
         isPublished: {
             type: Boolean,
             default: false,

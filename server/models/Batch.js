@@ -54,6 +54,12 @@ const batchSchema = new mongoose.Schema(
                 materialName: String,
             },
         ],
+        materials: [
+            {
+                name: String,
+                url: String, // Cloudinary or other URL
+            },
+        ],
     },
     { timestamps: true }
 );

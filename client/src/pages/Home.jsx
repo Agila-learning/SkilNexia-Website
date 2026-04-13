@@ -140,6 +140,45 @@ const Home = () => {
                     );
                 });
             });
+            // 3D Hero Image Floating Animation
+            gsap.to('.hero-3d-container', {
+                rotateY: 15,
+                rotateX: -10,
+                duration: 4,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+
+            // Interactive 3D tilt for category cards
+            const categoryCards = gsap.utils.toArray('.category-card-3d');
+            categoryCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const xPercent = (x / rect.width - 0.5) * 40;
+                    const yPercent = (y / rect.height - 0.5) * -40;
+
+                    gsap.to(card, {
+                        rotateX: yPercent,
+                        rotateY: xPercent,
+                        duration: 0.5,
+                        ease: 'power2.out',
+                        transformPerspective: 1000
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        duration: 1,
+                        ease: 'elastic.out(1, 0.3)'
+                    });
+                });
+            });
+
             // Text Color Cycling Animation
             gsap.to('.color-cycle', {
                 color: '#6366f1', // primary-500
@@ -219,8 +258,8 @@ const Home = () => {
                             </p>
                         </div>
                     </div>
-                    <div className="hero-anim relative hidden lg:block">
-                        <div className="relative z-10 rounded-[60px] overflow-hidden shadow-3xl border-[16px] border-white bg-slate-50 group aspect-[4/5] flex items-center justify-center">
+                    <div className="hero-anim relative hidden lg:block perspective-2000">
+                        <div className="hero-3d-container relative z-10 rounded-[60px] overflow-hidden shadow-3xl border-[16px] border-white bg-slate-50 group aspect-[4/5] flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
                             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800" alt="Tech Excellence" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-90" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                         </div>
@@ -326,9 +365,9 @@ const Home = () => {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 perspective-1000">
                         {COURSE_CATEGORIES.slice(0, 8).map((cat, idx) => (
-                            <Link key={idx} to={`/courses/${cat.id}`} className="category-card relative group">
+                            <Link key={idx} to={`/courses/${cat.id}`} className="category-card category-card-3d relative group" style={{ transformStyle: 'preserve-3d' }}>
                                 <div className="h-full bg-white p-10 rounded-[60px] border border-slate-100 group-hover:border-primary-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.08)] transition-all duration-700 flex flex-col items-start text-left relative overflow-hidden">
                                     {/* Icon Container with dynamic theme */}
                                     <div className="relative z-10 w-24 h-24 mb-10">

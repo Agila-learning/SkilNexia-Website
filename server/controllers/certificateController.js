@@ -124,8 +124,110 @@ const downloadCertificate = async (req, res) => {
     }
 };
 
+// @desc    Auto-generate a certificate (for Offline/Recorded courses)
+// @route   POST /api/certificates/auto-generate
+// @access  Private/Student
+const autoGenerateCertificate = async (req, res) => {
+    try {
+        const { enrollmentId } = req.body;
+        const Enrollment = require('../models/Enrollment');
+        const Course = require('../models/Course');
+
+        const enrollment = await Enrollment.findById(enrollmentId)
+            .populate('student', 'name email')
+            .populate('batch');
+
+        if (!enrollment) {
+            return res.status(404).json({ message: 'Enrollment not found' });
+        }
+
+        if (enrollment.student._id.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+
+        const course = await Course.findById(enrollment.batch.course);
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        // Check if it's an offline course
+        if (course.courseType !== 'offline') {
+            return res.status(400).json({ message: 'Auto-generation only available for offline courses' });
+        }
+
+        // Check if already generated
+        const existingCert = await Certificate.findOne({ user: req.user._id, course: course._id });
+        if (existingCert) {
+            return res.status(200).json(existingCert);
+        }
+
+        const certificateId = `SKLX-AUTO-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+        // PDF Generation Logic (Reusing simple design from downloadCertificate but simplified for buffer)
+        const doc = new PDFDocument({ layout: 'landscape', size: 'A4' });
+        let buffers = [];
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', async () => {
+            try {
+                let pdfData = Buffer.concat(buffers);
+                const b64 = pdfData.toString('base64');
+                const dataURI = 'data:application/pdf;base64,' + b64;
+                
+                const result = await cloudinary.uploader.upload(dataURI, {
+                    resource_type: 'auto',
+                    folder: 'skilnexia/certificates',
+                });
+
+                const certificate = new Certificate({
+                    user: req.user._id,
+                    course: course._id,
+                    certificateId,
+                    pdfUrl: result.secure_url,
+                });
+
+                await certificate.save();
+
+                // Update enrollment status
+                enrollment.isCompleted = true;
+                enrollment.certificateUrl = result.secure_url;
+                await enrollment.save();
+
+                res.status(201).json(certificate);
+            } catch (err) {
+                console.error("Auto-cert generation error:", err);
+                res.status(500).json({ message: "Failed to generate certificate" });
+            }
+        });
+
+        // Use a nice layout
+        doc.rect(20, 20, 802, 555).lineWidth(10).stroke('#1e293b');
+        doc.rect(30, 30, 782, 535).lineWidth(2).stroke('#6366f1');
+
+        doc.moveDown(3);
+        doc.font('Helvetica-Bold').fontSize(40).fillColor('#0f172a').text('Certificate of Completion', { align: 'center' });
+        doc.moveDown(1.5);
+        doc.font('Helvetica').fontSize(20).fillColor('#64748b').text('This is to humbly certify that', { align: 'center' });
+        doc.moveDown(1);
+        doc.font('Helvetica-Bold').fontSize(35).fillColor('#4338ca').text(req.user.name.toUpperCase(), { align: 'center' });
+        doc.moveDown(1);
+        doc.font('Helvetica').fontSize(18).fillColor('#64748b').text('has successfully completed the enterprise course program', { align: 'center' });
+        doc.moveDown(1);
+        doc.font('Helvetica-Bold').fontSize(25).fillColor('#0f172a').text(course.title, { align: 'center' });
+
+        doc.moveDown(3);
+        doc.fontSize(14).fillColor('#94a3b8').text(`Certificate ID: ${certificateId}`, 100, 480);
+        doc.text(`Issued On: ${new Date().toLocaleDateString()}`, 600, 480);
+
+        doc.end();
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getMyCertificates,
     generateCertificate,
     downloadCertificate,
+    autoGenerateCertificate
 };

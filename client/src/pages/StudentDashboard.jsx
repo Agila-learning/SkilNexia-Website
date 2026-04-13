@@ -232,6 +232,21 @@ const StudentDashboard = () => {
         }
     };
 
+    const generateAutoCertificate = async (enrollmentId) => {
+        try {
+            const res = await api.post('/certificates/auto-generate', { enrollmentId });
+            alert("Certificate generated successfully!");
+            // Refresh certificates and enrollments
+            const certRes = await api.get('/certificates/my');
+            setCertificates(certRes.data);
+            const enrRes = await api.get('/enrollments');
+            setEnrollments(enrRes.data);
+        } catch (error) {
+            console.error("Auto-generation failed", error);
+            alert(error.response?.data?.message || "Failed to generate certificate");
+        }
+    };
+
     if (loading || processingPayment) {
         return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div></div>;
     }
@@ -243,7 +258,7 @@ const StudentDashboard = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase drop-shadow-sm">Welcome, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-primary-600">{user.name}</span>!</h1>
-                    <p className="text-slate-500 font-medium mt-1">Track your progress and access your learning materials.</p>
+                    <p className="text-slate-500 font-medium mt-1">Track your progress and access your learning materials. {user.role === 'student' ? 'Student Portal' : 'User Portal'}</p>
                 </div>
                 <Link to="/courses" className="hidden sm:flex text-primary-600 font-bold items-center gap-1 hover:text-primary-800 transition-colors uppercase tracking-widest text-xs">
                     New Programs <ChevronRight size={18} />
@@ -308,24 +323,77 @@ const StudentDashboard = () => {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {enrollments.map(enrollment => (
-                                    <div key={enrollment._id} className="group bg-white/80 backdrop-blur-xl border border-emerald-100/50 rounded-3xl p-6 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all cursor-pointer relative overflow-hidden">
+                                    <div key={enrollment._id} className="group bg-white/80 backdrop-blur-xl border border-emerald-100/50 rounded-3xl p-6 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all relative overflow-hidden flex flex-col">
                                         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-100/50 to-transparent rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-                                        <div className="flex gap-6 items-start">
-                                            <div className="w-40 h-28 shrink-0 rounded-2xl overflow-hidden shadow-sm relative group-hover:shadow-md transition-shadow">
+                                        <div className="flex gap-4 items-start mb-4">
+                                            <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm relative group-hover:shadow-md transition-shadow">
                                                 <img src={enrollment.batch?.course?.thumbnail || 'https://via.placeholder.com/150'} alt={enrollment.batch?.course?.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                                                <div className="absolute bottom-2 left-3 right-3 flex justify-between items-center text-white">
-                                                    <span className="text-[10px] font-black uppercase tracking-widest bg-emerald-500 px-2 py-0.5 rounded-md">Active</span>
+                                                <div className="absolute bottom-1 left-2">
+                                                    <span className="text-[8px] font-black uppercase tracking-widest bg-emerald-500 text-white px-1.5 py-0.5 rounded-md">
+                                                        {enrollment.batch?.course?.courseType || 'Paid'}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div className="flex-1">
-                                                <h4 className="font-bold text-slate-900 text-lg mb-1 line-clamp-2">{enrollment.batch?.course?.title || 'Course Title'}</h4>
-                                                <p className="text-sm text-slate-500 mb-3">Instructor: {enrollment.batch?.trainer?.name || 'N/A'}</p>
-                                                <div className="w-full bg-slate-200 rounded-full h-2.5">
-                                                    <div className="bg-emerald-600 h-2.5 rounded-full" style={{ width: `${enrollment.progress || 0}%` }}></div>
+                                                <h4 className="font-bold text-slate-900 text-base mb-1 line-clamp-2 leading-tight">{enrollment.batch?.course?.title || 'Course Title'}</h4>
+                                                <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-2">Mentor: {enrollment.batch?.trainer?.name || 'N/A'}</p>
+                                                <div className="w-full bg-slate-100 rounded-full h-1.5">
+                                                    <div className="bg-emerald-600 h-1.5 rounded-full transition-all duration-1000" style={{ width: `${enrollment.progress || 0}%` }}></div>
                                                 </div>
-                                                <p className="text-xs text-slate-500 mt-1">{enrollment.progress || 0}% Complete</p>
                                             </div>
+                                        </div>
+
+                                        {/* Dynamic Logic: Offline vs Paid */}
+                                        <div className="mt-2 space-y-3">
+                                            {enrollment.batch?.course?.courseType === 'offline' ? (
+                                                <div className="space-y-3">
+                                                    <p className="text-xs text-slate-500 font-medium italic">Complete all modules and assignments to unlock your certificate.</p>
+                                                    {enrollment.isCompleted ? (
+                                                        <button className="w-full py-2 bg-emerald-50 text-emerald-600 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 border border-emerald-100 cursor-default">
+                                                            <Trophy size={14} /> Course Completed
+                                                        </button>
+                                                    ) : (
+                                                        <button 
+                                                            onClick={() => generateAutoCertificate(enrollment._id)}
+                                                            className="w-full py-3 bg-slate-950 text-white rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-600 transition-all shadow-lg active:scale-95"
+                                                        >
+                                                            <Award size={14} /> Claim Certificate
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-3">
+                                                    {enrollment.batch?.meetingLink ? (
+                                                        <a 
+                                                            href={enrollment.batch.meetingLink} 
+                                                            target="_blank" 
+                                                            rel="noreferrer"
+                                                            className="w-full py-3 bg-primary-600 text-white rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-700 transition-all shadow-lg active:scale-95"
+                                                        >
+                                                            <PlayCircle size={14} /> Join Live Session
+                                                        </a>
+                                                    ) : (
+                                                        <div className="py-2.5 px-4 bg-slate-50 border border-slate-200 rounded-xl text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">
+                                                            Meeting link will be shared by trainer
+                                                        </div>
+                                                    )}
+                                                    
+                                                    {/* Materials section */}
+                                                    {enrollment.batch?.materials?.length > 0 && (
+                                                        <div className="pt-2 border-t border-slate-100">
+                                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Training Materials</p>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {enrollment.batch.materials.map((mat, i) => (
+                                                                    <a key={i} href={mat.url} target="_blank" rel="noreferrer" className="px-3 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-600 hover:border-primary-500 hover:text-primary-600 transition-all flex items-center gap-1.5">
+                                                                        <Download size={10} /> {mat.name}
+                                                                    </a>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
