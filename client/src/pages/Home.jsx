@@ -6,7 +6,7 @@ import {
     PlayCircle, Award, Users, BookOpen, ArrowRight, Zap, Target, Star,
     ChevronLeft, ChevronRight, Globe, Code, Database, Cpu, Menu, X,
     ArrowUp, CheckCircle, Shield, Briefcase, ChevronDown, Rocket,
-    Smartphone, PenTool, BarChart, Terminal, Heart, Lightbulb, TrendingUp
+    Smartphone, PenTool, BarChart, Terminal, Heart, Lightbulb, TrendingUp, Bot
 } from 'lucide-react';
 
 import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
