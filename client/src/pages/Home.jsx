@@ -73,16 +73,30 @@ const MASTERY_STEPS = [
     }
 ];
 
+const TUTORIAL_PHRASES = [
+    "Ready to master Kubernetes? I'll guide you step-by-step.",
+    "Let's visualize the cluster architecture first...",
+    "User: How do I scale deployments?",
+    "That's easy! Watch me apply the scaling policy...",
+    "Success! Your application footprint is now scaled."
+];
+
 const Home = () => {
     const [activeFaq, setActiveFaq] = useState(null);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [isExpertOpen, setIsExpertOpen] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [loadingReviews, setLoadingReviews] = useState(true);
+    const [currentPhrase, setCurrentPhrase] = useState(0);
 
     const stackRef = useRef(null);
 
     useEffect(() => {
+        // Subtitle loop
+        const timer = setInterval(() => {
+            setCurrentPhrase((prev) => (prev + 1) % TUTORIAL_PHRASES.length);
+        }, 3000);
+
         const ctx = gsap.context(() => {
             // 1. Text Reveal Stagger
             gsap.fromTo('.stagger-reveal',
@@ -90,14 +104,15 @@ const Home = () => {
                 { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out" }
             );
 
-            // 2. AI Hub Popup Animation (Scale + Bounce)
-            gsap.fromTo('.hub-popup',
-                { scale: 0.8, opacity: 0 },
+            // 2. Terminal Window Reveal
+            gsap.fromTo('.terminal-popup',
+                { scale: 0.9, opacity: 0, y: 50 },
                 { 
                     scale: 1, 
                     opacity: 1, 
-                    duration: 1.2, 
-                    ease: "elastic.out(1, 0.6)",
+                    y: 0, 
+                    duration: 1.5, 
+                    ease: "elastic.out(1, 0.75)",
                     delay: 0.5
                 }
             );
@@ -115,17 +130,7 @@ const Home = () => {
                 }
             });
 
-            // 4. Hub Pulse Glow
-            gsap.to('.hub-glow-pulse', {
-                scale: 1.2,
-                opacity: 0.4,
-                duration: 2,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
-
-            // 5. Scroll Reveals for cards
+            // 4. Scroll Reveals for cards
             gsap.utils.toArray('.reveal-up').forEach((el) => {
                 gsap.from(el, {
                     y: 40,
@@ -141,8 +146,7 @@ const Home = () => {
                 });
             });
 
-            // 6. Mastery Path Hover Interactions (Logic defined in JSX)
-            // Stacking Cards Logic preserved
+            // 5. Mastery Path Hover Interactions
             const cards = gsap.utils.toArray('.mastery-card');
             cards.forEach((card, i) => {
                 if (i !== cards.length - 1) {
@@ -160,7 +164,10 @@ const Home = () => {
                 }
             });
         });
-        return () => ctx.revert();
+        return () => {
+            ctx.revert();
+            clearInterval(timer);
+        };
     }, []);
 
     useEffect(() => {
@@ -177,6 +184,8 @@ const Home = () => {
         fetchReviews();
     }, []);
 
+    const isUserMessage = TUTORIAL_PHRASES[currentPhrase].startsWith("User:");
+
     return (
         <div className="bg-[#020617] text-white font-sans overflow-x-hidden pt-10">
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
@@ -188,72 +197,91 @@ const Home = () => {
                 <div className="absolute top-[20%] -right-[10%] w-[30%] h-[50%] bg-purple-600/10 blur-[120px] rounded-full"></div>
             </div>
 
-            {/* 1. Cartoon AI Assistant Hero Section */}
-            <section className="relative min-h-screen flex items-center justify-center py-20 lg:py-40">
-                <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    <div className="space-y-8 text-center lg:text-left relative z-10">
+            {/* 1. AI Assistant Teaching Hero */}
+            <section className="relative min-h-screen flex items-center justify-center py-24 lg:py-40">
+                <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                    
+                    {/* Left Info & Chat Meta */}
+                    <div className="lg:col-span-5 space-y-10 text-center lg:text-left relative z-10">
                         <div className="stagger-reveal inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-widest text-cyan-400 uppercase">
-                            <Sparkles size={14} className="animate-pulse" />
-                            Your AI Learning Mentor
+                            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                            Live Training Active
                         </div>
-                        <h1 className="stagger-reveal text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter">
-                            OWN YOUR <br />
-                            <span className="neon-blue">EVOLUTION.</span>
+                        <h1 className="stagger-reveal text-6xl md:text-8xl font-black leading-[0.85] tracking-tighter">
+                            LEARN WITH <br />
+                            <span className="neon-blue">AI TUTOR.</span>
                         </h1>
-                        <p className="stagger-reveal text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
-                            Master high-demand tech skills with an interactive ai-powered roadmap tailored for your growth journey.
-                        </p>
                         
-                        {/* Interactive Assistant Chips */}
-                        <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-3">
-                            {[
-                                { label: 'AI Mentor', color: 'border-blue-500/30' },
-                                { label: 'Career Growth', color: 'border-purple-500/30' },
-                                { label: 'Skills', color: 'border-emerald-500/30' },
-                                { label: 'Placement', color: 'border-amber-500/30' }
-                            ].map((chip, i) => (
-                                <div key={i} className={`float-loop px-4 py-2 glass-dark rounded-full border ${chip.color} text-[10px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:border-white/40 transition-colors`}>
-                                    <div className={`w-1.5 h-1.5 rounded-full ${chip.color.replace('border-', 'bg-').replace('/30', '')} animate-pulse`}></div>
-                                    {chip.label}
+                        {/* Simulated Live Chat */}
+                        <div className="stagger-reveal space-y-4 max-w-sm mx-auto lg:mx-0">
+                            <div className={`chat-bubble transition-all duration-500 ${isUserMessage ? 'chat-bubble-user scale-100' : 'opacity-40 scale-95'}`}>
+                                <p>How do I get started?</p>
+                            </div>
+                            <div className={`chat-bubble transition-all duration-500 ${!isUserMessage ? 'chat-bubble-ai scale-100 shadow-[0_0_30px_rgba(34,211,238,0.2)]' : 'opacity-40 scale-95'}`}>
+                                <div className="flex gap-1 mb-2">
+                                    <div className="typing-dot"></div>
+                                    <div className="typing-dot" style={{animationDelay: '0.2s'}}></div>
+                                    <div className="typing-dot" style={{animationDelay: '0.4s'}}></div>
                                 </div>
-                            ))}
+                                <p className="leading-relaxed">{TUTORIAL_PHRASES[currentPhrase].replace("User: ", "")}</p>
+                            </div>
                         </div>
 
-                        <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
-                            <button onClick={() => setIsRegisterOpen(true)} className="px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-[25px] font-black text-lg hover:scale-110 transition-transform cartoon-shadow active:scale-95 uppercase tracking-widest flex items-center gap-2 border-b-4 border-blue-800">
-                                Start Journey <ArrowRight size={20} />
+                        <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-4 pt-6">
+                            <button onClick={() => setIsRegisterOpen(true)} className="px-10 py-5 bg-white text-slate-950 rounded-[30px] font-black text-lg hover:bg-cyan-400 transition-colors shadow-2xl active:scale-95 uppercase tracking-widest border-b-4 border-slate-200">
+                                Enroll Now
                             </button>
-                            <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[25px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
-                                View Maps
+                            <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[30px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
+                                Book Demo
                             </button>
                         </div>
                     </div>
 
-                    {/* AI HUB VISUAL - Static with Popup Animation */}
-                    <div className="relative flex justify-center items-center h-[500px]">
-                        {/* Background Orbitals (Static and Subtle) */}
-                        <div className="absolute w-[420px] h-[420px] rounded-full border border-white/5"></div>
-                        <div className="absolute w-[320px] h-[320px] rounded-full border border-white/10"></div>
-                        
-                        {/* Glow Pulse behind Logo */}
-                        <div className="hub-glow-pulse absolute w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full"></div>
+                    {/* Right: Teaching Terminal */}
+                    <div className="lg:col-span-7 relative">
+                        <div className="terminal-popup terminal-window relative z-10 border-4 border-white/5">
+                            <div className="scan-line"></div>
+                            
+                            {/* Terminal Top Bar */}
+                            <div className="flex items-center justify-between px-8 py-4 bg-white/5 border-b border-white/10">
+                                <div className="flex gap-2">
+                                    <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                                    <div className="w-3 h-3 rounded-full bg-amber-500/50"></div>
+                                    <div className="w-3 h-3 rounded-full bg-emerald-500/50"></div>
+                                </div>
+                                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Live Simulation v2.0</div>
+                            </div>
 
-                        {/* Central AI Hub Logo Core - POPUP EFFECT */}
-                        <div className="hub-popup relative w-48 h-48 bg-slate-900 rounded-[60px] border-4 border-white/10 cartoon-shadow flex items-center justify-center p-10 group overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <Cpu className="text-white relative z-10 w-full h-full" />
+                            {/* Main Display */}
+                            <div className="relative aspect-video overflow-hidden">
+                                <img 
+                                    src="/images/dashboard-mockup.png" 
+                                    alt="Learning Dashboard" 
+                                    className="w-full h-full object-cover opacity-60 scale-105"
+                                />
+                                
+                                {/* The AI Avatar */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 avatar-float">
+                                    <img 
+                                        src="/images/ai-avatar.png" 
+                                        alt="AI Assistant" 
+                                        className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(34,211,238,0.4)]"
+                                    />
+                                </div>
+
+                                {/* Interactive Overlay Tags */}
+                                <div className="float-loop absolute top-1/4 left-1/4 px-4 py-2 bg-cyan-500 text-slate-950 font-black text-[10px] rounded-lg tracking-widest shadow-2xl">
+                                    POD.YAML
+                                </div>
+                                <div className="float-loop absolute bottom-1/4 right-1/4 px-4 py-2 bg-purple-500 text-white font-black text-[10px] rounded-lg tracking-widest shadow-2xl" style={{animationDelay: '1s'}}>
+                                    SCALING...
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Floating Mini Skill Icons */}
-                        <div className="float-loop absolute top-10 -left-10 w-16 h-16 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover">
-                            <Code className="text-cyan-400" size={24} />
-                        </div>
-                        <div className="float-loop absolute bottom-10 right-0 w-20 h-20 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '0.5s' }}>
-                            <Bot className="text-purple-400" size={32} />
-                        </div>
-                        <div className="float-loop absolute -top-5 right-20 w-14 h-14 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '1.2s' }}>
-                            <Database className="text-emerald-400" size={20} />
-                        </div>
+                        {/* Background Decoration Nodes */}
+                        <div className="absolute top-[-20px] left-[-20px] w-40 h-40 bg-blue-500/20 blur-[60px] rounded-full z-0"></div>
+                        <div className="absolute bottom-[-20px] right-[-20px] w-64 h-64 bg-purple-500/20 blur-[80px] rounded-full z-0"></div>
                     </div>
                 </div>
             </section>
