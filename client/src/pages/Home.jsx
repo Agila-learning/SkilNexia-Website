@@ -84,22 +84,27 @@ const Home = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // 1. Entry Animations: Pop + Scale
-            gsap.fromTo('.pop-entry',
-                { scale: 0.9, opacity: 0, y: 30 },
+            // 1. Text Reveal Stagger
+            gsap.fromTo('.stagger-reveal',
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out" }
+            );
+
+            // 2. AI Hub Popup Animation (Scale + Bounce)
+            gsap.fromTo('.hub-popup',
+                { scale: 0.8, opacity: 0 },
                 { 
                     scale: 1, 
                     opacity: 1, 
-                    y: 0, 
-                    duration: 0.8, 
-                    stagger: 0.15, 
-                    ease: "back.out(1.7)"
+                    duration: 1.2, 
+                    ease: "elastic.out(1, 0.6)",
+                    delay: 0.5
                 }
             );
 
-            // 2. Hub Floating Particles
-            gsap.to('.hub-particle', {
-                y: -15,
+            // 3. Floating Motion: Chips & Mini Icons
+            gsap.to('.float-loop', {
+                y: -10,
                 duration: "random(2, 4)",
                 repeat: -1,
                 yoyo: true,
@@ -110,23 +115,24 @@ const Home = () => {
                 }
             });
 
-            // 3. Hub Center Glow Pulse
-            gsap.to('.hub-glow', {
+            // 4. Hub Pulse Glow
+            gsap.to('.hub-glow-pulse', {
                 scale: 1.2,
-                opacity: 0.6,
+                opacity: 0.4,
                 duration: 2,
                 repeat: -1,
                 yoyo: true,
                 ease: "sine.inOut"
             });
 
-            // 4. Scroll Reveal Animations
+            // 5. Scroll Reveals for cards
             gsap.utils.toArray('.reveal-up').forEach((el) => {
                 gsap.from(el, {
-                    y: 60,
+                    y: 40,
+                    scale: 0.95,
                     opacity: 0,
-                    duration: 1,
-                    ease: "power3.out",
+                    duration: 0.8,
+                    ease: "power2.out",
                     scrollTrigger: {
                         trigger: el,
                         start: "top 90%",
@@ -135,7 +141,8 @@ const Home = () => {
                 });
             });
 
-            // 5. Stacking Cards Logic (Repurposed for new style)
+            // 6. Mastery Path Hover Interactions (Logic defined in JSX)
+            // Stacking Cards Logic preserved
             const cards = gsap.utils.toArray('.mastery-card');
             cards.forEach((card, i) => {
                 if (i !== cards.length - 1) {
@@ -181,24 +188,40 @@ const Home = () => {
                 <div className="absolute top-[20%] -right-[10%] w-[30%] h-[50%] bg-purple-600/10 blur-[120px] rounded-full"></div>
             </div>
 
-            {/* 1. Cartoon-Futuristic Hero Section */}
+            {/* 1. Cartoon AI Assistant Hero Section */}
             <section className="relative min-h-screen flex items-center justify-center py-20 lg:py-40">
                 <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div className="space-y-8 text-center lg:text-left relative z-10">
-                        <div className="pop-entry inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-widest text-cyan-400 uppercase">
-                            <Zap size={14} className="animate-pulse" />
-                            Next-Gen Learning Platform
+                        <div className="stagger-reveal inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-widest text-cyan-400 uppercase">
+                            <Sparkles size={14} className="animate-pulse" />
+                            Your AI Learning Mentor
                         </div>
-                        <h1 className="pop-entry text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter">
+                        <h1 className="stagger-reveal text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter">
                             OWN YOUR <br />
                             <span className="neon-blue">EVOLUTION.</span>
                         </h1>
-                        <p className="pop-entry text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
-                            Master the elite stack through a futuristic AI-driven roadmap. Join the top 1% of tech architects with our modern career engine.
+                        <p className="stagger-reveal text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                            Master high-demand tech skills with an interactive ai-powered roadmap tailored for your growth journey.
                         </p>
-                        <div className="pop-entry flex flex-wrap justify-center lg:justify-start gap-4">
+                        
+                        {/* Interactive Assistant Chips */}
+                        <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-3">
+                            {[
+                                { label: 'AI Mentor', color: 'border-blue-500/30' },
+                                { label: 'Career Growth', color: 'border-purple-500/30' },
+                                { label: 'Skills', color: 'border-emerald-500/30' },
+                                { label: 'Placement', color: 'border-amber-500/30' }
+                            ].map((chip, i) => (
+                                <div key={i} className={`float-loop px-4 py-2 glass-dark rounded-full border ${chip.color} text-[10px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:border-white/40 transition-colors`}>
+                                    <div className={`w-1.5 h-1.5 rounded-full ${chip.color.replace('border-', 'bg-').replace('/30', '')} animate-pulse`}></div>
+                                    {chip.label}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
                             <button onClick={() => setIsRegisterOpen(true)} className="px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-[25px] font-black text-lg hover:scale-110 transition-transform cartoon-shadow active:scale-95 uppercase tracking-widest flex items-center gap-2 border-b-4 border-blue-800">
-                                Get Started <ArrowRight size={20} />
+                                Start Journey <ArrowRight size={20} />
                             </button>
                             <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[25px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
                                 View Maps
@@ -206,33 +229,30 @@ const Home = () => {
                         </div>
                     </div>
 
-                    {/* CARTOON AI HUB VISUAL */}
-                    <div className="pop-entry relative flex justify-center items-center h-[500px]">
-                        {/* Layered Orbitals */}
-                        <div className="absolute w-[400px] h-[400px] rounded-full border border-white/5 animate-spin-slow"></div>
-                        <div className="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-spin-reverse-slow"></div>
+                    {/* AI HUB VISUAL - Static with Popup Animation */}
+                    <div className="relative flex justify-center items-center h-[500px]">
+                        {/* Background Orbitals (Static and Subtle) */}
+                        <div className="absolute w-[420px] h-[420px] rounded-full border border-white/5"></div>
+                        <div className="absolute w-[320px] h-[320px] rounded-full border border-white/10"></div>
                         
-                        {/* Middle Glow */}
-                        <div className="hub-glow absolute w-48 h-48 bg-blue-500/20 blur-[60px] rounded-full"></div>
+                        {/* Glow Pulse behind Logo */}
+                        <div className="hub-glow-pulse absolute w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full"></div>
 
-                        {/* Central Hub Core */}
-                        <div className="relative w-40 h-40 bg-slate-900 rounded-[60px] border-4 border-white/10 cartoon-shadow flex items-center justify-center p-8 group overflow-hidden">
+                        {/* Central AI Hub Logo Core - POPUP EFFECT */}
+                        <div className="hub-popup relative w-48 h-48 bg-slate-900 rounded-[60px] border-4 border-white/10 cartoon-shadow flex items-center justify-center p-10 group overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <Cpu className="text-white relative z-10 w-full h-full animate-pulse-slow" />
+                            <Cpu className="text-white relative z-10 w-full h-full" />
                         </div>
 
-                        {/* Floating Particles (Mini Icons) */}
-                        <div className="hub-particle absolute top-0 -left-10 w-16 h-16 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover">
+                        {/* Floating Mini Skill Icons */}
+                        <div className="float-loop absolute top-10 -left-10 w-16 h-16 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover">
                             <Code className="text-cyan-400" size={24} />
                         </div>
-                        <div className="hub-particle absolute bottom-10 right-0 w-20 h-20 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '0.5s' }}>
+                        <div className="float-loop absolute bottom-10 right-0 w-20 h-20 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '0.5s' }}>
                             <Bot className="text-purple-400" size={32} />
                         </div>
-                        <div className="hub-particle absolute -top-10 right-20 w-14 h-14 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '1.2s' }}>
+                        <div className="float-loop absolute -top-5 right-20 w-14 h-14 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '1.2s' }}>
                             <Database className="text-emerald-400" size={20} />
-                        </div>
-                        <div className="hub-particle absolute top-1/2 -right-16 w-12 h-12 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center justify-center cartoon-shadow-hover" style={{ animationDelay: '0.8s' }}>
-                            <Smartphone className="text-amber-400" size={18} />
                         </div>
                     </div>
                 </div>

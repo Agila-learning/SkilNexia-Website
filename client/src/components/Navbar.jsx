@@ -33,15 +33,6 @@ const Navbar = () => {
                 ease: 'power3.out'
             });
 
-            // Continuous 3D Logo Rotation
-            gsap.to('#navbar-logo', {
-                rotateY: 360,
-                duration: 10,
-                repeat: -1,
-                ease: 'none',
-                transformOrigin: 'center center'
-            });
-
             // Nav links stagger
             gsap.to('.nav-link-item', {
                 y: 0,
