@@ -6,7 +6,7 @@ import {
     PlayCircle, Award, Users, BookOpen, ArrowRight, Zap, Target, Star,
     ChevronLeft, ChevronRight, Globe, Code, Database, Cpu, Menu, X,
     ArrowUp, CheckCircle, Shield, Briefcase, ChevronDown, Rocket,
-    Smartphone, PenTool, BarChart, Terminal, Heart, Lightbulb, TrendingUp, Bot
+    Smartphone, PenTool, BarChart, Terminal, Heart, Lightbulb, TrendingUp, Bot, Sparkles
 } from 'lucide-react';
 
 import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
@@ -274,7 +274,7 @@ const Home = () => {
                     <div className="space-y-[30vh]">
                         {MASTERY_STEPS.map((step, idx) => (
                             <div key={idx} className="mastery-card w-full max-w-5xl mx-auto opacity-100">
-                                <div className={`relative ${step.bg || 'bg-slate-900'} bubble-soft p-12 md:p-24 border-2 border-white/10 cartoon-shadow hover:glow-border transition-all duration-500 overflow-hidden min-h-[500px] flex flex-col justify-center`}>
+                                <div className={`relative ${step.bg || 'bg-slate-900'} bubble-soft p-12 md:p-24 border-2 border-white/10 shadow-xl hover:scale-[1.02] hover:glow-border transition-all duration-500 overflow-hidden min-h-[500px] flex flex-col justify-center cartoon-shadow`}>
                                     {/* Decorative glow */}
                                     <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
                                     
@@ -349,7 +349,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {COURSE_CATEGORIES.slice(0, 8).map((cat, idx) => (
                             <Link key={idx} to={`/courses/${cat.id}`} className="reveal-up group">
-                                <div className="h-full glass-dark bubble-soft p-12 border border-white/5 hover:glow-border cartoon-shadow-hover transition-all duration-500 flex flex-col items-center text-center relative overflow-hidden">
+                                <div className="h-full glass-dark bubble-soft p-12 border border-white/5 hover:glow-border hover:scale-105 cartoon-shadow transition-all duration-500 flex flex-col items-center text-center relative overflow-hidden">
                                     <div className="w-24 h-24 bg-white/5 rounded-[40px] border border-white/10 flex items-center justify-center text-white group-hover:bg-cyan-500 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 mb-8">
                                         <div className="w-10 h-10">{cat.icon}</div>
                                     </div>
@@ -502,7 +502,7 @@ const Home = () => {
                                         <ChevronDown size={24} />
                                     </div>
                                 </button>
-                                <div className={`transition-all duration-500 ease-in-out ${activeFaq === i ? 'max-h-[300px] opacity-100 p-10 pt-0' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                                <div className={`transition-all duration-700 ease-in-out ${activeFaq === i ? 'max-h-[500px] opacity-100 p-10 pt-0' : 'max-h-0 opacity-0 overflow-hidden'}`}>
                                     <p className={`text-lg font-medium leading-relaxed ${activeFaq === i ? 'text-slate-600' : 'text-slate-400'}`}>{faq.a}</p>
                                 </div>
                             </div>
