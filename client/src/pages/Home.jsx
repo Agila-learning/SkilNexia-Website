@@ -13,6 +13,7 @@ import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
 import RegistrationPopup from '../components/RegistrationPopup.jsx';
 import ConsultationModal from '../components/ConsultationModal.jsx';
 import api from '../services/api';
+import Lottie from 'lottie-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,12 +79,14 @@ const MASTERY_STEPS = [
 ];
 
 const TUTORIAL_PHRASES = [
-    "Ready to master Kubernetes? I'll guide you step-by-step.",
-    "Let's visualize the cluster architecture first...",
-    "User: How do I scale deployments?",
-    "That's easy! Watch me apply the scaling policy...",
-    "Success! Your application footprint is now scaled."
+    "Exploring Advanced React Patterns...",
+    "Compiling Node.js Microservices...",
+    "Deploying Docker Containers...",
+    "Applying Cyber Security Protocols...",
+    "Training Machine Learning Models..."
 ];
+
+const LOTTIE_TEACHER_URL = "https://assets3.lottiefiles.com/packages/lf20_1rrx3i3b.json";
 
 const Home = () => {
     const [activeFaq, setActiveFaq] = useState(null);
@@ -92,8 +95,16 @@ const Home = () => {
     const [reviews, setReviews] = useState([]);
     const [loadingReviews, setLoadingReviews] = useState(true);
     const [currentPhrase, setCurrentPhrase] = useState(0);
+    const [teacherAnimation, setTeacherAnimation] = useState(null);
 
     const stackRef = useRef(null);
+
+    useEffect(() => {
+        fetch(LOTTIE_TEACHER_URL)
+            .then(res => res.json())
+            .then(data => setTeacherAnimation(data))
+            .catch(err => console.error("Error loading Lottie", err));
+    }, []);
 
     useEffect(() => {
         // Subtitle loop
@@ -201,105 +212,84 @@ const Home = () => {
                 <div className="absolute top-[20%] -right-[10%] w-[30%] h-[50%] bg-purple-600/10 blur-[120px] rounded-full"></div>
             </div>
 
-            {/* 1. AI Assistant Teaching Hero */}
+            {/* 1. Cartoon Teaching Animation Hero */}
             <section className="relative min-h-screen flex items-center justify-center py-24 lg:py-40">
                 <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                     
-                    {/* Left Info & Chat Meta */}
+                    {/* Left Info */}
                     <div className="lg:col-span-5 space-y-10 text-center lg:text-left relative z-10">
                         <div className="stagger-reveal inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-widest text-cyan-400 uppercase">
                             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                            Live Training Active
+                            Live Learning Environment
                         </div>
                         <h1 className="stagger-reveal text-6xl md:text-8xl font-black leading-[0.85] tracking-tighter">
                             LEARN WITH <br />
-                            <span className="neon-blue">AI TUTOR.</span>
+                            <span className="neon-blue">ANIMATION.</span>
                         </h1>
                         
-                        {/* Simulated Live Chat */}
-                        <div className="stagger-reveal space-y-4 max-w-sm mx-auto lg:mx-0">
-                            <div className={`chat-bubble transition-all duration-500 ${isUserMessage ? 'chat-bubble-user scale-100' : 'opacity-40 scale-95'}`}>
-                                <p>How do I get started?</p>
-                            </div>
-                            <div className={`chat-bubble transition-all duration-500 ${!isUserMessage ? 'chat-bubble-ai scale-100 shadow-[0_0_30px_rgba(34,211,238,0.2)]' : 'opacity-40 scale-95'}`}>
-                                <div className="flex gap-1 mb-2">
-                                    <div className="typing-dot"></div>
-                                    <div className="typing-dot" style={{animationDelay: '0.2s'}}></div>
-                                    <div className="typing-dot" style={{animationDelay: '0.4s'}}></div>
-                                </div>
-                                <p className="leading-relaxed">{TUTORIAL_PHRASES[currentPhrase].replace("User: ", "")}</p>
-                            </div>
-                        </div>
+                        <p className="stagger-reveal text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                            Master high-demand tech skills through an interactive, visually stunning animated teaching experience.
+                        </p>
 
                         <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-4 pt-6">
-                            <Link to="/tutor" className="px-10 py-5 bg-white text-slate-950 rounded-[30px] font-black text-lg hover:bg-cyan-400 transition-colors shadow-2xl active:scale-95 uppercase tracking-widest border-b-4 border-slate-200 flex items-center gap-2">
-                                Ask AI Tutor <Play size={20} className="fill-current" />
-                            </Link>
-                            <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[30px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
-                                Book Demo
+                            <button onClick={() => setIsRegisterOpen(true)} className="px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-[25px] font-black text-lg hover:scale-110 transition-transform cartoon-shadow active:scale-95 uppercase tracking-widest flex items-center gap-2 border-b-4 border-blue-800">
+                                Enroll Now <ArrowRight size={20} />
+                            </button>
+                            <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[25px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
+                                View Courses
                             </button>
                         </div>
                     </div>
 
-                    {/* Right: Teaching Terminal */}
-                    <div className="lg:col-span-7 relative">
-                        <div className="terminal-popup terminal-window relative z-10 border-4 border-white/5">
-                            <div className="scan-line"></div>
-                            
-                            {/* Terminal Top Bar */}
-                            <div className="flex items-center justify-between px-8 py-4 bg-white/5 border-b border-white/10">
-                                <div className="flex gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                                    <div className="w-3 h-3 rounded-full bg-amber-500/50"></div>
-                                    <div className="w-3 h-3 rounded-full bg-emerald-500/50"></div>
-                                </div>
-                                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Live Simulation v2.0</div>
-                            </div>
+                    {/* Right: The Virtual Classroom Stage */}
+                    <div className="lg:col-span-7 relative h-[500px] flex items-center justify-center">
+                        {/* Background Pulsing Aura */}
+                        <div className="absolute w-[400px] h-[400px] bg-blue-500/10 blur-[80px] rounded-full hub-glow-pulse"></div>
 
-                            {/* Main Display */}
-                            <div className="relative aspect-video overflow-hidden">
-                                <img 
-                                    src="/images/dashboard-mockup.png" 
-                                    alt="Learning Dashboard" 
-                                    className="w-full h-full object-cover opacity-60 scale-105"
+                        {/* Centered Lottie Teacher Character */}
+                        <div className="relative z-20 w-80 h-80 lg:w-96 lg:h-96 cartoon-shadow">
+                            {teacherAnimation ? (
+                                <Lottie 
+                                    animationData={teacherAnimation} 
+                                    loop={true} 
+                                    className="w-full h-full drop-shadow-[0_0_50px_rgba(34,211,238,0.5)] avatar-float"
                                 />
-                                
-                                {/* The AI Avatar */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 avatar-float flex items-center justify-center">
-                                    <div className="relative">
-                                        <img 
-                                            src="/images/ai-avatar.png" 
-                                            alt="AI Assistant" 
-                                            className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(34,211,238,0.4)]"
-                                        />
-                                        {/* Audio Wave Simulation */}
-                                        {!isUserMessage && (
-                                            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1 h-6">
-                                                {[1, 2, 3, 4, 3, 2, 1].map((h, i) => (
-                                                    <div 
-                                                        key={i} 
-                                                        className="w-1 bg-cyan-400 rounded-full animate-pulse" 
-                                                        style={{ height: `${h * 20}%`, animationDelay: `${i * 0.1}s` }}
-                                                    ></div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                            ) : (
+                                <div className="w-full h-full animate-pulse bg-slate-800 rounded-full flex items-center justify-center text-slate-500 font-black">Loading Tutor...</div>
+                            )}
+                        </div>
 
-                                {/* Interactive Overlay Tags */}
-                                <div className="float-loop absolute top-1/4 left-1/4 px-4 py-2 bg-cyan-500 text-slate-950 font-black text-[10px] rounded-lg tracking-widest shadow-2xl">
-                                    POD.YAML
-                                </div>
-                                <div className="float-loop absolute bottom-1/4 right-1/4 px-4 py-2 bg-purple-500 text-white font-black text-[10px] rounded-lg tracking-widest shadow-2xl" style={{animationDelay: '1s'}}>
-                                    SCALING...
-                                </div>
+                        {/* Floating Dynamic Course Elements (HTML/CSS visuals) */}
+                        <div className="terminal-popup absolute z-30 bottom-10 -left-10 glass-dark p-6 rounded-3xl border border-white/10 cartoon-shadow w-72">
+                            <div className="flex items-center gap-3 mb-4">
+                                <Terminal className="text-cyan-400" size={24} />
+                                <p className="text-xs font-black uppercase tracking-widest text-slate-400">Current Module</p>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="h-2 w-3/4 bg-blue-500/50 rounded-full"></div>
+                                <div className="h-2 w-full bg-purple-500/50 rounded-full"></div>
+                                <div className="h-2 w-1/2 bg-emerald-500/50 rounded-full"></div>
+                                {/* Typewriter simulation */}
+                                <p className="text-cyan-400 text-sm font-bold min-h-[40px] mt-4 flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                                    {TUTORIAL_PHRASES[currentPhrase]}
+                                </p>
                             </div>
                         </div>
 
-                        {/* Background Decoration Nodes */}
-                        <div className="absolute top-[-20px] left-[-20px] w-40 h-40 bg-blue-500/20 blur-[60px] rounded-full z-0"></div>
-                        <div className="absolute bottom-[-20px] right-[-20px] w-64 h-64 bg-purple-500/20 blur-[80px] rounded-full z-0"></div>
+                        {/* Floating React Badge */}
+                        <div className="float-loop absolute top-10 -right-5 z-30 w-20 h-20 glass-dark rounded-3xl border border-blue-500/30 flex items-center justify-center cartoon-shadow-hover">
+                            <Code className="text-blue-400 w-10 h-10 animate-[spin_6s_linear_infinite]" />
+                        </div>
+
+                        {/* Floating Database Badge */}
+                        <div className="float-loop absolute top-1/2 -right-12 z-10 w-16 h-16 bg-white/5 backdrop-blur-md rounded-2xl border border-emerald-500/30 flex items-center justify-center cartoon-shadow" style={{animationDelay: '1s'}}>
+                            <Database className="text-emerald-400 w-8 h-8" />
+                        </div>
+                        
+                        {/* Background structural rings */}
+                        <div className="absolute inset-0 border border-white/5 rounded-full scale-110 opacity-50 border-dashed animate-[spin_30s_linear_infinite]"></div>
+                        <div className="absolute inset-0 border border-blue-500/20 rounded-full scale-90 animate-[spin_20s_linear_infinite_reverse]"></div>
                     </div>
                 </div>
             </section>
