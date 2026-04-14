@@ -14,6 +14,7 @@ import RegistrationPopup from '../components/RegistrationPopup.jsx';
 import ConsultationModal from '../components/ConsultationModal.jsx';
 import api from '../services/api';
 import Lottie from 'lottie-react';
+import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,7 +87,66 @@ const TUTORIAL_PHRASES = [
     "Training Machine Learning Models..."
 ];
 
-const LOTTIE_TEACHER_URL = "https://assets3.lottiefiles.com/packages/lf20_1rrx3i3b.json";
+// Natively built Framer Motion SVG Cartoon Teacher to guarantee 100% uptime and zero loading issues.
+const AnimatedVirtualTeacher = () => (
+    <motion.div 
+        animate={{ y: [0, -15, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="w-full h-full relative flex items-center justify-center p-8"
+    >
+        <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_40px_rgba(34,211,238,0.4)]">
+            {/* Robot Head Core */}
+            <motion.rect 
+                x="40" y="40" width="120" height="110" rx="40" 
+                fill="#0f172a" stroke="#22d3ee" strokeWidth="4"
+            />
+            {/* Screen / Face Shield */}
+            <rect x="55" y="60" width="90" height="60" rx="20" fill="#020617" />
+            
+            {/* Animated Glowing Eyes */}
+            <motion.ellipse 
+                cx="80" cy="85" rx="12" ry="16" fill="#22d3ee"
+                animate={{ scaleY: [1, 0.1, 1], opacity: [1, 0.5, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "circInOut", delay: 0.5 }}
+                className="drop-shadow-[0_0_15px_rgba(34,211,238,1)]"
+            />
+            <motion.ellipse 
+                cx="120" cy="85" rx="12" ry="16" fill="#22d3ee"
+                animate={{ scaleY: [1, 0.1, 1], opacity: [1, 0.5, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "circInOut", delay: 0.5 }}
+                className="drop-shadow-[0_0_15px_rgba(34,211,238,1)]"
+            />
+
+            {/* Speaking Audio Waveform Animation */}
+            <g transform="translate(100, 105)">
+                <motion.rect x="-15" y="0" width="6" height="5" rx="3" fill="#8b5cf6" animate={{ height: [5, 15, 5], y: [0, -5, 0] }} transition={{ duration: 0.4, repeat: Infinity }} />
+                <motion.rect x="-5" y="0" width="6" height="10" rx="3" fill="#22d3ee" animate={{ height: [10, 20, 10], y: [0, -5, 0] }} transition={{ duration: 0.3, repeat: Infinity, delay: 0.1 }} />
+                <motion.rect x="5"  y="0" width="6" height="5" rx="3" fill="#8b5cf6" animate={{ height: [5, 15, 5], y: [0, -5, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }} />
+                <motion.rect x="15" y="0" width="6" height="8" rx="3" fill="#22d3ee" animate={{ height: [8, 12, 8], y: [0, -2, 0] }} transition={{ duration: 0.4, repeat: Infinity, delay: 0.3 }} />
+            </g>
+
+            {/* Antennas & Tech Nodes */}
+            <line x1="100" y1="40" x2="100" y2="10" stroke="#8b5cf6" strokeWidth="4" />
+            <motion.circle 
+                cx="100" cy="10" r="8" fill="#22d3ee"
+                animate={{ fill: ["#22d3ee", "#8b5cf6", "#22d3ee"] }}
+                transition={{ duration: 2, repeat: Infinity }}
+            />
+            
+            {/* Animated Floating Hands */}
+            <motion.circle 
+                cx="20" cy="130" r="15" fill="#1e293b" stroke="#22d3ee" strokeWidth="3"
+                animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.circle 
+                cx="180" cy="130" r="15" fill="#1e293b" stroke="#8b5cf6" strokeWidth="3"
+                animate={{ y: [0, -15, 0], x: [0, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            />
+        </svg>
+    </motion.div>
+);
 
 const Home = () => {
     const [activeFaq, setActiveFaq] = useState(null);
@@ -95,16 +155,8 @@ const Home = () => {
     const [reviews, setReviews] = useState([]);
     const [loadingReviews, setLoadingReviews] = useState(true);
     const [currentPhrase, setCurrentPhrase] = useState(0);
-    const [teacherAnimation, setTeacherAnimation] = useState(null);
 
     const stackRef = useRef(null);
-
-    useEffect(() => {
-        fetch(LOTTIE_TEACHER_URL)
-            .then(res => res.json())
-            .then(data => setTeacherAnimation(data))
-            .catch(err => console.error("Error loading Lottie", err));
-    }, []);
 
     useEffect(() => {
         // Subtitle loop
@@ -246,17 +298,9 @@ const Home = () => {
                         {/* Background Pulsing Aura */}
                         <div className="absolute w-[400px] h-[400px] bg-blue-500/10 blur-[80px] rounded-full hub-glow-pulse"></div>
 
-                        {/* Centered Lottie Teacher Character */}
-                        <div className="relative z-20 w-80 h-80 lg:w-96 lg:h-96 cartoon-shadow">
-                            {teacherAnimation ? (
-                                <Lottie 
-                                    animationData={teacherAnimation} 
-                                    loop={true} 
-                                    className="w-full h-full drop-shadow-[0_0_50px_rgba(34,211,238,0.5)] avatar-float"
-                                />
-                            ) : (
-                                <div className="w-full h-full animate-pulse bg-slate-800 rounded-full flex items-center justify-center text-slate-500 font-black">Loading Tutor...</div>
-                            )}
+                        {/* Natively Animated Teacher SVG (Guaranteed to load) */}
+                        <div className="relative z-20 w-80 h-80 lg:w-96 lg:h-96">
+                            <AnimatedVirtualTeacher />
                         </div>
 
                         {/* Floating Dynamic Course Elements (HTML/CSS visuals) */}
