@@ -24,6 +24,7 @@ import PublicLayout from './layouts/PublicLayout';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Compliance from './pages/Compliance';
+import LiveTutor from './pages/LiveTutor';
 
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
@@ -138,6 +139,7 @@ function App() {
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/compliance" element={<Compliance />} />
+                <Route path="/tutor" element={<LiveTutor />} />
               </Route>
 
               {/* Dashboard Routed Wrapped inside DashboardLayout */}

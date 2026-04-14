@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-    PlayCircle, Award, Users, BookOpen, ArrowRight, Zap, Target, Star,
+    PlayCircle, Play, Award, Users, BookOpen, ArrowRight, Zap, Target, Star,
     ChevronLeft, ChevronRight, Globe, Code, Database, Cpu, Menu, X,
     ArrowUp, CheckCircle, Shield, Briefcase, ChevronDown, Rocket,
     Smartphone, PenTool, BarChart, Terminal, Heart, Lightbulb, TrendingUp, Bot, Sparkles
@@ -232,9 +232,9 @@ const Home = () => {
                         </div>
 
                         <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-4 pt-6">
-                            <button onClick={() => setIsRegisterOpen(true)} className="px-10 py-5 bg-white text-slate-950 rounded-[30px] font-black text-lg hover:bg-cyan-400 transition-colors shadow-2xl active:scale-95 uppercase tracking-widest border-b-4 border-slate-200">
-                                Enroll Now
-                            </button>
+                            <Link to="/tutor" className="px-10 py-5 bg-white text-slate-950 rounded-[30px] font-black text-lg hover:bg-cyan-400 transition-colors shadow-2xl active:scale-95 uppercase tracking-widest border-b-4 border-slate-200 flex items-center gap-2">
+                                Ask AI Tutor <Play size={20} className="fill-current" />
+                            </Link>
                             <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[30px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
                                 Book Demo
                             </button>
