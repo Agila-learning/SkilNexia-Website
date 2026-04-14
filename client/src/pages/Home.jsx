@@ -41,6 +41,7 @@ const MASTERY_STEPS = [
         icon: <Target size={48} />,
         bg: "bg-slate-950",
         accent: "text-accent-500",
+        skills: ["Career Discovery", "Skill Mapping", "Market Analysis"],
         btnText: "Explore All Maps",
         btnLink: "/courses"
     },
@@ -50,6 +51,7 @@ const MASTERY_STEPS = [
         icon: <Code size={48} />,
         bg: "bg-primary-900",
         accent: "text-emerald-400",
+        skills: ["Agile Workflow", "Clean Code", "CI/CD Pipeline"],
         btnText: "View Curriculum",
         btnLink: "/programs"
     },
@@ -59,6 +61,7 @@ const MASTERY_STEPS = [
         icon: <Users size={48} />,
         bg: "bg-slate-900",
         accent: "text-blue-400",
+        skills: ["Code Review", "Weekly Sync", "Interview prep"],
         btnText: "Meet the Mentors",
         btnLink: "/about"
     },
@@ -68,6 +71,7 @@ const MASTERY_STEPS = [
         icon: <Award size={48} />,
         bg: "bg-black",
         accent: "text-accent-500",
+        skills: ["Skill Validation", "Profile Audit", "Hiring Network"],
         btnText: "Learn About Certification",
         btnLink: "/programs"
     }
@@ -261,12 +265,26 @@ const Home = () => {
                                 />
                                 
                                 {/* The AI Avatar */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 avatar-float">
-                                    <img 
-                                        src="/images/ai-avatar.png" 
-                                        alt="AI Assistant" 
-                                        className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(34,211,238,0.4)]"
-                                    />
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 avatar-float flex items-center justify-center">
+                                    <div className="relative">
+                                        <img 
+                                            src="/images/ai-avatar.png" 
+                                            alt="AI Assistant" 
+                                            className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(34,211,238,0.4)]"
+                                        />
+                                        {/* Audio Wave Simulation */}
+                                        {!isUserMessage && (
+                                            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1 h-6">
+                                                {[1, 2, 3, 4, 3, 2, 1].map((h, i) => (
+                                                    <div 
+                                                        key={i} 
+                                                        className="w-1 bg-cyan-400 rounded-full animate-pulse" 
+                                                        style={{ height: `${h * 20}%`, animationDelay: `${i * 0.1}s` }}
+                                                    ></div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Interactive Overlay Tags */}
@@ -313,6 +331,16 @@ const Home = () => {
                                             </div>
                                             <h3 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-tight">{step.title}</h3>
                                             <p className="text-lg text-slate-400 font-medium leading-relaxed max-w-xl">{step.desc}</p>
+                                            
+                                            {/* Skill Chips */}
+                                            <div className="flex flex-wrap gap-2 pt-4">
+                                                {step.skills?.map((skill, si) => (
+                                                    <span key={si} className="px-3 py-1.5 bg-white/5 rounded-xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-300">
+                                                        {skill}
+                                                    </span>
+                                                ))}
+                                            </div>
+
                                             <div className="pt-6">
                                                 <Link to={step.btnLink || '/courses'} className="px-10 py-5 bg-white text-slate-950 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all cartoon-shadow flex items-center gap-2 w-fit">
                                                     {step.btnText} <ArrowRight size={16} />
