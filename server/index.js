@@ -6,6 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const cors = require('cors');
 const http = require('http');
+const path = require('path');
 const { Server } = require('socket.io');
 
 const app = express();
@@ -129,6 +130,19 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
+
+// Serve Static Assets in Production
+if (process.env.NODE_ENV === 'production' || true) { 
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  app.get('*', (req, res, next) => {
+    // Only handle routes that don't start with /api/
+    if (req.url.startsWith('/api/')) {
+      return next();
+    }
+    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+  });
+}
 
 // Basic Route
 app.get('/', (req, res) => {
