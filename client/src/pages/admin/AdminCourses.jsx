@@ -429,7 +429,6 @@ const AdminCourses = () => {
             )}
         </div>
     );
-);
 };
 
 export default AdminCourses;
