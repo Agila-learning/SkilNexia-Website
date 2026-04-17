@@ -48,50 +48,58 @@ const Sidebar = () => {
     const links = getLinks();
 
     return (
-        <div className="w-64 bg-white border-r border-slate-200 h-screen sticky top-0 flex flex-col items-center py-6 shadow-sm z-40">
-            <div className="mb-10 w-full px-6 flex items-center justify-center">
-                <img 
-                    src="/images/logo.png" 
-                    alt="Skilnexia Logo" 
-                    className="h-10 w-auto object-contain"
-                />
+        <div className="w-72 bg-slate-950 border-r border-white/5 h-screen sticky top-0 flex flex-col items-center py-8 shadow-2xl z-40">
+            {/* Logo Section */}
+            <div className="mb-12 w-full px-8">
+                <Link to="/" className="flex items-center gap-3 group">
+                    <img 
+                        src="/images/logo.png" 
+                        alt="Skilnexia Logo" 
+                        className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+                    />
+                </Link>
             </div>
 
-            <div className="flex flex-col w-full px-4 gap-2 flex-grow">
+            {/* Navigation Section */}
+            <div className="flex flex-col w-full px-4 gap-1.5 flex-grow font-sans">
+                <p className="px-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4">Ecosystem Hub</p>
                 {links.map((link) => (
                     <NavLink
                         key={link.name}
                         to={link.path}
                         end={link.path === `/${user?.role}`}
                         className={({ isActive }) =>
-                            `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${isActive
-                                ? 'bg-primary-50 text-primary-700 border border-primary-100 shadow-sm'
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-primary-600'
+                            `flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 font-bold text-sm group ${isActive
+                                ? 'bg-white/10 text-white border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]'
+                                : 'text-slate-400 hover:bg-white/5 hover:text-white'
                             }`
                         }
                     >
-                        {link.icon}
+                        <span className="shrink-0 transition-transform group-hover:scale-110">
+                            {React.cloneElement(link.icon, { size: 18 })}
+                        </span>
                         {link.name}
                     </NavLink>
                 ))}
             </div>
 
-            <div className="w-full px-4 mt-auto">
-                <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 mb-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-600 to-accent-600 flex items-center justify-center text-white font-bold shadow-md">
+            {/* User & Logout Section */}
+            <div className="w-full px-4 mt-auto pt-8 border-t border-white/5">
+                <div className="bg-white/5 border border-white/10 rounded-[24px] p-5 mb-4 flex items-center gap-4 group">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-accent-500 to-primary-600 flex items-center justify-center text-white font-black shadow-xl group-hover:rotate-12 transition-transform">
                         {user?.name?.charAt(0) || 'U'}
                     </div>
                     <div className="overflow-hidden cursor-default w-full">
-                        <p className="text-sm font-bold text-slate-800 truncate">{user?.name}</p>
-                        <p className="text-xs text-slate-500 capitalize font-medium">{user?.role}</p>
+                        <p className="text-sm font-black text-white truncate uppercase tracking-tighter">{user?.name}</p>
+                        <p className="text-xs text-slate-500 capitalize font-bold tracking-widest">{user?.role}</p>
                     </div>
                 </div>
                 <button
                     onClick={logout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 font-bold rounded-lg transition-all border border-transparent hover:border-red-100"
+                    className="w-full flex items-center justify-center gap-3 px-6 py-4 text-slate-400 hover:bg-white/5 hover:text-red-400 font-black rounded-2xl transition-all border border-transparent hover:border-red-400/20 text-xs uppercase tracking-widest"
                 >
-                    <LogOut size={18} />
-                    Logout
+                    <LogOut size={16} />
+                    Secure Logout
                 </button>
             </div>
         </div>

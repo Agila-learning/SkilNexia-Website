@@ -95,20 +95,28 @@ const setupAccounts = async (req, res) => {
             { email: 'vaideeswari@gmail.com', name: 'Master Trainer', role: 'trainer' }
         ];
 
+        const results = [];
         for (const acc of accounts) {
-            await User.findOneAndUpdate(
+            const result = await User.findOneAndUpdate(
                 { email: acc.email },
                 { ...acc, password: hashedPassword },
                 { upsert: true, new: true }
             );
+            results.push({ email: result.email, role: result.role, status: 'created/updated' });
         }
 
         res.status(200).json({ 
-            message: 'Test accounts created/reset successfully!',
-            accounts: accounts.map(a => a.email)
+            success: true,
+            message: 'Ecosystem test accounts initialized successfully.',
+            initializedAccounts: results
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Core Bootstrap Error:', error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Critical error during system bootstrap.',
+            error: error.message 
+        });
     }
 };
 
