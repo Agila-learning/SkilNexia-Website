@@ -94,7 +94,8 @@ const Courses = () => {
     const categories = ['All', ...new Set(coursesList.map(c => c.category).filter(Boolean))];
 
     const filtered = coursesList.filter(c => {
-        const matchesSearch = c.title?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
+        const matchesSearch = !searchTerm ||
+            (c.title || '').toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCat = activeCategory === 'All' || c.category === activeCategory;
         return matchesSearch && matchesCat;
     });
