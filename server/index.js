@@ -40,7 +40,20 @@ app.use(cors({
 
 // Security Middleware
 app.use(helmet({
-  crossOriginResourcePolicy: false, // Allow images/resources to be loaded from other origins
+  crossOriginResourcePolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      connectSrc: ["'self'", "https:", "http:", "wss:", "ws:"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'", "https:", "http:"],
+      frameSrc: ["'self'"],
+    },
+  },
 }));
 
 // Rate limiting - Temporarily disabled to debug crash

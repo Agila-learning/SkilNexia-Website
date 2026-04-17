@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
-import { Search, Send, User, MessageCircle, Clock, CheckCircle, ChevronRight } from 'lucide-react';
+import { Search, Send, User, MessageCircle, Clock, CheckCircle, ChevronRight, X } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import gsap from 'gsap';
