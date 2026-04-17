@@ -28,70 +28,78 @@ const Placements = () => {
     }, []);
 
     return (
-        <div className="bg-slate-50 text-slate-900 font-sans">
-            <div className="max-w-7xl mx-auto px-4 py-20">
-                <div className="text-center mb-16 stagger-item">
-                    <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 mb-4 tracking-tight">
-                        Placement <span className="text-primary-600">Statistics</span>
+        <div className="bg-slate-950 min-h-screen text-white font-sans pt-24 overflow-hidden relative">
+            {/* Background Glows */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+                <div className="text-center mb-24 stagger-item">
+                    <span className="section-subtitle">Impact Report</span>
+                    <h1 className="section-title">
+                        Placement <span className="text-brand-gradient">Statistics</span>
                     </h1>
-                    <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                    <p className="text-xl text-slate-400 max-w-3xl mx-auto font-medium">
                         Our career transition programs do not just stop at education. We provide an end-to-end recruitment bridge to the world's most innovative companies.
                     </p>
                 </div>
 
                 {/* Stat Highlights */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 stagger-item">
-                    <div className="glass-card flex flex-col items-center justify-center text-center p-8 border-t-4 border-t-primary-500 hover:-translate-y-2">
-                        <div className="p-4 bg-primary-50 text-primary-600 rounded-full mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24 stagger-item">
+                    <div className="glass-card-premium p-10 flex flex-col items-center justify-center text-center border-t-4 border-t-blue-500/50 hover:-translate-y-2 group">
+                        <div className="w-16 h-16 bg-white/5 border border-white/10 text-blue-400 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                             <Briefcase size={32} />
                         </div>
-                        <h3 className="text-4xl font-extrabold text-slate-900 mb-2">98%</h3>
-                        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Placement Rate</p>
+                        <h3 className="text-5xl font-black text-white mb-2 tracking-tighter">98%</h3>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Placement Rate</p>
                     </div>
-                    <div className="glass-card flex flex-col items-center justify-center text-center p-8 border-t-4 border-t-accent-500 hover:-translate-y-2">
-                        <div className="p-4 bg-accent-50 text-accent-600 rounded-full mb-4">
+                    <div className="glass-card-premium p-10 flex flex-col items-center justify-center text-center border-t-4 border-t-accent-500/50 hover:-translate-y-2 group">
+                        <div className="w-16 h-16 bg-white/5 border border-white/10 text-accent-400 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                             <TrendingUp size={32} />
                         </div>
-                        <h3 className="text-4xl font-extrabold text-slate-900 mb-2">₹12 LPA</h3>
-                        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Average Salary</p>
+                        <h3 className="text-5xl font-black text-white mb-2 tracking-tighter">₹12 LPA</h3>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Average Salary</p>
                     </div>
-                    <div className="glass-card flex flex-col items-center justify-center text-center p-8 border-t-4 border-t-emerald-500 hover:-translate-y-2">
-                        <div className="p-4 bg-emerald-50 text-emerald-600 rounded-full mb-4">
+                    <div className="glass-card-premium p-10 flex flex-col items-center justify-center text-center border-t-4 border-t-emerald-500/50 hover:-translate-y-2 group">
+                        <div className="w-16 h-16 bg-white/5 border border-white/10 text-emerald-400 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                             <Building2 size={32} />
                         </div>
-                        <h3 className="text-4xl font-extrabold text-slate-900 mb-2">500+</h3>
-                        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Hiring Partners</p>
+                        <h3 className="text-5xl font-black text-white mb-2 tracking-tighter">500+</h3>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Hiring Partners</p>
                     </div>
-                    <div className="glass-card flex flex-col items-center justify-center text-center p-8 border-t-4 border-t-blue-500 hover:-translate-y-2">
-                        <div className="p-4 bg-blue-50 text-blue-600 rounded-full mb-4">
+                    <div className="glass-card-premium p-10 flex flex-col items-center justify-center text-center border-t-4 border-t-indigo-500/50 hover:-translate-y-2 group">
+                        <div className="w-16 h-16 bg-white/5 border border-white/10 text-indigo-400 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                             <Award size={32} />
                         </div>
-                        <h3 className="text-4xl font-extrabold text-slate-900 mb-2">₹45 LPA</h3>
-                        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Highest CTC</p>
+                        <h3 className="text-5xl font-black text-white mb-2 tracking-tighter">₹45 LPA</h3>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Highest CTC</p>
                     </div>
                 </div>
 
                 {/* Reports / Analytics Section */}
-                <div className="mb-20 stagger-item">
-                    <h2 className="section-title text-center mb-10">Career Trajectory Analysis</h2>
+                <div className="mb-24 stagger-item">
+                    <div className="text-center mb-16">
+                        <span className="section-subtitle">Analytics Hub</span>
+                        <h2 className="section-title">Career <span className="text-brand-gradient">Trajectory</span></h2>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         {/* Bar Chart Mockup (CSS) */}
-                        <div className="glass-card p-8">
-                            <h3 className="text-xl font-bold mb-6 text-slate-800">Salary Growth Post Program</h3>
-                            <div className="space-y-4">
+                        <div className="glass-card-premium p-10">
+                            <h3 className="text-xl font-black mb-8 text-white uppercase tracking-tight">Salary Growth Analysis</h3>
+                            <div className="space-y-8">
                                 {[
-                                    { label: 'Before', percent: 30, value: '₹4 LPA' },
-                                    { label: 'After (Avg)', percent: 75, value: '₹12 LPA' },
-                                    { label: 'Highest', percent: 100, value: '₹45 LPA' }
+                                    { label: 'Baseline', percent: 30, value: '₹4 LPA' },
+                                    { label: 'Skilnexia Average', percent: 75, value: '₹12 LPA' },
+                                    { label: 'Elite Tier', percent: 100, value: '₹45 LPA' }
                                 ].map((item, i) => (
                                     <div key={i}>
-                                        <div className="flex justify-between text-sm font-bold text-slate-600 mb-1">
+                                        <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">
                                             <span>{item.label}</span>
-                                            <span>{item.value}</span>
+                                            <span className="text-white">{item.value}</span>
                                         </div>
-                                        <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden">
+                                        <div className="w-full bg-white/5 border border-white/5 rounded-full h-4 overflow-hidden p-1">
                                             <div 
-                                                className="bg-gradient-to-r from-primary-500 to-accent-500 h-full rounded-full transition-all duration-1000 origin-left" 
+                                                className="bg-gradient-to-r from-blue-600 via-indigo-500 to-accent-500 h-full rounded-full transition-all duration-1000 origin-left shadow-[0_0_15px_rgba(37,99,235,0.3)]" 
                                                 style={{ width: `${item.percent}%` }}
                                             ></div>
                                         </div>
@@ -101,18 +109,18 @@ const Placements = () => {
                         </div>
 
                         {/* Domain Distribution Mockup */}
-                        <div className="glass-card p-8 flex flex-col justify-center">
-                            <h3 className="text-xl font-bold mb-6 text-slate-800 text-center">Placement Domains</h3>
-                            <div className="flex flex-wrap gap-4 justify-center">
+                        <div className="glass-card-premium p-10 flex flex-col justify-center">
+                            <h3 className="text-xl font-black mb-10 text-white text-center uppercase tracking-tight">Ecosystem Penetration</h3>
+                            <div className="flex flex-wrap gap-6 justify-center">
                                 {[
-                                    { domain: 'Full Stack', percent: '40%', color: 'border-primary-500 text-primary-600 bg-primary-50' },
-                                    { domain: 'Data Science', percent: '25%', color: 'border-accent-500 text-accent-600 bg-accent-50' },
-                                    { domain: 'Cloud/DevOps', percent: '20%', color: 'border-emerald-500 text-emerald-600 bg-emerald-50' },
-                                    { domain: 'Cyber Security', percent: '15%', color: 'border-blue-500 text-blue-600 bg-blue-50' }
+                                    { domain: 'Full Stack', percent: '40%', color: 'border-blue-500/30 text-blue-400 bg-blue-500/5' },
+                                    { domain: 'Data Science', percent: '25%', color: 'border-accent-500/30 text-accent-400 bg-accent-500/5' },
+                                    { domain: 'Cloud/DevOps', percent: '20%', color: 'border-emerald-500/30 text-emerald-400 bg-emerald-500/5' },
+                                    { domain: 'Cyber Security', percent: '15%', color: 'border-indigo-500/30 text-indigo-400 bg-indigo-500/5' }
                                 ].map((item, i) => (
-                                    <div key={i} className={`flex-1 min-w-[120px] text-center p-4 border-2 rounded-2xl ${item.color}`}>
-                                        <p className="text-3xl font-black mb-1">{item.percent}</p>
-                                        <p className="text-[10px] uppercase tracking-widest font-bold">{item.domain}</p>
+                                    <div key={i} className={`flex-1 min-w-[130px] text-center p-6 border rounded-3xl backdrop-blur-xl ${item.color} hover:scale-105 transition-transform`}>
+                                        <p className="text-4xl font-black mb-1 tracking-tighter">{item.percent}</p>
+                                        <p className="text-[9px] uppercase tracking-[0.2em] font-black opacity-60">{item.domain}</p>
                                     </div>
                                 ))}
                             </div>
@@ -121,18 +129,21 @@ const Placements = () => {
                 </div>
 
                 {/* Hiring Partners Marquee */}
-                <div className="mb-20 stagger-item overflow-hidden relative">
-                    <h2 className="section-title text-center mb-10">Our Top Recruiters</h2>
+                <div className="mb-24 stagger-item overflow-hidden relative">
+                    <div className="text-center mb-16">
+                        <span className="section-subtitle">Networks</span>
+                        <h2 className="section-title">Hiring <span className="text-brand-gradient">Partners</span></h2>
+                    </div>
 
                     {/* Fades for smooth edges */}
-                    <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none"></div>
 
                     <div className="relative group overflow-hidden">
-                        <div className="flex w-max gap-20 animate-scroll-left hover:[animation-play-state:paused] items-center py-6 pr-20">
+                        <div className="flex w-max gap-24 animate-scroll-left hover:[animation-play-state:paused] items-center py-10 pr-24">
                             {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, i) => (
-                                <div key={i} className="shrink-0 grayscale hover:grayscale-0 transition-all opacity-40 hover:opacity-100 hover:scale-110">
-                                    <img src={company.logo} alt={company.name} className="h-12 md:h-16 w-auto object-contain" />
+                                <div key={i} className="shrink-0 grayscale hover:grayscale-0 transition-all opacity-20 hover:opacity-100 hover:scale-110 invert brightness-200">
+                                    <img src={company.logo} alt={company.name} className="h-10 md:h-12 w-auto object-contain" />
                                 </div>
                             ))}
                         </div>
@@ -140,13 +151,15 @@ const Placements = () => {
                 </div>
 
                 {/* CTA */}
-                <div className="bg-primary-900 rounded-3xl p-12 text-center text-white relative overflow-hidden stagger-item shadow-2xl">
-                    <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-accent-500 to-transparent rounded-full mix-blend-screen opacity-20 translate-x-1/2 -translate-y-1/2"></div>
-                    <h2 className="text-3xl font-extrabold mb-4 relative z-10">Ready to transform your career?</h2>
-                    <p className="text-primary-200 mb-8 max-w-2xl mx-auto relative z-10">Enroll in our programs today and get access to exclusive placement opportunities and career coaching.</p>
-                    <Link to="/register" className="btn-primary bg-white text-primary-900 hover:bg-slate-100 relative z-10 inline-block px-8 py-4">
-                        Explore Programs
-                    </Link>
+                <div className="glass-card-premium p-16 md:p-24 text-center text-white relative overflow-hidden stagger-item shadow-3xl border-t-4 border-t-accent-500/50 group">
+                    <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-accent-500/20 to-transparent rounded-full translate-x-1/2 -translate-y-1/2 blur-[100px]"></div>
+                    <div className="relative z-10 space-y-8">
+                        <h2 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter uppercase leading-[0.9]">Ready to <br />Transform?</h2>
+                        <p className="text-slate-400 mb-10 max-w-2xl mx-auto font-medium text-lg leading-relaxed">Enroll in our programs today and get access to exclusive placement opportunities and career coaching.</p>
+                        <Link to="/register" className="px-14 py-6 bg-white text-slate-950 rounded-[35px] font-black text-xl uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-3xl active:scale-95 inline-block">
+                            Enter Ecosystem
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

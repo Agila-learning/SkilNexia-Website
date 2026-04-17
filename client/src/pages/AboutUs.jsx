@@ -86,7 +86,8 @@ const AboutUs = () => {
     ];
 
     return (
-        <div className="bg-white min-h-screen font-sans overflow-x-hidden">
+    return (
+        <div className="bg-slate-950 min-h-screen font-sans overflow-x-hidden text-white">
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
             <ConsultationModal isOpen={isExpertOpen} onClose={() => setIsExpertOpen(false)} />
 
@@ -115,26 +116,26 @@ const AboutUs = () => {
             </section>
 
             {/* 2. WHO WE ARE - THE CORE NARRATIVE */}
-            <section className="py-20 lg:py-40 bg-white px-4 relative">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center">
+            <section className="py-24 lg:py-48 bg-slate-950 px-6 relative overflow-hidden">
+                <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full -translate-x-1/2"></div>
+                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
                     <div className="reveal-up relative">
-                        <div className="absolute -top-10 -left-10 w-40 h-40 bg-accent-500/10 rounded-full blur-[80px]"></div>
-                        <div className="relative border-[32px] border-slate-50 rounded-[80px] overflow-hidden shadow-3xl">
-                            <img src={WHO_WE_ARE_IMG} alt="Elite Collaboration" className="w-full h-full object-cover" />
+                        <div className="relative border-[12px] md:border-[32px] border-white/5 rounded-[40px] md:rounded-[80px] overflow-hidden shadow-3xl">
+                            <img src={WHO_WE_ARE_IMG} alt="Elite Collaboration" className="w-full h-full object-cover grayscale opacity-80" />
                         </div>
-                        <div className="absolute -bottom-20 -right-10 bg-slate-950 p-12 rounded-[40px] shadow-3xl hidden xl:block border border-white/10 max-w-[320px]">
-                            <p className="text-5xl font-black text-white mb-4 tracking-tighter">Gold Standard<span className="text-accent-500">.</span></p>
-                            <p className="text-slate-400 font-bold text-xs uppercase tracking-widest leading-relaxed">Certified by global hiring partners as the premier skill aggregator.</p>
+                        <div className="absolute -bottom-10 -right-5 md:-bottom-20 md:-right-10 glass-card-premium p-8 md:p-12 shadow-3xl hidden sm:block max-w-[280px] md:max-w-[320px] border-t-4 border-t-accent-500/50">
+                            <p className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tighter uppercase leading-none">Gold <br /><span className="text-accent-500">Standard.</span></p>
+                            <p className="text-slate-500 font-black text-[10px] uppercase tracking-widest leading-relaxed">Certified by global hiring partners as the premier skill aggregator.</p>
                         </div>
                     </div>
                     <div className="space-y-12">
                         <div className="space-y-6">
-                            <h4 className="text-primary-900 font-black uppercase tracking-[0.4em] text-[10px] reveal-up">Identity Check</h4>
-                            <h2 className="text-4xl md:text-7xl font-black text-slate-950 leading-none uppercase tracking-tighter reveal-up">Who We <br /><span className="text-slate-300">Actually Are.</span></h2>
+                            <span className="section-subtitle">Identity Check</span>
+                            <h2 className="section-title text-5xl md:text-8xl leading-[0.9] tracking-tighter reveal-up">Who We <br /><span className="text-slate-700">Actually Are.</span></h2>
                         </div>
-                        <div className="space-y-8 text-xl text-slate-900 leading-relaxed font-bold reveal-up">
+                        <div className="space-y-8 text-xl text-slate-400 leading-relaxed font-medium reveal-up">
                             <p>
-                                Skilnexia isn't a training center. We are a <span className="text-slate-950 font-black border-b-4 border-accent-500">Tech Performance Lab</span>. Born from the need for pure execution expertise, we strips away the fluff of academic theory to provide hyper-focused, industry-ready roadmaps.
+                                Skilnexia isn't a training center. We are a <span className="text-white font-black border-b-4 border-accent-500/50">Tech Performance Lab</span>. Born from the need for pure execution expertise, we strips away the fluff of academic theory to provide hyper-focused, industry-ready roadmaps.
                             </p>
                             <p>
                                 Our team consists of active leads and architects from FAANG and high-growth startups. We don't just know the stack; we built the stack.
@@ -175,14 +176,15 @@ const AboutUs = () => {
             </section>
 
             {/* 4. ECOSYSTEM FLOW - ANIMATED STEP BY STEP */}
-            <section className="py-40 bg-white px-4 ecosystem-section">
+            <section className="py-40 bg-slate-950 px-6 ecosystem-section relative">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16 lg:mb-32 space-y-6">
-                        <h2 className="text-4xl md:text-8xl font-black text-slate-950 uppercase tracking-tighter leading-none">How We <br /><span className="text-accent-500">Deploy Excellence.</span></h2>
+                    <div className="text-center mb-24 space-y-6">
+                        <span className="section-subtitle">Operational Matrix</span>
+                        <h2 className="section-title text-4xl md:text-9xl leading-[0.8]">How We <br /><span className="text-brand-gradient">Deploy Excellence.</span></h2>
                     </div>
 
-                    <div className="space-y-20 relative">
-                        <div className="absolute left-[54px] top-0 bottom-0 w-1 bg-slate-100 hidden lg:block"></div>
+                    <div className="space-y-12 relative">
+                        <div className="absolute left-[54px] top-0 bottom-0 w-px bg-white/10 hidden lg:block"></div>
 
                         {[
                             { title: "Phase 1: Diagnosis", desc: "We audit your current skill matrix and align it with a curated industry roadmap.", icon: <Search /> },
@@ -190,13 +192,13 @@ const AboutUs = () => {
                             { title: "Phase 3: Forge Mastery", desc: "Rigorous assessment and project defense before industry architects.", icon: <Award /> },
                             { title: "Phase 4: Global Deployment", desc: "Direct placement pairing with premium global hiring partners.", icon: <Rocket /> }
                         ].map((step, i) => (
-                            <div key={i} className="eco-step flex flex-col lg:flex-row gap-12 items-center bg-slate-50 p-12 rounded-[50px] border border-slate-100 hover:shadow-2xl transition-all">
-                                <div className="w-28 h-28 shrink-0 bg-slate-950 text-accent-500 rounded-[35px] flex items-center justify-center shadow-3xl border-8 border-white">
+                            <div key={i} className="eco-step flex flex-col lg:flex-row gap-12 items-center glass-card-premium p-10 md:p-14 hover:bg-white/10 transition-all border-l-4 border-l-blue-500/50">
+                                <div className="w-24 h-24 shrink-0 bg-slate-950 text-blue-400 rounded-[30px] flex items-center justify-center shadow-3xl border-4 border-white/10">
                                     {React.cloneElement(step.icon, { size: 40 })}
                                 </div>
                                 <div className="space-y-4">
-                                    <h4 className="text-2xl font-black text-slate-950 uppercase tracking-tight">Step 0{i + 1}: {step.title}</h4>
-                                    <p className="text-lg text-slate-500 font-medium leading-relaxed">{step.desc}</p>
+                                    <h4 className="text-2xl font-black text-white uppercase tracking-tight">Step 0{i + 1}: {step.title}</h4>
+                                    <p className="text-lg text-slate-400 font-medium leading-relaxed">{step.desc}</p>
                                 </div>
                             </div>
                         ))}
@@ -205,38 +207,39 @@ const AboutUs = () => {
             </section>
 
             {/* 5. EXPERTS & PLACEMENTS HIGHLIGHT */}
-            <section className="py-40 bg-slate-50 px-4 border-t border-slate-100">
+            <section className="py-40 bg-slate-950 px-6 border-t border-white/5 relative">
                 <div className="max-w-7xl mx-auto space-y-32">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                         <div className="space-y-12">
-                            <h2 className="text-5xl font-black text-slate-950 uppercase tracking-tight leading-none reveal-up">The Titans <br /><span className="text-primary-900">Who Train You.</span></h2>
+                            <span className="section-subtitle">Architects</span>
+                            <h2 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-[0.9] reveal-up">The Titans <br /><span className="text-slate-700">Who Train You.</span></h2>
                             <div className="space-y-8 trainers-grid">
                                 {trainers.map((t, i) => (
-                                    <div key={i} className="trainer-item flex gap-8 items-start group">
-                                        <img src={t.img} className="w-24 h-24 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-xl mt-1" alt={t.name} />
+                                    <div key={i} className="trainer-item flex gap-8 items-start group glass-card-premium p-6 hover:bg-white/10 transition-all border-l-4 border-l-accent-500/50">
+                                        <img src={t.img} className="w-24 h-24 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-xl" alt={t.name} />
                                         <div className="space-y-2">
-                                            <h4 className="text-xl font-black text-slate-900 uppercase">{t.name}</h4>
-                                            <p className="text-accent-600 font-black text-[10px] uppercase tracking-widest">{t.role} • {t.exp}</p>
+                                            <h4 className="text-xl font-black text-white uppercase">{t.name}</h4>
+                                            <p className="text-accent-500 font-black text-[9px] uppercase tracking-[0.2em]">{t.role} • {t.exp}</p>
                                             <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-sm">{t.bio}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div className="bg-slate-950 rounded-[60px] p-16 text-white space-y-10 relative overflow-hidden shadow-3xl">
-                            <div className="absolute top-0 right-0 w-80 h-80 bg-primary-900/20 blur-[100px] rounded-full"></div>
-                            <h2 className="text-4xl font-black uppercase tracking-tight relative z-10 leading-none">Elite <br /><span className="text-emerald-400">Placements.</span></h2>
-                            <p className="text-slate-400 text-lg font-medium relative z-10 leading-relaxed">
+                        <div className="glass-card-premium p-14 md:p-20 text-white space-y-10 relative overflow-hidden shadow-3xl border-t-4 border-t-emerald-500/50">
+                            <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full"></div>
+                            <h2 className="text-5xl font-black uppercase tracking-tighter relative z-10 leading-[0.9]">Elite <br /><span className="text-emerald-500">Placements.</span></h2>
+                            <p className="text-slate-400 text-lg font-medium relative z-10 leading-relaxed max-w-md">
                                 Our graduates don't apply for jobs; they are invited into roles. 98% of our alumni secure senior-tier roles within 4 months of roadmap completion.
                             </p>
-                            <div className="grid grid-cols-2 gap-10 relative z-10">
+                            <div className="grid grid-cols-2 gap-10 relative z-10 pt-6">
                                 <div>
-                                    <p className="text-4xl font-black text-white">₹45,00,000</p>
-                                    <p className="text-slate-500 font-black text-[9px] uppercase tracking-[0.2em] mt-2">Highest Package Secured</p>
+                                    <p className="text-4xl font-black text-white">₹45 LPA</p>
+                                    <p className="text-slate-600 font-black text-[9px] uppercase tracking-[0.2em] mt-3">Highest Recorded</p>
                                 </div>
                                 <div>
                                     <p className="text-4xl font-black text-white">500+</p>
-                                    <p className="text-slate-500 font-black text-[9px] uppercase tracking-[0.2em] mt-2">Premium Hiring Partners</p>
+                                    <p className="text-slate-600 font-black text-[9px] uppercase tracking-[0.2em] mt-3">Global Partners</p>
                                 </div>
                             </div>
                         </div>

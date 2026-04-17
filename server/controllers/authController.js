@@ -81,15 +81,40 @@ const loginUser = async (req, res) => {
     }
 };
 
-// @desc    Get user data
-// @route   GET /api/auth/me
-// @access  Private
-const getMe = async (req, res) => {
-    res.status(200).json(req.user);
+// @desc    Setup initial test accounts (Admin, HR, Trainer)
+// @route   GET /api/auth/setup-accounts
+// @access  Public (Temporary)
+const setupAccounts = async (req, res) => {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash('Skilnexia@123', salt);
+
+        const accounts = [
+            { email: 'admin@skilnexia.com', name: 'Super Admin', role: 'admin' },
+            { email: 'hr@skilnexia.com', name: 'Human Resource', role: 'hr' },
+            { email: 'vaideeswari@gmail.com', name: 'Master Trainer', role: 'trainer' }
+        ];
+
+        for (const acc of accounts) {
+            await User.findOneAndUpdate(
+                { email: acc.email },
+                { ...acc, password: hashedPassword },
+                { upsert: true, new: true }
+            );
+        }
+
+        res.status(200).json({ 
+            message: 'Test accounts created/reset successfully!',
+            accounts: accounts.map(a => a.email)
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 module.exports = {
     registerUser,
     loginUser,
     getMe,
+    setupAccounts,
 };

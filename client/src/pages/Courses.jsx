@@ -108,7 +108,10 @@ const Courses = () => {
         : [{ category: activeCategory, courses: filtered }];
 
     return (
-        <div className="bg-[#fcfdfe] min-h-screen pt-32 pb-24 font-sans text-slate-900 overflow-x-hidden">
+        <div className="bg-slate-950 min-h-screen pt-32 pb-24 font-sans text-white overflow-x-hidden relative">
+            {/* Background Glows */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2"></div>
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
             <ConsultationModal isOpen={isExpertOpen} onClose={() => setIsExpertOpen(false)} />
 
@@ -130,7 +133,7 @@ const Courses = () => {
             </section>
             {/* 2. Premium Control Bar */}
             <section className="max-w-7xl mx-auto px-4 mb-16 relative z-30">
-                <div className="bg-white/70 backdrop-blur-xl border border-white p-6 rounded-[40px] shadow-2xl shadow-slate-200/50 flex flex-col lg:flex-row gap-8 items-center justify-between">
+                <div className="glass-card-premium p-6 flex flex-col lg:flex-row gap-8 items-center justify-between border-t-4 border-t-blue-500/30">
                     
                     {/* Category Filter - Glassmorphism Aesthetic */}
                     <div className="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto no-scrollbar">
@@ -140,8 +143,8 @@ const Courses = () => {
                                 onClick={() => setActiveCategory(cat)}
                                 className={`px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 whitespace-nowrap ${
                                     activeCategory === cat 
-                                    ? 'bg-slate-950 text-white shadow-xl shadow-slate-900/10' 
-                                    : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'
+                                    ? 'bg-white text-slate-950 shadow-xl' 
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                             >
                                 {cat}
@@ -153,25 +156,24 @@ const Courses = () => {
                     <div className="flex items-center gap-4 w-full lg:w-auto">
                         <div className="relative flex-grow lg:w-[450px] group">
                             <div className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                                <Search className="text-slate-400 group-focus-within:text-primary-600 transition-colors" size={18} />
-                                <div className="w-px h-4 bg-slate-200"></div>
+                                <Search className="text-slate-500 group-focus-within:text-blue-400 transition-colors" size={18} />
+                                <div className="w-px h-4 bg-white/10"></div>
                             </div>
                             <input
                                 type="text"
                                 placeholder="Search your ideal roadmap..."
-                                className="w-full pl-16 pr-6 py-5 rounded-[28px] bg-slate-100/50 border-2 border-transparent focus:border-primary-500/10 focus:bg-white focus:outline-none font-bold transition-all text-sm placeholder:text-slate-400 shadow-sm"
+                                className="input-premium pl-16 pr-6 w-full"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                             {searchTerm && (
-                                <button onClick={() => setSearchTerm('')} className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-900 transition-colors">
+                                <button onClick={() => setSearchTerm('')} className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
                                     <X size={16} />
                                 </button>
                             )}
                         </div>
 
-                        
-                        <div className="flex items-center p-1.5 bg-slate-100/50 rounded-2xl border border-transparent">
+                        <div className="flex items-center p-1.5 bg-white/5 rounded-2xl border border-white/10">
                             <button 
                                 onClick={() => setViewMode('grid')} 
                                 className={`p-3 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-400'}`}
@@ -193,20 +195,20 @@ const Courses = () => {
             <section className="max-w-7xl mx-auto px-4 space-y-24">
                 {groupedCourses.length > 0 ? (
                     groupedCourses.map((group, gIdx) => (
-                        <div key={group.category} className="course-section space-y-10 reveal-up">
-                            <div className="flex items-end justify-between border-b border-slate-100 pb-6">
-                                <div className="space-y-2">
-                                    <h2 className="premium-title text-3xl flex items-center gap-3">
-                                        <div className="w-2 h-10 bg-accent-500 rounded-full"></div>
+                        <div key={group.category} className="course-section space-y-12 reveal-up">
+                            <div className="flex items-end justify-between border-b border-white/5 pb-8">
+                                <div className="space-y-4">
+                                    <h2 className="section-title text-4xl mb-0 flex items-center gap-4">
+                                        <div className="w-2 h-12 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.3)]"></div>
                                         {group.category}
                                     </h2>
-                                    <p className="text-slate-500 font-medium text-sm">Industry-vetted programs for {group.category}</p>
+                                    <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">Industry-vetted programs for {group.category}</p>
                                 </div>
                             </div>
 
-                            <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10" : "space-y-8"}>
+                            <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10" : "space-y-10"}>
                                 {group.courses.map(course => (
-                                    <div key={course._id} className={`course-card group relative transition-all duration-500 opacity-100 ${viewMode === 'grid' ? 'bg-white rounded-[40px] border-2 border-slate-200 overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 flex flex-col' : 'flex bg-white rounded-[40px] border-2 border-slate-200 p-6 items-center gap-8 hover:shadow-2xl hover:border-primary-200 opacity-100'}`}>
+                                    <div key={course._id} className={`course-card group relative transition-all duration-500 opacity-100 ${viewMode === 'grid' ? 'glass-card-premium overflow-hidden flex flex-col border-t-2 border-t-white/10 hover:border-t-blue-500/50' : 'flex glass-card-premium p-8 items-center gap-10 hover:border-blue-500/30 opacity-100'}`}>
 
                                         <div className={`relative overflow-hidden shrink-0 bg-slate-900 ${viewMode === 'grid' ? 'h-64' : 'w-80 h-48 rounded-3xl'}`}>
                                             <img
@@ -229,40 +231,40 @@ const Courses = () => {
                                         </div>
 
                                         <div className={`flex flex-col flex-grow ${viewMode === 'grid' ? 'p-8 md:p-10' : 'pr-8'}`}>
-                                            <div className="flex items-center gap-2 mb-4">
+                                            <div className="flex items-center gap-3 mb-6">
                                                 <div className="flex gap-0.5 text-accent-500">
-                                                    <Star size={14} fill="currentColor" />
-                                                    <Star size={14} fill="currentColor" />
-                                                    <Star size={14} fill="currentColor" />
-                                                    <Star size={14} fill="currentColor" />
-                                                    <Star size={14} fill="currentColor" />
+                                                    <Star size={12} fill="currentColor" />
+                                                    <Star size={12} fill="currentColor" />
+                                                    <Star size={12} fill="currentColor" />
+                                                    <Star size={12} fill="currentColor" />
+                                                    <Star size={12} fill="currentColor" />
                                                 </div>
-                                                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest bg-slate-200 px-3 py-1 rounded-full">Industry Standard</span>
+                                                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">Industry Standard</span>
                                             </div>
 
                                             <h3 className="premium-title text-xl md:text-2xl mb-6">
                                                 {course.title}
                                             </h3>
-
-                                            <div className="grid grid-cols-2 gap-4 mb-8">
-                                                <div className="flex items-center gap-3 bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-100 transition-colors group-hover:bg-primary-50/50">
-                                                    <Clock size={18} className="text-accent-500" />
-                                                    <span className="text-xs font-black text-slate-700 uppercase tracking-widest">{course.duration}</span>
+                                            <div className="grid grid-cols-2 gap-4 mb-10">
+                                                <div className="flex items-center gap-3 bg-white/5 px-4 py-2.5 rounded-2xl border border-white/5 transition-all group-hover:bg-white/10">
+                                                    <Clock size={16} className="text-accent-400" />
+                                                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">{course.duration}</span>
                                                 </div>
-                                                <div className="flex items-center gap-3 bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-100 transition-colors group-hover:bg-primary-50/50">
-                                                    <Award size={18} className="text-primary-500" />
-                                                    <span className="text-xs font-black text-slate-700 uppercase tracking-widest">Cert.</span>
+                                                <div className="flex items-center gap-3 bg-white/5 px-4 py-2.5 rounded-2xl border border-white/5 transition-all group-hover:bg-white/10">
+                                                    <Award size={16} className="text-blue-400" />
+                                                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Cert.</span>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between gap-4">
-                                                <Link to={`/courses/${course._id}`} className="px-6 py-4 bg-slate-100 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-2">
+                                            <div className="mt-auto pt-8 border-t border-white/5 flex items-center justify-between gap-4">
+                                                <Link to={`/courses/${course._id}`} className="px-6 py-4 bg-white/5 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-2 border border-white/5">
                                                     Roadmap
                                                 </Link>
-                                                <button onClick={() => setIsRegisterOpen(true)} className="flex-grow px-8 py-4 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary-900 transition-all shadow-xl shadow-slate-950/10 flex items-center justify-center gap-3 active:scale-95 group/btn">
+                                                <button onClick={() => setIsRegisterOpen(true)} className="flex-grow px-8 py-4 bg-white text-slate-950 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all shadow-xl flex items-center justify-center gap-3 active:scale-95 group/btn">
                                                     Start Learning <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
                                                 </button>
                                             </div>
+
                                         </div>
                                     </div>
                                 ))}
