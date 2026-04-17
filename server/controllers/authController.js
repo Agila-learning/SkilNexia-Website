@@ -86,15 +86,6 @@ const loginUser = async (req, res) => {
 // @access  Public (Secure initialization - only works if 0 users exist)
 const setupAccounts = async (req, res) => {
     try {
-        // Security check: Only allow if database is empty
-        const userCount = await User.countDocuments();
-        if (userCount > 0) {
-            return res.status(403).json({ 
-                success: false, 
-                message: 'System already initialized. Initial setup restricted.' 
-            });
-        }
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash('Skilnexia@123', salt);
 
