@@ -86,7 +86,6 @@ const AboutUs = () => {
     ];
 
     return (
-    return (
         <div className="bg-slate-950 min-h-screen font-sans overflow-x-hidden text-white">
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
             <ConsultationModal isOpen={isExpertOpen} onClose={() => setIsExpertOpen(false)} />
