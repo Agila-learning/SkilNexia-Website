@@ -132,6 +132,8 @@ const Home = () => {
     const [reviews, setReviews] = useState([]);
     const [loadingReviews, setLoadingReviews] = useState(true);
     const [currentPhrase, setCurrentPhrase] = useState(0);
+    const [heroSearch, setHeroSearch] = useState('');
+    const navigate = useNavigate();
 
     const stackRef = useRef(null);
 
@@ -142,39 +144,13 @@ const Home = () => {
         }, 3000);
 
         const ctx = gsap.context(() => {
-            // 1. Text Reveal Stagger
-            gsap.fromTo('.stagger-reveal',
+            // 1. Text Reveal Stagger (Hero)
+            gsap.fromTo('.fade-up',
                 { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out" }
+                { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }
             );
 
-            // 2. Terminal Window Reveal
-            gsap.fromTo('.terminal-popup',
-                { scale: 0.9, opacity: 0, y: 50 },
-                { 
-                    scale: 1, 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 1.5, 
-                    ease: "elastic.out(1, 0.75)",
-                    delay: 0.5
-                }
-            );
-
-            // 3. Floating Motion: Chips & Mini Icons
-            gsap.to('.float-loop', {
-                y: -10,
-                duration: "random(2, 4)",
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                stagger: {
-                    amount: 2,
-                    from: "random"
-                }
-            });
-
-            // 4. Scroll Reveals for cards
+            // 2. Scroll Reveals for cards & sections
             gsap.utils.toArray('.reveal-up').forEach((el) => {
                 gsap.from(el, {
                     y: 40,
@@ -184,13 +160,13 @@ const Home = () => {
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: el,
-                        start: "top 90%",
+                        start: "top 92%",
                         toggleActions: "play none none none"
                     }
                 });
             });
 
-            // 5. Mastery Path Hover Interactions
+            // 3. Mastery Path Hover Interactions (Parallax/Scrub)
             const cards = gsap.utils.toArray('.mastery-card');
             cards.forEach((card, i) => {
                 if (i !== cards.length - 1) {
@@ -262,20 +238,37 @@ const Home = () => {
                         </div>
 
                         {/* Integrated Hero Search Bar */}
-                        <div className="fade-up hero-search-container group max-w-lg lg:max-w-none">
+                        <form 
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                if (heroSearch.trim()) navigate(`/courses?query=${encodeURIComponent(heroSearch)}`);
+                            }}
+                            className="fade-up hero-search-container group max-w-lg lg:max-w-none"
+                        >
                             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={24} />
                             <input 
                                 type="text" 
                                 placeholder="What do you want to learn today?" 
+                                value={heroSearch}
+                                onChange={(e) => setHeroSearch(e.target.value)}
                                 className="hero-search-input font-medium"
                             />
-                            <button className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 hidden sm:block">
+                            <button 
+                                type="submit"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 hidden sm:block"
+                            >
                                 Search
                             </button>
-                        </div>
+                        </form>
 
                         <div className="fade-up flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
-                            <button onClick={() => setIsRegisterOpen(true)} className="btn-premium flex items-center gap-2 group">
+                            <button 
+                                onClick={() => {
+                                    const el = document.getElementById('learning-maps');
+                                    if(el) el.scrollIntoView({ behavior: 'smooth' });
+                                }} 
+                                className="btn-premium flex items-center gap-2 group"
+                            >
                                 Explore Courses <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </button>
                             <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline">
@@ -389,8 +382,8 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* 4. Domain Mastery: Cartoon Roadmap Grid */}
-            <section className="py-24 lg:py-40 relative overflow-hidden bg-[#020617]">
+            {/* 4. Domain Mastery: Roadmap Grid */}
+            <section id="learning-maps" className="py-24 lg:py-40 relative overflow-hidden bg-[#020617]">
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8 text-center lg:text-left">
                         <div className="space-y-6">

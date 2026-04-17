@@ -23,8 +23,8 @@ const ConsultationModal = ({ isOpen, onClose, defaultCourseId = '' }) => {
 
             gsap.fromTo('.modal-overlay', { opacity: 0 }, { opacity: 1, duration: 0.3 });
             gsap.fromTo('.modal-content',
-                { x: '100%', opacity: 0 },
-                { x: '0%', opacity: 1, duration: 0.6, ease: 'power3.out' }
+                { scale: 0.9, opacity: 0 },
+                { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' }
             );
 
             // Fetch courses for dropdown

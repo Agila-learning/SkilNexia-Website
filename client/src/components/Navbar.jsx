@@ -9,6 +9,8 @@ const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [showCoursesMenu, setShowCoursesMenu] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
     const { user, logout } = useAuth();
@@ -60,6 +62,16 @@ const Navbar = () => {
     }, []);
 
     const isActive = (path) => location.pathname === path;
+    const isHomePage = location.pathname === '/';
+
+    const handleSearch = (e) => {
+        if (e) e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/courses?query=${encodeURIComponent(searchQuery)}`);
+            setIsSearchOpen(false);
+            setSearchQuery('');
+        }
+    };
 
     const navLinks = [
         { name: 'Home', path: '/' },
@@ -72,8 +84,8 @@ const Navbar = () => {
     return (
         <header
             className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-                isScrolled 
-                ? 'bg-slate-950/80 backdrop-blur-md border-b border-white/10 py-3' 
+                (isScrolled || !isHomePage)
+                ? 'bg-slate-950/90 backdrop-blur-md border-b border-white/10 py-3 shadow-2xl' 
                 : 'bg-transparent py-5'
             }`}
         >
@@ -102,7 +114,7 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.path}
-                                className={`text-[13px] font-semibold tracking-wide transition-all duration-300 relative group py-2 ${
+                                className={`nav-link-item text-[13px] font-semibold tracking-wide transition-all duration-300 relative group py-2 ${
                                     isActive(link.path) ? 'text-white' : 'text-slate-400 hover:text-white'
                                 }`}
                             >
@@ -115,7 +127,7 @@ const Navbar = () => {
 
                         {/* Dropdown for Categories */}
                         <div
-                            className="relative group py-2"
+                            className="relative group py-2 nav-link-item"
                             onMouseEnter={() => setShowCoursesMenu(true)}
                             onMouseLeave={() => setShowCoursesMenu(false)}
                         >
@@ -165,7 +177,26 @@ const Navbar = () => {
                     </div>
 
                     {/* Desktop Auth Actions */}
-                    <div className="hidden lg:flex items-center gap-4 nav-auth-reveal">
+                    <div className="hidden lg:flex items-center gap-6 nav-auth-reveal">
+                        {/* Search Toggle */}
+                        <div className="relative flex items-center">
+                            <form onSubmit={handleSearch} className={`flex items-center transition-all duration-500 overflow-hidden ${isSearchOpen ? 'w-64 opacity-100' : 'w-0 opacity-0'}`}>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search maps..." 
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="bg-white/5 border border-white/10 rounded-full py-2 px-4 text-xs focus:outline-none focus:border-blue-500 w-full"
+                                />
+                            </form>
+                            <button 
+                                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                                className="p-2 text-slate-400 hover:text-white transition-colors"
+                            >
+                                {isSearchOpen ? <X size={18} /> : <Search size={18} />}
+                            </button>
+                        </div>
+
                         {user ? (
                             <Link
                                 to={`/${user.role === 'admin' ? 'admin' : user.role === 'trainer' ? 'trainer' : user.role === 'hr' ? 'hr' : 'student'}`}
