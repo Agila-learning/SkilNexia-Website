@@ -67,8 +67,11 @@ const loginUser = async (req, res) => {
         const normalizedEmail = (email || '').toLowerCase().trim();
         console.log(`[LOGIN] Attempting login for: ${normalizedEmail}`);
 
-        // Check for user email
-        const user = await User.findOne({ email: normalizedEmail, platform: 'skilnexia' });
+        // Check for user email (Allow legacy users without platform field during transition)
+        const user = await User.findOne({ 
+            email: normalizedEmail, 
+            $or: [{ platform: 'skilnexia' }, { platform: { $exists: false } }] 
+        });
         console.log(`[LOGIN] User found: ${!!user}`);
 
         if (user && (await bcrypt.compare(password, user.password))) {

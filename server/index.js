@@ -62,7 +62,24 @@ app.use(express.json());
 // Database Connection
 mongoose
   .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/skilnexia')
-  .then(() => console.log('MongoDB Connected successfully!'))
+  .then(async () => {
+    console.log('MongoDB Connected successfully!');
+    
+    // Migration: Tag legacy documents with 'skilnexia' platform if not already tagged
+    try {
+      const User = require('./models/User');
+      const Course = require('./models/Course');
+      const Lead = require('./models/Lead');
+      
+      await User.updateMany({ platform: { $exists: false } }, { platform: 'skilnexia' });
+      await Course.updateMany({ platform: { $exists: false } }, { platform: 'skilnexia' });
+      await Lead.updateMany({ platform: { $exists: false } }, { platform: 'skilnexia' });
+      
+      console.log('Platform migration completed: Legacy nodes initialized to skilnexia.');
+    } catch (migErr) {
+      console.error('Migration Warning:', migErr.message);
+    }
+  })
   .catch((err) => console.log('MongoDB connection error:', err));
 
 // Routes
