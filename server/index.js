@@ -135,7 +135,7 @@ io.on('connection', (socket) => {
 if (process.env.NODE_ENV === 'production' || true) { 
   app.use(express.static(path.join(__dirname, '../client/dist')));
 
-  app.get('(.*)', (req, res, next) => {
+  app.get('/:path*', (req, res, next) => {
     // Only handle routes that don't start with /api/
     if (req.url.startsWith('/api/')) {
       return next();
