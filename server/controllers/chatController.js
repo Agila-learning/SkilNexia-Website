@@ -7,9 +7,14 @@ const User = require('../models/User');
 // @access  Private
 exports.getChats = async (req, res) => {
     try {
-        const chats = await Chat.find({
-            participants: { $in: [req.user.id] }
-        })
+        let query = { participants: { $in: [req.user.id] } };
+
+        // Admins and HR can see all chats
+        if (req.user.role === 'admin' || req.user.role === 'hr') {
+            query = {};
+        }
+
+        const chats = await Chat.find(query)
             .populate('participants', 'name email role avatar')
             .populate('latestMessage')
             .sort({ updatedAt: -1 });

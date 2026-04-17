@@ -22,7 +22,7 @@ const DashboardLayout = () => {
 
             <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-            <div className="flex-1 flex flex-col overflow-hidden z-10">
+            <div className="flex-1 flex flex-col overflow-hidden relative">
                 {/* Fixed Premium Header */}
                 <header className="h-20 lg:h-24 border-b border-white/5 bg-slate-950/50 backdrop-blur-2xl flex items-center px-6 lg:px-12 z-20 sticky top-0 justify-between">
                     <div className="flex items-center gap-4">

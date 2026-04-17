@@ -199,8 +199,8 @@ const UserManagement = () => {
 
             {/* Add User Modal */}
             {showAddModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl">
-                    <div className="bg-slate-900 rounded-[48px] p-12 max-w-lg w-full shadow-2xl animate-in zoom-in duration-300 border border-white/10 relative overflow-hidden">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 bg-slate-950/90 backdrop-blur-xl overflow-y-auto">
+                    <div className="bg-slate-900 rounded-[40px] p-8 md:p-12 max-w-lg w-full shadow-2xl animate-in zoom-in duration-300 border border-white/10 relative my-auto">
                         <div className="absolute top-0 right-0 w-40 h-40 bg-accent-500/10 rounded-bl-full pointer-events-none"></div>
                         <div className="flex justify-between items-center mb-10 relative z-10">
                             <div>

@@ -167,8 +167,8 @@ const CourseMaterials = () => {
 
             {/* Add Lecture Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-[100] flex items-center justify-center p-6">
-                    <div className="bg-slate-900 rounded-[48px] p-12 w-full max-w-2xl shadow-2xl animate-in zoom-in duration-300 border border-white/10 relative overflow-hidden">
+                <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-xl z-[9999] flex items-center justify-center p-4 md:p-8 overflow-y-auto">
+                    <div className="bg-slate-900 rounded-[40px] p-8 md:p-12 w-full max-w-2xl shadow-2xl animate-in zoom-in duration-300 border border-white/10 relative my-auto">
                         <div className="absolute top-0 right-0 w-48 h-48 bg-accent-500/10 rounded-bl-full pointer-events-none"></div>
                         <div className="flex justify-between items-start mb-10 relative z-10">
                             <div>
