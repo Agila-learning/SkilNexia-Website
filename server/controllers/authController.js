@@ -109,7 +109,7 @@ const setupAccounts = async (req, res) => {
         const accounts = [
             { email: 'admin@skilnexia.com', name: 'Super Admin', role: 'admin' },
             { email: 'hr@skilnexia.com', name: 'Human Resource', role: 'hr' },
-            { email: 'vaideeswari@gmail.com', name: 'Master Trainer', role: 'trainer' }
+            { email: 'trainer@skilnexia.com', name: 'Master Trainer', role: 'trainer' }
         ];
 
         const results = [];
