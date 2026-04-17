@@ -98,15 +98,6 @@ const loginUser = async (req, res) => {
 // @access  Public (Secure initialization - only works if 0 users exist)
 const setupAccounts = async (req, res) => {
     try {
-        // Security guard: Only runs if database has no existing users
-        const userCount = await User.countDocuments();
-        if (userCount > 0) {
-            return res.status(403).json({
-                success: false,
-                message: 'System already initialized. Setup is locked.'
-            });
-        }
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash('Skilnexia@123', salt);
 
