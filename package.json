@@ -1,0 +1,14 @@
+{
+  "name": "skilnexia-root",
+  "version": "1.0.0",
+  "description": "Root package for SkilNexia platform build orchestration",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install && npm install --prefix client && npm install --prefix server",
+    "build": "npm install --prefix client && npm run build --prefix client && npm install --prefix server",
+    "start": "npm start --prefix server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

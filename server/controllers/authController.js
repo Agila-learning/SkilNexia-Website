@@ -81,44 +81,6 @@ const loginUser = async (req, res) => {
     }
 };
 
-// @desc    Setup initial test accounts (Admin, HR, Trainer)
-// @route   GET /api/auth/setup-accounts
-// @access  Public (Temporary)
-const setupAccounts = async (req, res) => {
-    try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash('Skilnexia@123', salt);
-
-        const accounts = [
-            { email: 'admin@skilnexia.com', name: 'Super Admin', role: 'admin' },
-            { email: 'hr@skilnexia.com', name: 'Human Resource', role: 'hr' },
-            { email: 'vaideeswari@gmail.com', name: 'Master Trainer', role: 'trainer' }
-        ];
-
-        const results = [];
-        for (const acc of accounts) {
-            const result = await User.findOneAndUpdate(
-                { email: acc.email },
-                { ...acc, password: hashedPassword },
-                { upsert: true, new: true }
-            );
-            results.push({ email: result.email, role: result.role, status: 'created/updated' });
-        }
-
-        res.status(200).json({ 
-            success: true,
-            message: 'Ecosystem test accounts initialized successfully.',
-            initializedAccounts: results
-        });
-    } catch (error) {
-        console.error('Core Bootstrap Error:', error);
-        res.status(500).json({ 
-            success: false,
-            message: 'Critical error during system bootstrap.',
-            error: error.message 
-        });
-    }
-};
 
 // @desc    Get user data
 // @route   GET /api/auth/me
@@ -131,5 +93,4 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
-    setupAccounts,
 };

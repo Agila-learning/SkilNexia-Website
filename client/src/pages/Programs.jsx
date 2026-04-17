@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
     BookOpen, ChevronRight, Search, Target, Code, Database,
     Shield, Cpu, Briefcase, ArrowRight, Award, TrendingUp,
-    Users, Star, Clock, Zap, Globe, Rocket, Layers
+    Users, Star, Clock, Zap, Globe, Rocket, Layers, LayoutGrid, List
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
