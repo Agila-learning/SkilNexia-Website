@@ -239,22 +239,23 @@ const Navbar = () => {
                         className="fixed inset-0 bg-slate-950/60 backdrop-blur-xl lg:hidden h-screen w-screen z-[110]"
                         onClick={() => setIsMobileMenuOpen(false)}
                     ></div>
-                    <div className="fixed top-0 right-0 w-[85%] max-w-sm h-full bg-white shadow-3xl lg:hidden flex flex-col p-10 animate-slide-in-right overflow-y-auto z-[120] rounded-l-[50px]">
-                        <div className="flex items-center justify-between mb-12">
-                            <span className="text-lg font-black text-slate-950 tracking-tighter uppercase">Menu</span>
-                            <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 bg-slate-50 rounded-2xl transition-colors">
+                    <div className="fixed top-0 right-0 w-[85%] max-w-sm h-full bg-slate-950 lg:hidden flex flex-col p-10 animate-slide-in-right overflow-y-auto z-[120] rounded-l-[50px] border-l border-white/10 shadow-[0_0_50px_rgba(0,0,0,1)]">
+                        <div className="absolute top-0 right-0 w-full h-full bg-blue-600/5 blur-[100px] pointer-events-none"></div>
+                        <div className="flex items-center justify-between mb-12 relative z-10">
+                            <span className="text-lg font-black text-white tracking-tighter uppercase">Menu</span>
+                            <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 bg-white/5 rounded-2xl transition-colors text-white border border-white/10 shadow-xl">
                                 <X size={24} />
                             </button>
                         </div>
 
-                        <div className="flex flex-col gap-3 mb-12">
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4 ml-2">Navigation</p>
+                        <div className="flex flex-col gap-3 mb-12 relative z-10">
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4 ml-6">Engineering Excellence</p>
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     to={link.path}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className={`text-base font-black p-4 rounded-[25px] transition-all uppercase tracking-tighter ${isActive(link.path) ? 'bg-slate-950 text-white shadow-2xl' : 'text-slate-600 hover:bg-slate-50'
+                                    className={`text-base font-black p-5 rounded-[25px] transition-all uppercase tracking-tighter border border-transparent ${isActive(link.path) ? 'bg-white text-slate-950 shadow-2xl scale-[1.02]' : 'text-slate-400 hover:bg-white/5 hover:border-white/5'
                                         }`}
                                 >
                                     {link.name}
@@ -263,19 +264,19 @@ const Navbar = () => {
                             <Link
                                 to="/courses"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`text-base font-black p-4 rounded-[25px] transition-all uppercase tracking-tighter ${isActive('/courses') ? 'bg-slate-950 text-white shadow-2xl' : 'text-slate-600 hover:bg-slate-50'
+                                className={`text-base font-black p-5 rounded-[25px] transition-all uppercase tracking-tighter border border-transparent ${isActive('/courses') ? 'bg-white text-slate-950 shadow-2xl scale-[1.02]' : 'text-slate-400 hover:bg-white/5 hover:border-white/5'
                                     }`}
                             >
                                 All Maps
                             </Link>
                         </div>
 
-                        <div className="mt-auto space-y-4">
+                        <div className="mt-auto space-y-4 relative z-10">
                             {user ? (
                                 <Link
                                     to={`/${user.role === 'admin' ? 'admin' : user.role === 'trainer' ? 'trainer' : user.role === 'hr' ? 'hr' : 'student'}`}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="w-full py-6 text-center text-white bg-slate-950 font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-primary-900 transition-all flex items-center justify-center gap-2"
+                                    className="w-full py-6 text-center text-white bg-blue-600 font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
                                 >
                                     Dashboard <LayoutDashboard size={16} />
                                 </Link>
@@ -284,16 +285,16 @@ const Navbar = () => {
                                     <Link
                                         to="/login"
                                         onClick={() => setIsMobileMenuOpen(false)}
-                                        className="w-full py-5 text-center text-slate-950 font-black uppercase tracking-widest border-2 border-slate-100 rounded-[28px] hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                                        className="w-full py-5 text-center text-white font-black uppercase tracking-widest border border-white/10 rounded-[28px] hover:bg-white/5 transition-all flex items-center justify-center gap-2"
                                     >
                                         Secure Login <ChevronDown size={16} className="-rotate-90" />
                                     </Link>
                                     <Link
                                         to="/register"
                                         onClick={() => setIsMobileMenuOpen(false)}
-                                        className="w-full py-6 text-center text-white bg-slate-950 font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-primary-900 transition-all"
+                                        className="w-full py-6 text-center text-slate-950 bg-white font-black uppercase tracking-widest rounded-[28px] shadow-3xl hover:bg-slate-200 transition-all"
                                     >
-                                        Join Free
+                                        Join Now
                                     </Link>
                                 </>
                             )}

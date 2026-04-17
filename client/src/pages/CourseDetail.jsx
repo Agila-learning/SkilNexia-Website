@@ -119,19 +119,10 @@ const CourseDetail = () => {
         );
     }
 
-    if (!course) {
-        return (
-            <div className="min-h-screen flex items-center justify-center p-4">
-                <div className="text-center">
-                    <h2 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Roadmap Not Found</h2>
-                    <Link to="/courses" className="btn-primary">Back to Roadmaps</Link>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="bg-[#fcfdfe] min-h-screen pt-32 pb-24 font-sans text-slate-900">
+        <div className="bg-slate-950 min-h-screen pt-32 pb-24 font-sans text-white">
+            <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
+
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
             <ConsultationModal
                 isOpen={isExpertOpen}
@@ -207,21 +198,21 @@ const CourseDetail = () => {
             </section>
 
             {/* 2. Premium Vertical Roadmap */}
-            <section className="max-w-7xl mx-auto px-4 py-20 bg-white rounded-[80px] border border-slate-100 shadow-2xl shadow-slate-200/40 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(#00000003_1px,transparent_1px)] [background-size:30px_30px]"></div>
+            <section className="max-w-7xl mx-auto px-4 py-20 bg-slate-900/40 rounded-[80px] border border-white/5 shadow-2xl relative overflow-hidden backdrop-blur-3xl">
+                <div className="absolute inset-0 bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [background-size:30px_30px]"></div>
 
                 <div className="text-center mb-32 space-y-6 relative z-10">
-                    <div className="inline-flex gap-2 text-primary-900 font-black uppercase tracking-[0.3em] text-[10px] items-center">
-                        <div className="w-12 h-1 bg-primary-900 rounded-full"></div> Phase-by-Phase <div className="w-12 h-1 bg-primary-900 rounded-full"></div>
+                    <div className="inline-flex gap-2 text-primary-400 font-black uppercase tracking-[0.3em] text-[10px] items-center">
+                        <div className="w-12 h-1 bg-primary-400 rounded-full"></div> Phase-by-Phase <div className="w-12 h-1 bg-primary-400 rounded-full"></div>
                     </div>
-                    <h2 className="text-5xl md:text-7xl font-black text-slate-950 uppercase tracking-tighter leading-none">Your Career <br /><span className="text-accent-500">Lifecycle</span></h2>
+                    <h2 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none">Your Career <br /><span className="text-accent-500">Lifecycle</span></h2>
                     <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-xs">Transform from foundations to industry expertise</p>
                 </div>
 
                 <div className="roadmap-container relative max-w-5xl mx-auto pb-40">
                     {/* Background Line */}
-                    <div className="absolute left-[50%] top-0 bottom-0 w-1.5 bg-slate-100 -translate-x-1/2 rounded-full overflow-hidden hidden md:block">
-                        <div className="roadmap-line-progress w-full bg-gradient-to-b from-primary-900 via-accent-500 to-emerald-400 h-0 rounded-full shadow-[0_0_20px_rgba(30,58,138,0.5)]"></div>
+                    <div className="absolute left-[50%] top-0 bottom-0 w-1.5 bg-white/5 -translate-x-1/2 rounded-full overflow-hidden hidden md:block">
+                        <div className="roadmap-line-progress w-full bg-gradient-to-b from-primary-400 via-accent-500 to-emerald-400 h-0 rounded-full shadow-[0_0_20px_rgba(96,165,250,0.5)]"></div>
                     </div>
 
                     <div className="space-y-40">
@@ -231,21 +222,21 @@ const CourseDetail = () => {
 
                                     {/* Content side */}
                                     <div className="w-full md:w-1/2 space-y-8">
-                                        <div className={`p-10 md:p-14 rounded-[50px] bg-white border border-slate-100 shadow-xl group-hover:shadow-3xl transition-all duration-500 relative ${idx % 2 === 0 ? 'md:mr-4' : 'md:ml-4'}`}>
-                                            <div className="absolute top-0 right-10 -translate-y-1/2 w-16 h-16 bg-slate-950 text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl group-hover:rotate-12 transition-transform">
+                                        <div className={`p-10 md:p-14 rounded-[50px] bg-slate-950 border border-white/5 shadow-xl group-hover:shadow-3xl transition-all duration-500 relative ${idx % 2 === 0 ? 'md:mr-4' : 'md:ml-4'}`}>
+                                            <div className="absolute top-0 right-10 -translate-y-1/2 w-16 h-16 bg-white text-slate-950 rounded-2xl flex items-center justify-center text-2xl font-black shadow-xl group-hover:rotate-12 transition-transform">
                                                 0{idx + 1}
                                             </div>
 
                                             <div className="space-y-6">
-                                                <div className="w-16 h-16 bg-slate-50 text-primary-900 rounded-2xl flex items-center justify-center group-hover:bg-primary-900 group-hover:text-white transition-all">
+                                                <div className="w-16 h-16 bg-white/5 text-primary-400 rounded-2xl flex items-center justify-center group-hover:bg-primary-400 group-hover:text-white transition-all">
                                                     <Globe size={32} />
                                                 </div>
-                                                <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{phase.title || phase.step}</h3>
-                                                <p className="text-slate-500 text-lg font-medium leading-relaxed">{phase.content || phase.description || phase.desc || "In-depth training module."}</p>
+                                                <h3 className="text-3xl font-black text-white uppercase tracking-tighter leading-tight">{phase.title || phase.step}</h3>
+                                                <p className="text-slate-400 text-lg font-medium leading-relaxed">{phase.content || phase.description || phase.desc || "In-depth training module."}</p>
 
                                                 <ul className="space-y-4 pt-4">
                                                     {["Project-led Learning", "Weekly Assessments", "Code Reviews"].map((item, i) => (
-                                                        <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-600">
+                                                        <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-500">
                                                             <CheckCircle size={18} className="text-emerald-500" /> {item}
                                                         </li>
                                                     ))}
@@ -257,21 +248,22 @@ const CourseDetail = () => {
                                     {/* Image side - Animated Reveal */}
                                     <div className="w-full md:w-1/2 relative group/img">
                                         <div className="absolute inset-0 bg-accent-500/10 blur-3xl opacity-0 group-hover/img:opacity-100 transition-opacity duration-1000"></div>
-                                        <div className="relative rounded-[50px] overflow-hidden border-[16px] border-white shadow-2xl aspect-[4/3] bg-slate-50">
-                                            <img src={"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=400"} alt={phase.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                                        <div className="relative rounded-[50px] overflow-hidden border-[16px] border-white/5 shadow-2xl aspect-[4/3] bg-slate-900">
+                                            <img src={"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=400"} alt={phase.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-80" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent"></div>
                                         </div>
                                     </div>
 
                                     {/* Center Node (Mobile Hidden) */}
-                                    <div className="absolute left-[50%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white border-[6px] border-slate-100 rounded-full z-20 hidden md:flex items-center justify-center transition-all duration-500 group-hover:border-primary-900 group-hover:scale-150 group-hover:shadow-[0_0_20px_rgba(30,58,138,0.3)]">
-                                        <div className="w-2 h-2 bg-slate-200 rounded-full group-hover:bg-primary-900"></div>
+                                    <div className="absolute left-[50%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-slate-950 border-[6px] border-white/5 rounded-full z-20 hidden md:flex items-center justify-center transition-all duration-500 group-hover:border-primary-400 group-hover:scale-150 group-hover:shadow-[0_0_20px_rgba(96,165,250,0.3)]">
+                                        <div className="w-2 h-2 bg-slate-800 rounded-full group-hover:bg-primary-400"></div>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
+
 
                 {/* Road to Hire CTA */}
                 <div className="max-w-4xl mx-auto mt-20 p-12 md:p-20 bg-slate-950 rounded-[60px] text-center text-white relative overflow-hidden group">
@@ -294,21 +286,22 @@ const CourseDetail = () => {
             </section>
 
             {/* Support Sidebar replacement or bottom section */}
-            <section className="max-w-7xl mx-auto px-4 mt-32 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section className="max-w-7xl mx-auto px-4 mt-32 grid grid-cols-1 lg:grid-cols-3 gap-8 pb-32">
                 {[
-                    { title: "Placement Help", desc: "Dedicated resume building & mock interviews.", icon: <Briefcase className="text-blue-500" /> },
+                    { title: "Placement Help", desc: "Dedicated resume building & mock interviews.", icon: <Briefcase className="text-blue-400" /> },
                     { title: "Elite Mentors", desc: "Learn from specialists working at Google & Meta.", icon: <Star className="text-accent-500" /> },
-                    { title: "Premium Access", desc: "Life-time access to roadmap updates and community.", icon: <Shield className="text-emerald-500" /> }
+                    { title: "Premium Access", desc: "Life-time access to roadmap updates and community.", icon: <Shield className="text-emerald-400" /> }
                 ].map((card, i) => (
-                    <div key={i} className="bg-white p-12 rounded-[50px] border border-slate-100 shadow-xl hover:shadow-3xl transition-all duration-300 space-y-6">
-                        <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center">
+                    <div key={i} className="bg-slate-900/40 p-12 rounded-[50px] border border-white/5 shadow-xl hover:shadow-3xl transition-all duration-300 space-y-6 backdrop-blur-3xl">
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center">
                             {card.icon}
                         </div>
-                        <h4 className="text-2xl font-black uppercase tracking-tight">{card.title}</h4>
+                        <h4 className="text-2xl font-black uppercase tracking-tight text-white">{card.title}</h4>
                         <p className="text-slate-500 font-medium leading-relaxed">{card.desc}</p>
                     </div>
                 ))}
             </section>
+
         </div>
     );
 };

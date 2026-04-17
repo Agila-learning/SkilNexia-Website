@@ -53,11 +53,15 @@ const AuthPage = ({ initialMode = 'login' }) => {
     };
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-4 md:p-8 font-sans overflow-hidden py-24 md:py-32">
-            <div className="auth-card w-full max-w-6xl bg-white rounded-[40px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col lg:flex-row relative">
+        <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 md:p-8 font-sans overflow-hidden py-24 md:py-32 relative">
+            {/* Background Glows */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-600/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-500/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+            <div className="auth-card w-full max-w-6xl bg-slate-900/40 backdrop-blur-3xl rounded-[40px] border border-white/5 shadow-2xl overflow-hidden flex flex-col lg:flex-row relative z-10">
 
                 {/* Close/Back Button */}
-                <Link to="/" className="absolute top-8 right-8 z-50 p-3 bg-slate-100 rounded-2xl text-slate-600 hover:text-slate-950 transition-all hover:rotate-90">
+                <Link to="/" className="absolute top-8 right-8 z-50 p-3 bg-white/5 border border-white/10 rounded-2xl text-slate-400 hover:text-white transition-all hover:rotate-90">
                     <ChevronLeft size={20} />
                 </Link>
 
@@ -105,22 +109,22 @@ const AuthPage = ({ initialMode = 'login' }) => {
                 </div>
 
                 {/* Right Side: Form */}
-                <div className="w-full lg:w-1/2 p-10 md:p-20 flex flex-col justify-center bg-white relative">
+                <div className="w-full lg:w-1/2 p-10 md:p-20 flex flex-col justify-center bg-slate-900/20 md:backdrop-blur-xl relative">
                     <div className="max-w-md mx-auto w-full space-y-10">
                         <div className="space-y-3">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
-                                <ShieldCheck size={12} className="text-accent-500" /> Secure Verification
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                                <ShieldCheck size={12} className="text-accent-500" /> Secure Node Verification
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-black text-slate-950 tracking-tighter uppercase leading-none">
+                            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none">
                                 {mode === 'login' ? 'Mission' : 'New'} <br />
-                                <span className={mode === 'login' ? 'text-primary-900' : 'text-accent-500'}>
-                                    {mode === 'login' ? 'Checkpoint.' : 'Account.'}
+                                <span className={mode === 'login' ? 'text-primary-400' : 'text-accent-500'}>
+                                    {mode === 'login' ? 'Checkpoint.' : 'Identity.'}
                                 </span>
                             </h1>
                         </div>
 
                         {error && (
-                            <div className="bg-red-50 text-red-600 p-5 rounded-3xl border border-red-100 flex items-center gap-4 animate-bounce-subtle">
+                            <div className="bg-red-500/10 text-red-500 p-5 rounded-3xl border border-red-500/20 flex items-center gap-4 animate-bounce-subtle">
                                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                                 <p className="text-xs font-black uppercase tracking-tight">{error}</p>
                             </div>
@@ -129,13 +133,13 @@ const AuthPage = ({ initialMode = 'login' }) => {
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {mode === 'register' && (
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Full Name</label>
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Full Identity</label>
                                     <div className="relative group">
-                                        <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent-500 transition-colors" size={20} />
+                                        <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-accent-500 transition-colors" size={20} />
                                         <input
                                             type="text"
                                             required
-                                            className="w-full pl-16 pr-6 py-5 rounded-[24px] bg-slate-50 border-2 border-transparent focus:border-accent-500/20 focus:bg-white focus:outline-none font-bold transition-all"
+                                            className="w-full pl-16 pr-6 py-5 rounded-[24px] bg-slate-950 border-2 border-white/5 focus:border-accent-500/20 text-white outline-none font-bold transition-all shadow-inner"
                                             placeholder="Enter your name"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
@@ -145,14 +149,14 @@ const AuthPage = ({ initialMode = 'login' }) => {
                             )}
 
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Work Email</label>
+                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Evolution Email</label>
                                 <div className="relative group">
-                                    <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-900 transition-colors" size={20} />
+                                    <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-400 transition-colors" size={20} />
                                     <input
                                         type="email"
                                         required
-                                        className="w-full pl-16 pr-6 py-5 rounded-[24px] bg-slate-50 border-2 border-transparent focus:border-primary-900/20 focus:bg-white focus:outline-none font-bold transition-all"
-                                        placeholder="name@company.com"
+                                        className="w-full pl-16 pr-6 py-5 rounded-[24px] bg-slate-950 border-2 border-white/5 focus:border-primary-400/20 text-white outline-none font-bold transition-all shadow-inner"
+                                        placeholder="portal@skilnexia.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
@@ -161,15 +165,15 @@ const AuthPage = ({ initialMode = 'login' }) => {
 
                             <div className="space-y-2">
                                 <div className="flex justify-between px-1">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Security Key</label>
-                                    {mode === 'login' && <button type="button" className="text-[10px] font-black uppercase tracking-widest text-primary-600">Forgot?</button>}
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Security Key</label>
+                                    {mode === 'login' && <button type="button" className="text-[10px] font-black uppercase tracking-widest text-primary-400">Lost Access?</button>}
                                 </div>
                                 <div className="relative group">
-                                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-900 transition-colors" size={20} />
+                                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-400 transition-colors" size={20} />
                                     <input
                                         type="password"
                                         required
-                                        className="w-full pl-16 pr-6 py-5 rounded-[24px] bg-slate-50 border-2 border-transparent focus:border-primary-900/20 focus:bg-white focus:outline-none font-bold transition-all"
+                                        className="w-full pl-16 pr-6 py-5 rounded-[24px] bg-slate-950 border-2 border-white/5 focus:border-primary-400/20 text-white outline-none font-bold transition-all shadow-inner"
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -179,17 +183,17 @@ const AuthPage = ({ initialMode = 'login' }) => {
 
                             {mode === 'register' && (
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Account Persona</label>
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Account Persona</label>
                                     <div className="relative group">
-                                        <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-900 transition-colors" size={20} />
+                                        <Shield className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-400 transition-colors" size={20} />
                                         <select
-                                            className="w-full pl-16 pr-10 py-5 rounded-[24px] bg-slate-50 border-2 border-transparent focus:border-primary-900/20 focus:bg-white focus:outline-none font-bold transition-all appearance-none cursor-pointer"
+                                            className="w-full pl-16 pr-10 py-5 rounded-[24px] bg-slate-950 border-2 border-white/5 focus:border-primary-400/20 text-white outline-none font-bold transition-all appearance-none cursor-pointer shadow-inner"
                                             value={role}
                                             onChange={(e) => setRole(e.target.value)}
                                         >
-                                            <option value="student">Student / Learner</option>
-                                            <option value="trainer">Industry Expert</option>
-                                            <option value="hr">Enterprise Partner</option>
+                                            <option value="student" className="bg-slate-900">Student / Learner</option>
+                                            <option value="trainer" className="bg-slate-900">Industry Expert</option>
+                                            <option value="hr" className="bg-slate-900">Enterprise Partner</option>
                                         </select>
                                     </div>
                                 </div>
@@ -198,18 +202,18 @@ const AuthPage = ({ initialMode = 'login' }) => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className={`w-full py-6 rounded-[28px] font-black text-lg uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50 mt-4 ${mode === 'login' ? 'bg-slate-950 text-white hover:bg-primary-900' : 'bg-accent-500 text-white hover:bg-slate-950'}`}
+                                className={`w-full py-6 rounded-[28px] font-black text-lg uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50 mt-4 ${mode === 'login' ? 'bg-white text-slate-950 hover:bg-primary-400 hover:text-white' : 'bg-accent-500 text-white hover:bg-white hover:text-slate-950'}`}
                             >
-                                {isLoading ? 'Verifying...' : (mode === 'login' ? 'Secure Access' : 'Join The Movement')}
+                                {isLoading ? 'Verifying...' : (mode === 'login' ? 'Initiate Node' : 'Complete Setup')}
                                 {!isLoading && (mode === 'login' ? <Zap size={20} fill="currentColor" /> : <Rocket size={20} />)}
                             </button>
                         </form>
 
                         <div className="text-center pt-6">
-                            <p className="text-xs font-black text-slate-400 uppercase tracking-widest italic leading-relaxed">
+                            <p className="text-xs font-black text-slate-500 uppercase tracking-widest italic leading-relaxed">
                                 {mode === 'login' ? "New to the elite network?" : "Already part of the evolution?"}
-                                <button onClick={toggleMode} className="ml-2 text-primary-900 hover:text-accent-500 transition-colors underline decoration-2 underline-offset-4">
-                                    {mode === 'login' ? 'Create Your Account' : 'Sign In To Dashboard'}
+                                <button onClick={toggleMode} className="ml-2 text-primary-400 hover:text-accent-500 transition-colors underline decoration-2 underline-offset-4">
+                                    {mode === 'login' ? 'Create New Profile' : 'Sign In To Node'}
                                 </button>
                             </p>
                         </div>
