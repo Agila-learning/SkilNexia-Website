@@ -62,10 +62,16 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Normalize email
+        const normalizedEmail = (email || '').toLowerCase().trim();
+        console.log(`[LOGIN] Attempting login for: ${normalizedEmail}`);
+
         // Check for user email
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: normalizedEmail });
+        console.log(`[LOGIN] User found: ${!!user}`);
 
         if (user && (await bcrypt.compare(password, user.password))) {
+            console.log(`[LOGIN] Success for: ${normalizedEmail}`);
             res.json({
                 _id: user.id,
                 name: user.name,
@@ -74,9 +80,11 @@ const loginUser = async (req, res) => {
                 token: generateToken(user._id),
             });
         } else {
+            console.log(`[LOGIN] Failed for: ${normalizedEmail} — user: ${!!user}`);
             res.status(401).json({ message: 'Invalid credentials' });
         }
     } catch (error) {
+        console.error('[LOGIN] Error:', error.message);
         res.status(500).json({ message: error.message });
     }
 };
