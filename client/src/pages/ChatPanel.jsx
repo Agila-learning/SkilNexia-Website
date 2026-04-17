@@ -21,7 +21,15 @@ const ChatPanel = () => {
 
     useEffect(() => {
         // Initialize Socket
-        socket.current = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000');
+        let socketUrl = import.meta.env.VITE_SOCKET_URL;
+        if (!socketUrl) {
+            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                socketUrl = window.location.origin;
+            } else {
+                socketUrl = 'http://localhost:5000';
+            }
+        }
+        socket.current = io(socketUrl);
 
         socket.current.on('receive_message', (message) => {
             if (selectedChat && message.chatId === selectedChat._id) {

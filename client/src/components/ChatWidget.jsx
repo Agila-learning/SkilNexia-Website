@@ -37,7 +37,14 @@ const ChatWidget = () => {
     useEffect(() => {
         if (isOpen) {
             // Initialize Socket
-            const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000');
+            let socketUrl = import.meta.env.VITE_SOCKET_URL;
+            if (!socketUrl) {
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    socketUrl = window.location.origin;
+                } else {
+                    socketUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000';
+                }
+            }
             socket.current = io(socketUrl);
 
             // Initial call to get/create chat
