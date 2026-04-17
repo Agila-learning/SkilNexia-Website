@@ -111,7 +111,7 @@ const AdminDashboard = () => {
                     <div className="overflow-hidden">
                         <table className="w-full text-left order-collapse">
                             <thead>
-                                <tr className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
+                                <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
                                     <th className="pb-4 px-4">Entity</th>
                                     <th className="pb-4 px-4">Program</th>
                                     <th className="pb-4 px-4">Status</th>
@@ -127,7 +127,7 @@ const AdminDashboard = () => {
                                                 </div>
                                                 <div className="overflow-hidden">
                                                     <p className="text-sm font-bold text-white uppercase tracking-tight truncate">{enr.student?.name}</p>
-                                                    <p className="text-[10px] text-slate-500 font-medium">Node ID: {enr._id.slice(-6)}</p>
+                                                    <p className="text-[10px] text-slate-400 font-medium">Node ID: {enr._id.slice(-6)}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
                                         </td>
                                         <td className="py-6 px-4 text-right">
                                             <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                                                enr.status === 'active' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-500 border-white/10'
+                                                enr.status === 'active' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-400 border-white/10'
                                             }`}>
                                                 {enr.status}
                                             </span>
