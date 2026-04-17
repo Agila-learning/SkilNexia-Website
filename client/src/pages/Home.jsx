@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
     PlayCircle, Play, Award, Users, BookOpen, ArrowRight, Zap, Target, Star,
     ChevronLeft, ChevronRight, Globe, Code, Database, Cpu, Menu, X,
-    ArrowUp, CheckCircle, Shield, Briefcase, ChevronDown, Rocket,
+    ArrowUp, CheckCircle, Shield, Briefcase, ChevronDown, Rocket, Search,
     Smartphone, PenTool, BarChart, Terminal, Heart, Lightbulb, TrendingUp, Bot, Sparkles
 } from 'lucide-react';
 
