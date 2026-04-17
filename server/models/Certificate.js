@@ -24,6 +24,11 @@ const certificateSchema = new mongoose.Schema(
         pdfUrl: {
             type: String, // Cloudinary URL or local path
         },
+        platform: {
+            type: String,
+            default: 'skilnexia',
+            index: true
+        }
     },
     { timestamps: true }
 );

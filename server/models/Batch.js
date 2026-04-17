@@ -60,6 +60,11 @@ const batchSchema = new mongoose.Schema(
                 url: String, // Cloudinary or other URL
             },
         ],
+        platform: {
+            type: String,
+            default: 'skilnexia',
+            index: true
+        }
     },
     { timestamps: true }
 );

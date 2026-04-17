@@ -37,6 +37,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             role: role || 'student', // Default role
+            platform: 'skilnexia'
         });
 
         if (user) {
@@ -67,7 +68,7 @@ const loginUser = async (req, res) => {
         console.log(`[LOGIN] Attempting login for: ${normalizedEmail}`);
 
         // Check for user email
-        const user = await User.findOne({ email: normalizedEmail });
+        const user = await User.findOne({ email: normalizedEmail, platform: 'skilnexia' });
         console.log(`[LOGIN] User found: ${!!user}`);
 
         if (user && (await bcrypt.compare(password, user.password))) {
@@ -115,8 +116,8 @@ const setupAccounts = async (req, res) => {
         const results = [];
         for (const acc of accounts) {
             const result = await User.findOneAndUpdate(
-                { email: acc.email },
-                { ...acc, password: hashedPassword },
+                { email: acc.email, platform: 'skilnexia' },
+                { ...acc, password: hashedPassword, platform: 'skilnexia' },
                 { upsert: true, new: true }
             );
             results.push({ email: result.email, role: result.role, status: 'created/updated' });

@@ -34,6 +34,11 @@ const userSchema = new mongoose.Schema(
                 ref: 'Course',
             },
         ],
+        platform: {
+            type: String,
+            default: 'skilnexia',
+            index: true
+        }
     },
     { timestamps: true }
 );

@@ -72,7 +72,7 @@ const getMyEnrollments = async (req, res) => {
 // @access  Private/Admin,HR,Trainer
 const getAllEnrollments = async (req, res) => {
     try {
-        const enrollments = await Enrollment.find({})
+        const enrollments = await Enrollment.find({ platform: 'skilnexia' })
             .populate('student', 'name email')
             .populate({
                 path: 'batch',
@@ -142,7 +142,7 @@ const completeEnrollment = async (req, res) => {
         await enrollment.save();
 
         // Check if certificate already exists
-        let certificate = await Certificate.findOne({ user: enrollment.student._id, course: enrollment.batch.course._id });
+        let certificate = await Certificate.findOne({ user: enrollment.student._id, course: enrollment.batch.course._id, platform: 'skilnexia' });
 
         if (!certificate) {
             const certificateId = `SKLX-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -150,6 +150,7 @@ const completeEnrollment = async (req, res) => {
                 user: enrollment.student._id,
                 course: enrollment.batch.course._id,
                 certificateId,
+                platform: 'skilnexia'
             });
 
             // Send certificate email to student

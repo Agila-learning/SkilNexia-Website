@@ -29,6 +29,11 @@ const enrollmentSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        platform: {
+            type: String,
+            default: 'skilnexia',
+            index: true
+        }
     },
     { timestamps: true }
 );

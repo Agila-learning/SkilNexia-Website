@@ -5,7 +5,7 @@ const User = require('../models/User');
 // @access  Private/Admin
 exports.getUsers = async (req, res) => {
     try {
-        const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+        const users = await User.find({ platform: 'skilnexia' }).select('-password').sort({ createdAt: -1 });
         res.json(users);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -67,8 +67,8 @@ exports.getAdminStats = async (req, res) => {
         const Course = require('../models/Course');
         const Enrollment = require('../models/Enrollment');
 
-        const totalStudents = await User.countDocuments({ role: 'student' });
-        const totalTrainers = await User.countDocuments({ role: 'trainer' });
+        const totalStudents = await User.countDocuments({ role: 'student', platform: 'skilnexia' });
+        const totalTrainers = await User.countDocuments({ role: 'trainer', platform: 'skilnexia' });
         const activeCourses = await Course.countDocuments({ isPublished: true });
 
         // Simple revenue calculation (sum of all verified payments)

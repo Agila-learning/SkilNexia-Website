@@ -102,6 +102,11 @@ const courseSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        platform: {
+            type: String,
+            default: 'skilnexia',
+            index: true
+        }
     },
     { timestamps: true }
 );

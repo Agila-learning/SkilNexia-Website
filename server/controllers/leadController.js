@@ -14,7 +14,8 @@ exports.createLead = async (req, res) => {
             email,
             phone,
             courseId,
-            message
+            message,
+            platform: 'skilnexia'
         });
 
         await lead.save();
@@ -34,7 +35,7 @@ exports.createLead = async (req, res) => {
 
 exports.getLeads = async (req, res) => {
     try {
-        const leads = await Lead.find()
+        const leads = await Lead.find({ platform: 'skilnexia' })
             .populate('courseId', 'title')
             .sort('-createdAt');
 
@@ -47,7 +48,7 @@ exports.getLeads = async (req, res) => {
 
 exports.getMyLeads = async (req, res) => {
     try {
-        const leads = await Lead.find({ email: req.user.email })
+        const leads = await Lead.find({ email: req.user.email, platform: 'skilnexia' })
             .populate('courseId', 'title thumbnail')
             .sort('-createdAt');
 
@@ -74,7 +75,7 @@ exports.updateLeadStatus = async (req, res) => {
         // If converted, create user and enrollment
         if (status === 'Converted' && oldStatus !== 'Converted') {
             // 1. Find or Create User
-            let user = await User.findOne({ email: lead.email });
+            let user = await User.findOne({ email: lead.email, platform: 'skilnexia' });
             if (!user) {
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash('Skilnexia@123', salt);
@@ -82,7 +83,8 @@ exports.updateLeadStatus = async (req, res) => {
                     name: lead.fullName,
                     email: lead.email,
                     password: hashedPassword,
-                    role: 'student'
+                    role: 'student',
+                    platform: 'skilnexia'
                 });
             }
 

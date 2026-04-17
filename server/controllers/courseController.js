@@ -9,7 +9,7 @@ const Course = require('../models/Course');
 const getCourses = async (req, res) => {
     try {
         const { category, level, search } = req.query;
-        let query = {};
+        let query = { platform: 'skilnexia' };
 
         if (category) query.category = category;
         if (level) query.level = level;
@@ -59,7 +59,7 @@ const getCourseById = async (req, res) => {
 // @access  Private/Admin
 const getAdminCourses = async (req, res) => {
     try {
-        const courses = await Course.find({}).populate('trainers', 'name email');
+        const courses = await Course.find({ platform: 'skilnexia' }).populate('trainers', 'name email');
         res.json(courses);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -92,6 +92,7 @@ const createCourse = async (req, res) => {
             projects,
             modules,
             faqs,
+            platform: 'skilnexia'
         });
 
         const createdCourse = await course.save();

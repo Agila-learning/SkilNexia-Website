@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, UserPlus, MoreVertical, Shield, Trash2, Mail, Calendar, CheckCircle, XCircle } from 'lucide-react';
+import { Search, UserPlus, MoreVertical, Shield, Trash2, Mail, Calendar, CheckCircle, XCircle, X } from 'lucide-react';
 import api from '../../services/api';
 
 const UserManagement = () => {

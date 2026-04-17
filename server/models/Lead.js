@@ -38,6 +38,11 @@ const leadSchema = new mongoose.Schema({
     referredBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    platform: {
+        type: String,
+        default: 'skilnexia',
+        index: true
     }
 }, { timestamps: true });
 
