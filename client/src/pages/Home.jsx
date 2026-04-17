@@ -88,63 +88,40 @@ const TUTORIAL_PHRASES = [
 ];
 
 // Natively built Framer Motion SVG Cartoon Teacher to guarantee 100% uptime and zero loading issues.
-const AnimatedVirtualTeacher = () => (
+// Professional Dashboard Preview Component
+const DashboardPreview = () => (
     <motion.div 
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="w-full h-full relative flex items-center justify-center p-8"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="w-full h-full relative group"
     >
-        <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_40px_rgba(34,211,238,0.4)]">
-            {/* Robot Head Core */}
-            <motion.rect 
-                x="40" y="40" width="120" height="110" rx="40" 
-                fill="#0f172a" stroke="#22d3ee" strokeWidth="4"
+        <div className="absolute inset-0 bg-blue-500/10 blur-[100px] rounded-full group-hover:bg-blue-500/20 transition-all duration-700"></div>
+        <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl glass-card-premium">
+            <img 
+                src="/images/dashboard_preview.png" 
+                alt="Skilnexia Platform Preview" 
+                className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
             />
-            {/* Screen / Face Shield */}
-            <rect x="55" y="60" width="90" height="60" rx="20" fill="#020617" />
-            
-            {/* Animated Glowing Eyes */}
-            <motion.ellipse 
-                cx="80" cy="85" rx="12" ry="16" fill="#22d3ee"
-                animate={{ scaleY: [1, 0.1, 1], opacity: [1, 0.5, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "circInOut", delay: 0.5 }}
-                className="drop-shadow-[0_0_15px_rgba(34,211,238,1)]"
-            />
-            <motion.ellipse 
-                cx="120" cy="85" rx="12" ry="16" fill="#22d3ee"
-                animate={{ scaleY: [1, 0.1, 1], opacity: [1, 0.5, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "circInOut", delay: 0.5 }}
-                className="drop-shadow-[0_0_15px_rgba(34,211,238,1)]"
-            />
-
-            {/* Speaking Audio Waveform Animation */}
-            <g transform="translate(100, 105)">
-                <motion.rect x="-15" y="0" width="6" height="5" rx="3" fill="#8b5cf6" animate={{ height: [5, 15, 5], y: [0, -5, 0] }} transition={{ duration: 0.4, repeat: Infinity }} />
-                <motion.rect x="-5" y="0" width="6" height="10" rx="3" fill="#22d3ee" animate={{ height: [10, 20, 10], y: [0, -5, 0] }} transition={{ duration: 0.3, repeat: Infinity, delay: 0.1 }} />
-                <motion.rect x="5"  y="0" width="6" height="5" rx="3" fill="#8b5cf6" animate={{ height: [5, 15, 5], y: [0, -5, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }} />
-                <motion.rect x="15" y="0" width="6" height="8" rx="3" fill="#22d3ee" animate={{ height: [8, 12, 8], y: [0, -2, 0] }} transition={{ duration: 0.4, repeat: Infinity, delay: 0.3 }} />
-            </g>
-
-            {/* Antennas & Tech Nodes */}
-            <line x1="100" y1="40" x2="100" y2="10" stroke="#8b5cf6" strokeWidth="4" />
-            <motion.circle 
-                cx="100" cy="10" r="8" fill="#22d3ee"
-                animate={{ fill: ["#22d3ee", "#8b5cf6", "#22d3ee"] }}
-                transition={{ duration: 2, repeat: Infinity }}
-            />
-            
-            {/* Animated Floating Hands */}
-            <motion.circle 
-                cx="20" cy="130" r="15" fill="#1e293b" stroke="#22d3ee" strokeWidth="3"
-                animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.circle 
-                cx="180" cy="130" r="15" fill="#1e293b" stroke="#8b5cf6" strokeWidth="3"
-                animate={{ y: [0, -15, 0], x: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-            />
-        </svg>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60"></div>
+        </div>
+        
+        {/* Floating Mini Badges for Context */}
+        <motion.div 
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-6 -right-6 p-4 glass-card-premium border-blue-500/30 shadow-xl hidden lg:block"
+        >
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                    <CheckCircle size={20} />
+                </div>
+                <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Job Ready</p>
+                    <p className="text-xs font-bold text-white">Curriculum Verified</p>
+                </div>
+            </div>
+        </motion.div>
     </motion.div>
 );
 
@@ -258,82 +235,76 @@ const Home = () => {
             <RegistrationPopup isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
             <ConsultationModal isOpen={isExpertOpen} onClose={() => setIsExpertOpen(false)} />
 
-            {/* AI HUB BACKGROUND EFFECT */}
-            <div className="absolute top-0 left-0 w-full h-screen pointer-events-none -z-10 overflow-hidden">
-                <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full"></div>
-                <div className="absolute top-[20%] -right-[10%] w-[30%] h-[50%] bg-purple-600/10 blur-[120px] rounded-full"></div>
+            {/* HERO BACKGROUND GRADIENT */}
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-[800px] bg-gradient-to-b from-blue-900/20 via-slate-950 to-slate-950 border-white/5"></div>
+                <div className="absolute top-[10%] left-[20%] w-[30%] h-[30%] bg-blue-600/10 blur-[120px] rounded-full"></div>
             </div>
 
-            {/* 1. Cartoon Teaching Animation Hero */}
-            <section className="relative min-h-screen flex items-center justify-center py-24 lg:py-40">
-                <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            {/* 1. Career-Focused Hero Section */}
+            <section className="relative min-h-[90vh] flex items-center justify-center pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     
-                    {/* Left Info */}
-                    <div className="lg:col-span-5 space-y-10 text-center lg:text-left relative z-10">
-                        <div className="stagger-reveal inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-black tracking-widest text-cyan-400 uppercase">
-                            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                            Live Learning Environment
+                    {/* Left Info: Content Focused */}
+                    <div className="space-y-8 text-center lg:text-left relative z-10">
+                        <div className="fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-bold tracking-widest text-blue-400 uppercase">
+                            <Rocket size={14} /> Higher Education for Better Careers
                         </div>
-                        <h1 className="stagger-reveal text-6xl md:text-8xl font-black leading-[0.85] tracking-tighter">
-                            LEARN WITH <br />
-                            <span className="neon-blue">ANIMATION.</span>
-                        </h1>
                         
-                        <p className="stagger-reveal text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
-                            Master high-demand tech skills through an interactive, visually stunning animated teaching experience.
-                        </p>
+                        <div className="space-y-6">
+                            <h1 className="fade-up leading-[1.05]">
+                                Upgrade your <br />
+                                <span className="text-brand-gradient">career with job-ready</span> skills
+                            </h1>
+                            <p className="fade-up text-lg md:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                                Master high-demand tech skills with our industry-led programs and get placed at top-tier companies. Learn from world-class experts.
+                            </p>
+                        </div>
 
-                        <div className="stagger-reveal flex flex-wrap justify-center lg:justify-start gap-4 pt-6">
-                            <button onClick={() => setIsRegisterOpen(true)} className="px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-[25px] font-black text-lg hover:scale-110 transition-transform cartoon-shadow active:scale-95 uppercase tracking-widest flex items-center gap-2 border-b-4 border-blue-800">
-                                Enroll Now <ArrowRight size={20} />
+                        {/* Integrated Hero Search Bar */}
+                        <div className="fade-up hero-search-container group max-w-lg lg:max-w-none">
+                            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={24} />
+                            <input 
+                                type="text" 
+                                placeholder="What do you want to learn today?" 
+                                className="hero-search-input font-medium"
+                            />
+                            <button className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 hidden sm:block">
+                                Search
                             </button>
-                            <button onClick={() => setIsExpertOpen(true)} className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-[25px] font-black text-lg hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
-                                View Courses
+                        </div>
+
+                        <div className="fade-up flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
+                            <button onClick={() => setIsRegisterOpen(true)} className="btn-premium flex items-center gap-2 group">
+                                Explore Courses <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </button>
+                            <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline">
+                                Book Free Demo
+                            </button>
+                        </div>
+
+                        {/* Trust Indicators in Hero */}
+                        <div className="fade-up flex flex-wrap justify-center lg:justify-start gap-8 pt-8 border-t border-white/5">
+                            {[
+                                { val: "50,000+", label: "Learners" },
+                                { val: "500+", label: "Hiring Partners" },
+                                { val: "45 LPA", label: "Highest CTC" }
+                            ].map((item, i) => (
+                                <div key={i} className="space-y-1">
+                                    <p className="text-2xl font-bold text-white leading-none">{item.val}</p>
+                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{item.label}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Right: The Virtual Classroom Stage */}
-                    <div className="lg:col-span-7 relative h-[500px] flex items-center justify-center">
-                        {/* Background Pulsing Aura */}
-                        <div className="absolute w-[400px] h-[400px] bg-blue-500/10 blur-[80px] rounded-full hub-glow-pulse"></div>
-
-                        {/* Natively Animated Teacher SVG (Guaranteed to load) */}
-                        <div className="relative z-20 w-80 h-80 lg:w-96 lg:h-96">
-                            <AnimatedVirtualTeacher />
-                        </div>
-
-                        {/* Floating Dynamic Course Elements (HTML/CSS visuals) */}
-                        <div className="terminal-popup absolute z-30 bottom-10 -left-10 glass-dark p-6 rounded-3xl border border-white/10 cartoon-shadow w-72">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Terminal className="text-cyan-400" size={24} />
-                                <p className="text-xs font-black uppercase tracking-widest text-slate-400">Current Module</p>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="h-2 w-3/4 bg-blue-500/50 rounded-full"></div>
-                                <div className="h-2 w-full bg-purple-500/50 rounded-full"></div>
-                                <div className="h-2 w-1/2 bg-emerald-500/50 rounded-full"></div>
-                                {/* Typewriter simulation */}
-                                <p className="text-cyan-400 text-sm font-bold min-h-[40px] mt-4 flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                                    {TUTORIAL_PHRASES[currentPhrase]}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Floating React Badge */}
-                        <div className="float-loop absolute top-10 -right-5 z-30 w-20 h-20 glass-dark rounded-3xl border border-blue-500/30 flex items-center justify-center cartoon-shadow-hover">
-                            <Code className="text-blue-400 w-10 h-10 animate-[spin_6s_linear_infinite]" />
-                        </div>
-
-                        {/* Floating Database Badge */}
-                        <div className="float-loop absolute top-1/2 -right-12 z-10 w-16 h-16 bg-white/5 backdrop-blur-md rounded-2xl border border-emerald-500/30 flex items-center justify-center cartoon-shadow" style={{animationDelay: '1s'}}>
-                            <Database className="text-emerald-400 w-8 h-8" />
-                        </div>
+                    {/* Right: Premium Platform Preview */}
+                    <div className="relative fade-up lg:block">
+                        <DashboardPreview />
                         
-                        {/* Background structural rings */}
-                        <div className="absolute inset-0 border border-white/5 rounded-full scale-110 opacity-50 border-dashed animate-[spin_30s_linear_infinite]"></div>
-                        <div className="absolute inset-0 border border-blue-500/20 rounded-full scale-90 animate-[spin_20s_linear_infinite_reverse]"></div>
+                        {/* Background structural rings for depth */}
+                        <div className="absolute -inset-20 border border-white/5 rounded-full scale-110 opacity-30 border-dashed animate-[spin_60s_linear_infinite]"></div>
+                        <div className="absolute -inset-10 border border-blue-500/10 rounded-full scale-90 animate-[spin_40s_linear_infinite_reverse]"></div>
                     </div>
                 </div>
             </section>
@@ -342,47 +313,47 @@ const Home = () => {
             {/* 2. Mastery Path: The Journey */}
             <section ref={stackRef} className="py-24 lg:py-40 relative">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-32 space-y-4">
-                        <div className="reveal-up inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black tracking-[0.3em] text-cyan-400 uppercase">
+                    <div className="text-center mb-24 space-y-4">
+                        <div className="reveal-up inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-[0.3em] text-blue-400 uppercase">
                             <Target size={14} /> Path to Excellence
                         </div>
-                        <h2 className="reveal-up text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9]">
-                            The <span className="neon-purple">Mastery</span> Path.
+                        <h2 className="reveal-up font-poppins font-bold tracking-tight">
+                            The <span className="text-brand-gradient">Mastery</span> Path.
                         </h2>
                     </div>
 
                     <div className="space-y-[30vh]">
                         {MASTERY_STEPS.map((step, idx) => (
                             <div key={idx} className="mastery-card w-full max-w-5xl mx-auto opacity-100">
-                                <div className={`relative ${step.bg || 'bg-slate-900'} bubble-soft p-12 md:p-24 border-2 border-white/10 shadow-xl hover:scale-[1.02] hover:glow-border transition-all duration-500 overflow-hidden min-h-[500px] flex flex-col justify-center cartoon-shadow`}>
-                                    {/* Decorative glow */}
-                                    <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+                                <div className={`relative ${step.bg || 'bg-slate-900'} glass-card-premium p-12 md:p-24 border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden min-h-[500px] flex flex-col justify-center`}>
+                                    {/* Decorative subtle glow */}
+                                    <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
                                     
                                     <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center relative z-10">
                                         <div className="md:col-span-8 space-y-8">
-                                            <div className="w-20 h-20 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center text-cyan-400 cartoon-shadow hover:scale-110 transition-transform">
+                                            <div className="w-16 h-16 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center text-blue-400">
                                                 {step.icon}
                                             </div>
-                                            <h3 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-tight">{step.title}</h3>
+                                            <h3 className="text-3xl md:text-5xl font-bold tracking-tight">{step.title}</h3>
                                             <p className="text-lg text-slate-400 font-medium leading-relaxed max-w-xl">{step.desc}</p>
                                             
                                             {/* Skill Chips */}
                                             <div className="flex flex-wrap gap-2 pt-4">
                                                 {step.skills?.map((skill, si) => (
-                                                    <span key={si} className="px-3 py-1.5 bg-white/5 rounded-xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-300">
+                                                    <span key={si} className="px-3 py-1.5 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold uppercase tracking-widest text-slate-300">
                                                         {skill}
                                                     </span>
                                                 ))}
                                             </div>
 
                                             <div className="pt-6">
-                                                <Link to={step.btnLink || '/courses'} className="px-10 py-5 bg-white text-slate-950 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all cartoon-shadow flex items-center gap-2 w-fit">
+                                                <Link to={step.btnLink || '/courses'} className="px-8 py-4 bg-white text-slate-950 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all flex items-center gap-2 w-fit">
                                                     {step.btnText} <ArrowRight size={16} />
                                                 </Link>
                                             </div>
                                         </div>
-                                        <div className="hidden md:block md:col-span-4 text-center opacity-10">
-                                            <div className="text-[200px] font-black leading-none">{idx + 1}</div>
+                                        <div className="hidden md:block md:col-span-4 text-center opacity-5">
+                                            <div className="text-[180px] font-bold leading-none">{idx + 1}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -402,16 +373,15 @@ const Home = () => {
                         { label: "Average Hike", value: 150, suffix: "%", sub: "Salary Surge", icon: <TrendingUp size={32} /> }
                     ].map((stat, i) => (
                         <div key={i} className="reveal-up group flex flex-col items-center text-center space-y-6">
-                            <div className="w-20 h-20 bg-white/5 rounded-3xl border border-white/10 flex items-center justify-center text-cyan-400 cartoon-shadow-hover hover:rotate-6 transition-all duration-500">
+                            <div className="w-16 h-16 bg-white/5 rounded-2xl border border-white/5 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/10 transition-all duration-500">
                                 {stat.icon}
                             </div>
-                            <div className="space-y-2">
-                                <div className="text-6xl font-black tracking-tighter neon-blue">
+                            <div className="space-y-1">
+                                <div className="text-5xl font-bold tracking-tight text-white">
                                     {stat.value}{stat.suffix}
                                 </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</p>
-                                    <p className="text-xs font-bold text-slate-500">{stat.sub}</p>
+                                <div className="space-y-0.5">
+                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{stat.label}</p>
                                 </div>
                             </div>
                         </div>
@@ -424,36 +394,36 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8 text-center lg:text-left">
                         <div className="space-y-6">
-                            <div className="reveal-up inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black tracking-[0.3em] text-purple-400 uppercase">
+                            <div className="reveal-up inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-[0.3em] text-blue-400 uppercase">
                                 <Rocket size={14} /> Future Ready Skills
                             </div>
-                            <h2 className="reveal-up text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.9]">
-                                EXPLORE <br /><span className="neon-blue">ROADMAPS.</span>
+                            <h2 className="reveal-up font-poppins font-bold tracking-tight">
+                                Explore <span className="text-brand-gradient">Learning</span> Maps.
                             </h2>
                         </div>
-                        <Link to="/courses" className="reveal-up text-sm font-black uppercase tracking-widest text-slate-400 border-b-4 border-cyan-500 pb-2 hover:text-white transition-all">
-                            View Deep Dives
+                        <Link to="/courses" className="reveal-up text-sm font-bold uppercase tracking-widest text-slate-500 border-b-2 border-blue-500 pb-2 hover:text-white transition-all">
+                            View All Roadmaps
                         </Link>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {COURSE_CATEGORIES.slice(0, 8).map((cat, idx) => (
                             <Link key={idx} to={`/courses/${cat.id}`} className="reveal-up group">
-                                <div className="h-full glass-dark bubble-soft p-12 border border-white/5 hover:glow-border hover:scale-105 cartoon-shadow transition-all duration-500 flex flex-col items-center text-center relative overflow-hidden">
-                                    <div className="w-24 h-24 bg-white/5 rounded-[40px] border border-white/10 flex items-center justify-center text-white group-hover:bg-cyan-500 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700 mb-8">
-                                        <div className="w-10 h-10">{cat.icon}</div>
+                                <div className="h-full glass-card-premium p-10 border border-white/5 hover:border-blue-500/30 transition-all duration-500 flex flex-col items-center text-center relative overflow-hidden">
+                                    <div className="w-20 h-20 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center text-white group-hover:bg-blue-600 transition-all duration-500 mb-8">
+                                        <div className="w-8 h-8">{cat.icon}</div>
                                     </div>
                                     
-                                    <div className="space-y-4">
-                                        <h3 className="text-2xl font-black uppercase tracking-tighter leading-tight">{cat.title}</h3>
+                                    <div className="space-y-3">
+                                        <h3 className="text-xl font-bold tracking-tight">{cat.title}</h3>
                                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
-                                            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                                            <p className="text-[8px] text-slate-400 font-black uppercase tracking-widest">Enroll Open</p>
+                                            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Enroll Open</p>
                                         </div>
                                     </div>
 
-                                    <div className="mt-12 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-cyan-400 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
-                                        Open Map <ArrowRight size={14} />
+                                    <div className="mt-10 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-blue-400 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                                        Open Roadmap <ArrowRight size={14} />
                                     </div>
                                 </div>
                             </Link>
@@ -465,39 +435,39 @@ const Home = () => {
             {/* 5. Visionary Section: Feature Spotlight */}
             <section className="py-24 lg:py-40 relative">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="glass-dark bubble-soft p-12 md:p-32 relative overflow-hidden flex flex-col lg:flex-row items-center gap-24 border border-white/5 cartoon-shadow">
-                        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full bg-blue-600/10 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                    <div className="glass-card-premium p-12 md:p-32 relative overflow-hidden flex flex-col lg:flex-row items-center gap-24 border border-white/5">
+                        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full bg-blue-600/5 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
                         <div className="lg:w-1/2 space-y-12 relative z-10 text-center lg:text-left">
-                            <div className="reveal-up space-y-6">
-                                <h3 className="text-cyan-400 text-xs font-black uppercase tracking-[0.4em]">The Architecture</h3>
-                                <h2 className="text-5xl md:text-7xl font-black text-white leading-tight uppercase tracking-tighter">Bridge the <br /><span className="neon-blue">Gap.</span></h2>
+                            <div className="reveal-up space-y-4">
+                                <h3 className="text-blue-500 text-xs font-bold uppercase tracking-[0.4em]">Global Standards</h3>
+                                <h2 className="text-white leading-tight tracking-tight">Bridge the <br /><span className="text-brand-gradient">Expertise Gap.</span></h2>
                             </div>
-                            <p className="reveal-up text-xl font-medium text-slate-400 leading-relaxed italic border-l-0 lg:border-l-4 border-cyan-500 pl-0 lg:pl-8 mx-auto lg:mx-0 max-w-2xl">
-                                “We're an engine of transformation for those who dare to master the modern enterprise stack.”
+                            <p className="reveal-up text-lg font-medium text-slate-400 leading-relaxed border-l-2 border-blue-600 pl-8 mx-auto lg:mx-0 max-w-2xl">
+                                "We are an engine of transformation for those who dare to master the modern enterprise stack."
                             </p>
-                            <div className="reveal-up pt-10 flex justify-center lg:justify-start">
-                                <button onClick={() => setIsRegisterOpen(true)} className="px-12 py-6 bg-white text-slate-950 rounded-3xl font-black text-lg uppercase tracking-widest hover:bg-cyan-400 hover:text-white transition-all cartoon-shadow active:scale-95">
-                                    Join Core
+                            <div className="reveal-up pt-6 flex justify-center lg:justify-start">
+                                <button onClick={() => setIsRegisterOpen(true)} className="btn-premium">
+                                    Join the Elite
                                 </button>
                             </div>
                         </div>
                         <div className="lg:w-1/2 relative z-10 w-full">
-                            <div className="grid grid-cols-2 gap-6">
-                                {[
-                                    { label: "Job-Ready", text: "Enterprise grade curriculum.", icon: <Rocket className="text-cyan-400" /> },
-                                    { label: "1:1 Sync", text: "Direct expert mentorship.", icon: <Users className="text-purple-400" /> },
-                                    { label: "Web3 Ops", text: "Future-proof networking.", icon: <Globe className="text-cyan-400" /> },
-                                    { label: "Placement", text: "End-to-end transition.", icon: <Briefcase className="text-purple-400" /> }
-                                ].map((item, i) => (
-                                    <div key={i} className="reveal-up bg-white/5 p-8 rounded-[40px] border border-white/5 hover:border-white/20 transition-all space-y-4 group cartoon-shadow-hover">
-                                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            {item.icon}
+                                <div className="grid grid-cols-2 gap-6">
+                                    {[
+                                        { label: "Job-Ready", text: "Enterprise grade curriculum.", icon: <Rocket className="text-blue-400" /> },
+                                        { label: "1:1 Sync", text: "Direct expert mentorship.", icon: <Users className="text-indigo-400" /> },
+                                        { label: "Global Ops", text: "Future-proof networking.", icon: <Globe className="text-blue-400" /> },
+                                        { label: "Placement", text: "End-to-end transition.", icon: <Briefcase className="text-indigo-400" /> }
+                                    ].map((item, i) => (
+                                        <div key={i} className="reveal-up bg-white/5 p-8 rounded-2xl border border-white/5 hover:border-white/10 transition-all space-y-4 group">
+                                            <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                {item.icon}
+                                            </div>
+                                            <h4 className="text-lg font-bold tracking-tight">{item.label}</h4>
+                                            <p className="text-slate-500 text-xs font-medium leading-relaxed">{item.text}</p>
                                         </div>
-                                        <h4 className="text-xl font-black uppercase tracking-tight">{item.label}</h4>
-                                        <p className="text-slate-400 text-xs font-medium leading-relaxed">{item.text}</p>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -507,11 +477,11 @@ const Home = () => {
             <section className="py-24 relative overflow-hidden border-y border-white/5 bg-slate-900/40">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16 space-y-4">
-                        <h2 className="reveal-up text-4xl md:text-6xl font-black tracking-tighter uppercase">ALUMNI <span className="neon-blue">REACH.</span></h2>
-                        <p className="reveal-up text-slate-500 font-black uppercase tracking-widest text-[10px]">Engineering careers at the world's most innovative tech giants</p>
+                        <h2 className="reveal-up font-poppins font-bold tracking-tight">Alumni <span className="text-brand-gradient">Success.</span></h2>
+                        <p className="reveal-up text-slate-500 font-bold uppercase tracking-widest text-[9px]">Engineering careers at the world's most innovative tech giants</p>
                     </div>
                     
-                    <div className="reveal-up glass-dark rounded-full py-12 px-20 border border-white/5 overflow-hidden">
+                    <div className="reveal-up glass-card-premium rounded-full py-10 px-20 border border-white/5 overflow-hidden">
                         <div className="flex w-max gap-20 animate-scroll-left hover:[animation-play-state:paused] transition-all items-center">
                             {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, i) => (
                                 <div key={i} className="shrink-0 grayscale invert opacity-50 hover:grayscale-0 hover:invert-0 hover:opacity-100 hover:scale-110 transition-all duration-500">
@@ -527,46 +497,46 @@ const Home = () => {
             <section className="py-32 bg-[#020617]">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-24 space-y-4">
-                        <h2 className="reveal-up text-4xl md:text-6xl font-black tracking-tighter uppercase">SUCCESS <span className="neon-purple">HUB.</span></h2>
-                        <div className="reveal-up flex justify-center gap-1 text-cyan-400">
-                            {[1, 2, 3, 4, 5].map(i => <Star key={i} size={20} fill="currentColor" />)}
+                        <h2 className="reveal-up font-poppins font-bold tracking-tight">Success <span className="text-brand-gradient">Stories.</span></h2>
+                        <div className="reveal-up flex justify-center gap-1 text-blue-500">
+                            {[1, 2, 3, 4, 5].map(i => <Star key={i} size={18} fill="currentColor" />)}
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {loadingReviews ? (
                             [1, 2, 3].map(i => (
-                                <div key={i} className="h-80 bg-white/5 animate-pulse bubble-soft"></div>
+                                <div key={i} className="h-80 bg-white/5 animate-pulse rounded-2xl"></div>
                             ))
                         ) : reviews.length > 0 ? (
                             reviews.slice(0, 6).map((t) => (
                                 <div key={t._id} className="reveal-up group h-full">
-                                    <div className="h-full glass-dark bubble-soft p-12 border border-white/5 group-hover:glow-border cartoon-shadow-hover transition-all duration-500 flex flex-col">
-                                        <div className="mb-10 w-20 h-20 rounded-3xl overflow-hidden border-4 border-white/10 cartoon-shadow bg-slate-900 flex items-center justify-center">
+                                    <div className="h-full glass-card-premium p-10 border border-white/5 hover:border-blue-500/20 transition-all duration-500 flex flex-col">
+                                        <div className="mb-8 w-16 h-16 rounded-2xl overflow-hidden border-2 border-white/10 bg-slate-900 flex items-center justify-center">
                                             {t.user?.profileImage ? (
                                                 <img src={t.user.profileImage} alt={t.user?.name} className="w-full h-full object-cover" />
                                             ) : (
-                                                <span className="text-2xl font-black text-white uppercase tracking-tighter">
+                                                <span className="text-xl font-bold text-white uppercase tracking-tight">
                                                     {t.user?.name?.charAt(0) || 'S'}
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="text-slate-400 font-medium italic leading-relaxed mb-12">"{t.comment}"</p>
+                                        <p className="text-slate-400 font-medium italic leading-relaxed mb-10">"{t.comment}"</p>
                                         <div className="mt-auto">
-                                            <h4 className="text-xl font-black text-white uppercase tracking-tight">{t.user?.name}</h4>
+                                            <h4 className="text-lg font-bold text-white tracking-tight">{t.user?.name}</h4>
                                             <div className="flex items-center gap-2 mt-1">
-                                                <span className="w-4 h-0.5 bg-cyan-400 rounded-full"></span>
-                                                <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest italic">Verified Architect</p>
+                                                <span className="w-4 h-0.5 bg-blue-500 rounded-full"></span>
+                                                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest italic">Verified Student</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div className="col-span-full py-20 glass-dark bubble-soft border border-dashed border-white/10 flex flex-col items-center justify-center text-center">
+                            <div className="col-span-full py-20 glass-card-premium border border-dashed border-white/10 flex flex-col items-center justify-center text-center">
                                 <Users size={48} className="text-slate-700 mb-6" />
-                                <h4 className="text-2xl font-black text-white uppercase tracking-tighter">Our Community is Growing</h4>
-                                <p className="text-slate-500 font-medium mt-2">More stories being mapped. Join the elite elite today.</p>
+                                <h4 className="text-2xl font-bold text-white tracking-tight">Our Community is Growing</h4>
+                                <p className="text-slate-500 font-medium mt-2">More stories being mapped. Join us today.</p>
                             </div>
                         )}
                     </div>
@@ -577,23 +547,23 @@ const Home = () => {
             <section className="py-32 relative overflow-hidden bg-slate-900/20">
                 <div className="max-w-4xl mx-auto px-6 relative z-10">
                     <div className="text-center mb-20 space-y-4">
-                        <h2 className="reveal-up text-5xl font-black tracking-tighter uppercase">CORE <span className="neon-blue">FAQS.</span></h2>
-                        <p className="reveal-up text-slate-500 font-black uppercase tracking-widest text-xs italic">Everything you need to know about your evolution.</p>
+                        <h2 className="reveal-up font-poppins font-bold tracking-tight text-white">Common <span className="text-brand-gradient">Questions.</span></h2>
+                        <p className="reveal-up text-slate-500 font-bold uppercase tracking-widest text-[9px] italic">Everything you need to know about your growth.</p>
                     </div>
                     <div className="space-y-4">
                         {FAQS.map((faq, i) => (
-                            <div key={i} className={`reveal-up bubble-soft border transition-all duration-500 ${activeFaq === i ? 'bg-white border-transparent' : 'glass-dark border-white/5 hover:bg-white/5'}`}>
+                            <div key={i} className={`reveal-up rounded-2xl border transition-all duration-500 ${activeFaq === i ? 'bg-white border-transparent' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}>
                                 <button
                                     onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                                    className="w-full flex items-center justify-between p-8 md:p-10 text-left"
+                                    className="w-full flex items-center justify-between p-8 text-left"
                                 >
-                                    <span className={`text-xl font-black uppercase tracking-tighter ${activeFaq === i ? 'text-slate-950' : 'text-white'}`}>{faq.q}</span>
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeFaq === i ? 'bg-slate-900 text-white rotate-180' : 'bg-white/10 text-white hover:bg-white/20'}`}>
-                                        <ChevronDown size={24} />
+                                    <span className={`text-lg font-bold tracking-tight ${activeFaq === i ? 'text-slate-950' : 'text-white'}`}>{faq.q}</span>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${activeFaq === i ? 'bg-slate-900 text-white rotate-180' : 'bg-white/10 text-white'}`}>
+                                        <ChevronDown size={20} />
                                     </div>
                                 </button>
-                                <div className={`transition-all duration-700 ease-in-out ${activeFaq === i ? 'max-h-[500px] opacity-100 p-10 pt-0' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                                    <p className={`text-lg font-medium leading-relaxed ${activeFaq === i ? 'text-slate-600' : 'text-slate-400'}`}>{faq.a}</p>
+                                <div className={`transition-all duration-700 ease-in-out ${activeFaq === i ? 'max-h-[500px] opacity-100 p-8 pt-0' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                                    <p className={`text-base font-medium leading-relaxed ${activeFaq === i ? 'text-slate-600' : 'text-slate-400'}`}>{faq.a}</p>
                                 </div>
                             </div>
                         ))}
@@ -603,23 +573,23 @@ const Home = () => {
 
             {/* 9. Final CTA: Gradient Engine */}
             <section className="py-40 px-6">
-                <div className="max-w-7xl mx-auto bubble-soft bg-gradient-to-br from-blue-600 to-purple-700 p-16 md:p-32 text-center relative overflow-hidden group cartoon-shadow border-4 border-white/10">
+                <div className="max-w-7xl mx-auto rounded-[40px] bg-gradient-to-br from-blue-700 to-indigo-900 p-16 md:p-32 text-center relative overflow-hidden group border border-white/10 shadow-2xl">
                     <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 blur-[150px] rounded-full animate-float"></div>
-                    <div className="relative z-10 max-w-4xl mx-auto space-y-16">
+                    <div className="relative z-10 max-w-4xl mx-auto space-y-12">
                         <div className="space-y-6">
-                            <h2 className="text-5xl md:text-9xl font-black text-white uppercase tracking-tighter leading-[0.8] reveal-up">
-                                SCALE YOUR <br />VALUE.
+                            <h2 className="text-5xl md:text-8xl font-bold text-white tracking-tight leading-none reveal-up">
+                                Ignite Your <br />Value.
                             </h2>
-                            <p className="text-white/80 text-xl md:text-2xl font-medium max-w-2xl mx-auto reveal-up">
-                                Don't just learn. Build your footprint with Skilnexia's elite mentorship.
+                            <p className="text-white/80 text-lg md:text-xl font-medium max-w-2xl mx-auto reveal-up">
+                                Do not just learn. Build your career footprint with Skilnexia's elite programs.
                             </p>
                         </div>
                         <div className="flex flex-wrap justify-center gap-6 reveal-up">
-                            <button onClick={() => setIsRegisterOpen(true)} className="px-16 py-6 bg-white text-slate-950 rounded-[30px] font-black text-xl hover:scale-110 transition-transform cartoon-shadow active:scale-95 uppercase tracking-widest border-b-4 border-slate-200">
-                                Enroll Now
+                            <button onClick={() => setIsRegisterOpen(true)} className="btn-premium px-12 py-5 text-xl">
+                                Join Now
                             </button>
-                            <button onClick={() => setIsExpertOpen(true)} className="px-16 py-6 bg-slate-950/20 border border-white/20 text-white rounded-[30px] font-black text-xl hover:bg-white/10 transition-all active:scale-95 uppercase tracking-widest">
-                                Speak to Expert
+                            <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline px-12 py-5 text-xl">
+                                Talk to Career Expert
                             </button>
                         </div>
                     </div>

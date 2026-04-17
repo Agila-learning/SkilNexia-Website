@@ -71,87 +71,92 @@ const Navbar = () => {
 
     return (
         <header
-            className="fixed top-0 w-full z-[100] bg-white border-b border-slate-100 shadow-sm py-2 lg:py-4 transition-all duration-500"
+            className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
+                isScrolled 
+                ? 'bg-slate-950/80 backdrop-blur-md border-b border-white/10 py-3' 
+                : 'bg-transparent py-5'
+            }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav className="flex items-center justify-between">
 
-                    {/* Brand/Logo - Image Update */}
+                    {/* Brand/Logo - Circular Update */}
                     <Link to="/" className="flex items-center gap-3 group nav-brand-reveal perspective-1000">
-                        <img 
-                            id="navbar-logo"
-                            src="/images/logo.png" 
-                            alt="Skilnexia Logo" 
-                            className="h-16 lg:h-24 w-auto object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-2xl"
-                            style={{ transformStyle: 'preserve-3d' }}
-                        />
+                        <div className="w-12 h-12 lg:w-16 lg:h-16 logo-circle bg-white p-2">
+                            <img 
+                                id="navbar-logo"
+                                src="/images/logo.png" 
+                                alt="Skilnexia Logo" 
+                                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                            />
+                        </div>
+                        <span className="text-xl lg:text-2xl font-poppins font-bold tracking-tighter text-white">
+                            Skil<span className="text-blue-500">Nexia</span>
+                        </span>
                     </Link>
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex items-center gap-10">
+                        {/* Nav Links */}
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 to={link.path}
-                                className={`nav-link-item text-[12px] font-black uppercase tracking-widest transition-all duration-300 relative group py-2 ${isActive(link.path)
-                                    ? 'text-primary-600'
-                                    : 'text-slate-500 hover:text-primary-600'
-                                    }`}
+                                className={`text-[13px] font-semibold tracking-wide transition-all duration-300 relative group py-2 ${
+                                    isActive(link.path) ? 'text-white' : 'text-slate-400 hover:text-white'
+                                }`}
                             >
                                 {link.name}
-                                <span className={`absolute -bottom-1 left-0 w-full h-1 bg-accent-500 rounded-full transition-transform duration-500 origin-left ${isActive(link.path) ? 'scale-x-100 opacity-100' : 'scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100'
-                                    }`}></span>
+                                <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 rounded-full transition-transform duration-500 origin-left ${
+                                    isActive(link.path) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                                }`}></span>
                             </Link>
                         ))}
 
-                        {/* Mega Menu Link (Moved here from the left) */}
+                        {/* Dropdown for Categories */}
                         <div
                             className="relative group py-2"
                             onMouseEnter={() => setShowCoursesMenu(true)}
                             onMouseLeave={() => setShowCoursesMenu(false)}
                         >
-                            <button className={`flex items-center gap-1.5 text-[13px] font-black uppercase tracking-tighter transition-all duration-300 ${isActive('/courses') ? 'text-primary-900' : 'text-slate-500 hover:text-slate-950'}`}>
-                                Explore Maps <ChevronDown size={14} className={`transition-transform duration-500 ${showCoursesMenu ? 'rotate-180' : ''}`} />
+                            <button className={`flex items-center gap-1.5 text-[13px] font-semibold tracking-wide transition-all duration-300 ${
+                                isActive('/courses') ? 'text-white' : 'text-slate-400 hover:text-white'
+                            }`}>
+                                Categories <ChevronDown size={14} className={`transition-transform duration-500 ${showCoursesMenu ? 'rotate-180' : ''}`} />
                             </button>
 
-                            {/* Mega Menu Dropdown - Glassmorphism Refined */}
-                            <div className={`absolute top-full right-0 w-[850px] bg-white rounded-[40px] shadow-3xl border border-slate-100 p-10 transition-all duration-500 origin-top overflow-hidden ${showCoursesMenu ? 'opacity-100 scale-100 pointer-events-auto mt-0 pt-10' : 'opacity-0 scale-95 pointer-events-none mt-2'}`}>
-                                <div className="absolute top-0 left-0 w-full h-8 bg-transparent -translate-y-full"></div> {/* Bridge to prevent premature closing */}
-                                <div className="grid grid-cols-12 gap-10">
-                                    <div className="col-span-4 border-r border-slate-50 pr-10">
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-2">
-                                            <Search size={14} /> Domain Filters
-                                        </h3>
-                                        <div className="space-y-2">
+                            {/* Refined Dropdown */}
+                            <div className={`absolute top-full left-0 w-[600px] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-8 transition-all duration-500 origin-top overflow-hidden mt-2 ${
+                                showCoursesMenu ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+                            }`}>
+                                <div className="grid grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Top Domains</h3>
+                                        <div className="space-y-1">
                                             {categories.map(cat => (
                                                 <Link
                                                     key={cat}
                                                     to={`/courses?category=${cat}`}
                                                     onClick={() => setShowCoursesMenu(false)}
-                                                    className="flex items-center justify-between p-4 rounded-2xl hover:bg-slate-50 text-slate-600 font-black text-xs transition-all uppercase tracking-tight group/item"
+                                                    className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 text-slate-300 text-sm font-medium transition-all group/item"
                                                 >
-                                                    {cat} <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-primary-600" />
+                                                    {cat} <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-blue-500" />
                                                 </Link>
                                             ))}
-                                            <Link to="/courses" onClick={() => setShowCoursesMenu(false)} className="flex items-center text-primary-900 font-black text-[11px] uppercase tracking-widest p-5 hover:underline gap-2 group/all">
-                                                All Roadmaps <ChevronDown size={14} className="-rotate-90 group-hover/all:translate-x-1 transition-transform" />
-                                            </Link>
                                         </div>
                                     </div>
-                                    <div className="col-span-8">
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8">Premium Tracks</h3>
-                                        <div className="grid grid-cols-2 gap-6">
-                                            {COURSE_CATEGORIES.slice(0, 4).map(course => (
-                                                <Link key={course.id} to={`/courses/${course.id}`} onClick={() => setShowCoursesMenu(false)} className="group/card flex items-start gap-5 p-5 rounded-[30px] hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100">
-                                                    <div className="w-14 h-14 rounded-2xl bg-white shadow-xl flex items-center justify-center shrink-0 border border-slate-50 group-hover/card:scale-110 group-hover/card:bg-slate-950 group-hover/card:text-white transition-all duration-500">
-                                                        {course.icon}
-                                                    </div>
-                                                    <div>
-                                                        <p className="font-black text-slate-900 text-[13px] mb-1.5 leading-tight group-hover/card:text-primary-900 uppercase tracking-tight">{course.title}</p>
-                                                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em]">{course.duration}</p>
-                                                    </div>
+                                    <div className="bg-white/5 rounded-2xl p-6">
+                                        <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Featured</h3>
+                                        <div className="space-y-4">
+                                            {COURSE_CATEGORIES.slice(0, 2).map(course => (
+                                                <Link key={course.id} to={`/courses/${course.id}`} onClick={() => setShowCoursesMenu(false)} className="group/card block">
+                                                    <p className="font-bold text-white text-sm mb-1 group-hover/card:text-blue-400 transition-colors">{course.title}</p>
+                                                    <p className="text-[10px] text-slate-500 font-medium">{course.duration} course</p>
                                                 </Link>
                                             ))}
+                                            <Link to="/courses" onClick={() => setShowCoursesMenu(false)} className="mt-4 flex items-center gap-2 text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest">
+                                                Explore All <ArrowRight size={14} />
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -160,27 +165,27 @@ const Navbar = () => {
                     </div>
 
                     {/* Desktop Auth Actions */}
-                    <div className="hidden lg:flex items-center gap-6 nav-auth-reveal">
+                    <div className="hidden lg:flex items-center gap-4 nav-auth-reveal">
                         {user ? (
                             <Link
                                 to={`/${user.role === 'admin' ? 'admin' : user.role === 'trainer' ? 'trainer' : user.role === 'hr' ? 'hr' : 'student'}`}
-                                className="px-8 py-3.5 bg-slate-950 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center gap-2 group hover:bg-primary-900 transition-all shadow-xl active:scale-95"
+                                className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition-all shadow-lg active:scale-95"
                             >
-                                Dashboard <LayoutDashboard size={14} className="group-hover:scale-110 transition-transform" />
+                                Dashboard
                             </Link>
                         ) : (
                             <>
                                 <Link
                                     to="/login"
-                                    className="text-[13px] font-black uppercase tracking-tighter text-slate-500 hover:text-slate-950 transition-colors"
+                                    className="text-xs font-bold text-slate-400 hover:text-white transition-colors"
                                 >
-                                    Sign In
+                                    Login
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-8 py-4 bg-slate-950 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center gap-2 group hover:bg-primary-900 transition-all shadow-xl active:scale-95"
+                                    className="px-6 py-2.5 bg-white text-slate-950 rounded-xl text-xs font-bold hover:bg-slate-100 transition-all shadow-lg active:scale-95"
                                 >
-                                    Join Free <Zap size={14} className="fill-white group-hover:scale-125 transition-transform" />
+                                    Join Now
                                 </Link>
                             </>
                         )}
@@ -188,7 +193,7 @@ const Navbar = () => {
 
                     {/* Mobile Menu Toggle */}
                     <button
-                        className="lg:hidden p-3 text-slate-900 bg-slate-50 rounded-2xl transition-all hover:bg-slate-100"
+                        className="lg:hidden p-2 text-white bg-white/10 rounded-xl transition-all hover:bg-white/20"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

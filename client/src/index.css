@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,90 +10,79 @@ html {
 
 @layer base {
   body {
-    @apply bg-slate-950 text-white font-sans antialiased selection:bg-primary-500/30;
+    @apply bg-slate-950 text-slate-50 font-sans antialiased selection:bg-primary-500/30;
   }
 }
 
 @layer components {
-  .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-primary-900 to-accent-600 hover:from-primary-800 hover:to-accent-700 text-white rounded-full transition-all duration-300 font-bold shadow-lg shadow-primary-900/10 hover:shadow-primary-900/20 hover:-translate-y-0.5 active:translate-y-0;
+  h1, .h1 {
+    @apply font-poppins font-extrabold text-4xl md:text-6xl lg:text-7xl tracking-tight text-white;
   }
 
-  .btn-outline {
-    @apply px-6 py-3 border-2 border-primary-900 text-primary-900 hover:bg-primary-50 rounded-full transition-all duration-300 font-bold hover:-translate-y-0.5 active:translate-y-0;
+  h2, .h2 {
+    @apply font-poppins font-bold text-3xl md:text-5xl lg:text-6xl tracking-tight text-white;
   }
 
-  .input-field {
-    @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all shadow-sm;
+  h3, .h3 {
+    @apply font-poppins font-semibold text-2xl md:text-3xl lg:text-4xl text-white;
   }
 
-  .glass-card {
-    @apply bg-white border border-slate-100 rounded-2xl p-6 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-slate-200/60 transition-all duration-300;
+  /* Premium Glassmorphism */
+  .glass-header {
+    @apply bg-slate-950/80 backdrop-blur-md border-b border-white/10;
   }
 
-  .section-title {
-    @apply text-3xl md:text-5xl font-extrabold text-slate-900 mb-4;
+  .glass-card-premium {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl;
   }
 
-  /* Premium UI Tokens */
-  .premium-title {
-    @apply font-black uppercase tracking-tighter leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-slate-700 via-primary-600 to-slate-900;
-  }
-
-  .nav-link-premium {
-    @apply text-[12px] font-black uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-all duration-300 relative;
-  }
-
-  .premium-card {
-    @apply bg-white/10 backdrop-blur-xl rounded-[40px] border border-white/10 shadow-xl hover:shadow-3xl transition-all duration-500;
-  }
-
-  /* Cartoon + Futuristic Tokens */
-  .cartoon-shadow {
-    box-shadow: 0 20px 0 0 rgba(0, 0, 0, 0.2);
-  }
-
-  .cartoon-shadow-hover:hover {
-    box-shadow: 0 10px 0 0 rgba(0, 0, 0, 0.2);
-    transform: translateY(10px);
-  }
-
-  .glass-dark {
+  .glass-surface {
     @apply bg-slate-900/40 backdrop-blur-2xl border border-white/5;
   }
 
-  .neon-blue {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500;
-    filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.3));
+  /* New Utility Tokens */
+  .text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/40;
   }
 
-  .neon-purple {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500;
-    filter: drop-shadow(0 0 8px rgba(192, 38, 211, 0.3));
+  .text-brand-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500;
   }
 
-  .glow-border {
-    @apply border border-white/10 hover:border-primary-500/50 transition-colors duration-500;
+  .btn-premium {
+    @apply px-8 py-4 bg-white text-slate-950 rounded-xl font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-white/10;
   }
 
-  .bubble-soft {
-    @apply rounded-[50px];
+  .btn-premium-outline {
+    @apply px-8 py-4 bg-transparent text-white border border-white/20 rounded-xl font-bold transition-all duration-300 hover:bg-white/5 hover:border-white/40;
   }
 
-  /* Fluid Typography & Spacing for Responsiveness */
-  h1,
-  .h1 {
-    @apply text-4xl md:text-6xl lg:text-8xl;
+  .hero-search-container {
+    @apply relative w-full max-w-2xl mx-auto md:mx-0;
   }
 
-  h2,
-  .h2 {
-    @apply text-3xl md:text-5xl lg:text-7xl;
+  .hero-search-input {
+    @apply w-full pl-14 pr-32 py-5 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500/50 backdrop-blur-xl transition-all;
   }
 
-  h3,
-  .h3 {
-    @apply text-2xl md:text-3xl lg:text-4xl;
+  /* Redefined Logo Styling */
+  .logo-circle {
+    @apply relative flex items-center justify-center overflow-hidden rounded-full border-2 border-white/10 shadow-xl;
+  }
+
+  /* Professional Stats styling */
+  .stat-badge {
+    @apply flex flex-col items-center md:items-start p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-lg;
+  }
+
+  /* Animations - Minimal & Smooth */
+  .fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @media (max-width: 768px) {
