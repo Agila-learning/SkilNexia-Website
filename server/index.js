@@ -59,9 +59,24 @@ app.use(helmet({
 // Middleware
 app.use(express.json());
 
-// Database Connection
+// Database Connection with explicit database enforcement
+const rawUri = process.env.MONGO_URI || 'mongodb://localhost:27017/skilnexia';
+const dbName = 'skilnexia';
+const uriParts = rawUri.split('/');
+let finalUri = rawUri;
+
+// If the URI doesn't end with the db name or has parameters, ensure the db name is present
+if (!rawUri.includes(`/${dbName}`)) {
+    if (rawUri.includes('?')) {
+        const [base, params] = rawUri.split('?');
+        finalUri = `${base.endsWith('/') ? base : base + '/'}${dbName}?${params}`;
+    } else {
+        finalUri = `${rawUri.endsWith('/') ? rawUri : rawUri + '/'}${dbName}`;
+    }
+}
+
 mongoose
-  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/skilnexia')
+  .connect(finalUri)
   .then(async () => {
     console.log('MongoDB Connected successfully!');
     
