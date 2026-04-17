@@ -148,7 +148,7 @@ const Footer = () => {
                             &copy; {new Date().getFullYear()} <span className="text-white">Skilnexia Global Ltd.</span> All rights reserved.
                         </p>
                         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">
-                            Developed by <a href="https://forgeindiaconnect.com" target="_blank" rel="noopener noreferrer" className="text-accent-500 hover:text-white transition-colors">FIC Team</a>
+                            Developed by <span className="text-accent-500">Skilnexia Tech Team</span>
                         </p>
                     </div>
                     <div className="flex flex-wrap justify-center md:justify-end gap-x-10 gap-y-4 text-[10px] font-black uppercase tracking-widest">

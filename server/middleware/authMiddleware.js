@@ -8,6 +8,7 @@ const protect = async (req, res, next) => {
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {
+        console.log(`[AUTH] Verifying token for path: ${req.path}`);
         try {
             token = req.headers.authorization.split(' ')[1];
 
@@ -16,10 +17,11 @@ const protect = async (req, res, next) => {
             }
 
             // Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'skilnexiasecret');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'skilnexia_prod_secret_unique_2026');
 
             // Get user from the token
             req.user = await User.findById(decoded.id).select('-password');
+            console.log(`[AUTH] User found: ${!!req.user}`);
 
             if (!req.user) {
                 return res.status(401).json({ message: 'Not authorized, user not found' });
@@ -53,7 +55,7 @@ const optionalAuth = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'skilnexiasecret');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'skilnexia_prod_secret_unique_2026');
             req.user = await User.findById(decoded.id).select('-password');
         } catch (error) {
             console.error('Optional Auth Error:', error.message);

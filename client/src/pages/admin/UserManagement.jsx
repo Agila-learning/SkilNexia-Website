@@ -7,6 +7,9 @@ const UserManagement = () => {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [filterRole, setFilterRole] = useState('all');
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [newUserForm, setNewUserForm] = useState({ name: '', email: '', password: '', role: 'student' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -42,6 +45,31 @@ const UserManagement = () => {
         }
     };
 
+    const handleToggleStatus = async (user) => {
+        const newStatus = user.status === 'active' ? 'suspended' : 'active';
+        try {
+            await api.put(`/admin/users/${user._id}`, { status: newStatus });
+            fetchUsers();
+        } catch (error) {
+            alert("Failed to update status");
+        }
+    };
+
+    const handleAddUser = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            await api.post('/auth/register', newUserForm);
+            setShowAddModal(false);
+            setNewUserForm({ name: '', email: '', password: '', role: 'student' });
+            fetchUsers();
+        } catch (error) {
+            alert(error.response?.data?.message || "Failed to add user");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     const filteredUsers = users.filter(user => {
         const matchesSearch = !search ||
             user.name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -61,7 +89,7 @@ const UserManagement = () => {
                     <h1 className="text-3xl font-black text-slate-900 mb-1 tracking-tight uppercase">User Management</h1>
                     <p className="text-slate-500 font-medium">Manage platform access, roles, and community members.</p>
                 </div>
-                <button className="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-primary-600 transition-all shadow-lg active:scale-95 uppercase text-xs tracking-widest">
+                <button onClick={() => setShowAddModal(true)} className="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-primary-600 transition-all shadow-lg active:scale-95 uppercase text-xs tracking-widest">
                     <UserPlus size={18} /> Add New User
                 </button>
             </div>
@@ -75,14 +103,14 @@ const UserManagement = () => {
                         placeholder="Search by name or email..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-bold focus:ring-2 focus:ring-primary-500 transition-all"
+                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary-500 transition-all"
                     />
                 </div>
                 <div className="flex gap-2">
                     <select
                         value={filterRole}
                         onChange={(e) => setFilterRole(e.target.value)}
-                        className="px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-bold focus:ring-2 focus:ring-primary-500 transition-all"
+                        className="px-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary-500 transition-all"
                     >
                         <option value="all">All Roles</option>
                         <option value="student">Students</option>
@@ -153,7 +181,7 @@ const UserManagement = () => {
                                     </td>
                                     <td className="py-6 px-8 text-right">
                                         <div className="flex items-center justify-end gap-2">
-                                            <button className="p-2.5 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all"><Shield size={18} /></button>
+                                            <button onClick={() => handleToggleStatus(user)} title="Toggle Status" className="p-2.5 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all"><Shield size={18} /></button>
                                             <button
                                                 onClick={() => handleDeleteUser(user._id)}
                                                 className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
@@ -168,6 +196,44 @@ const UserManagement = () => {
                     </table>
                 </div>
             </div>
+
+            {/* Add User Modal */}
+            {showAddModal && (
+                <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-10 pb-20 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
+                    <div className="bg-white rounded-[40px] p-8 max-w-lg w-full shadow-2xl animate-in zoom-in duration-200 border border-slate-100">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Add New User</h2>
+                            <button onClick={() => setShowAddModal(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"><XCircle size={24} /></button>
+                        </div>
+                        <form onSubmit={handleAddUser} className="space-y-4">
+                            <div>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Full Name</label>
+                                <input required type="text" value={newUserForm.name} onChange={e => setNewUserForm({ ...newUserForm, name: e.target.value })} className="w-full px-4 py-3 bg-slate-50 rounded-xl text-sm font-bold text-slate-900 border-none focus:ring-2 focus:ring-primary-500" placeholder="John Doe" />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Email Address</label>
+                                <input required type="email" value={newUserForm.email} onChange={e => setNewUserForm({ ...newUserForm, email: e.target.value })} className="w-full px-4 py-3 bg-slate-50 rounded-xl text-sm font-bold text-slate-900 border-none focus:ring-2 focus:ring-primary-500" placeholder="john@example.com" />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Password</label>
+                                <input required type="password" value={newUserForm.password} onChange={e => setNewUserForm({ ...newUserForm, password: e.target.value })} className="w-full px-4 py-3 bg-slate-50 rounded-xl text-sm font-bold text-slate-900 border-none focus:ring-2 focus:ring-primary-500" placeholder="••••••••" />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Role</label>
+                                <select value={newUserForm.role} onChange={e => setNewUserForm({ ...newUserForm, role: e.target.value })} className="w-full px-4 py-3 bg-slate-50 rounded-xl text-sm font-bold text-slate-900 border-none focus:ring-2 focus:ring-primary-500">
+                                    <option value="student">Student</option>
+                                    <option value="trainer">Trainer</option>
+                                    <option value="hr">HR</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <button disabled={isSubmitting} type="submit" className="w-full py-4 mt-4 bg-primary-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-primary-700 shadow-xl disabled:opacity-50 transition-all">
+                                {isSubmitting ? 'Creating...' : 'Create User'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

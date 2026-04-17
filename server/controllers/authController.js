@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 // Generate JWT
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || 'skilnexiasecret', {
+    return jwt.sign({ id }, process.env.JWT_SECRET || 'skilnexia_prod_secret_unique_2026', {
         expiresIn: '30d',
     });
 };

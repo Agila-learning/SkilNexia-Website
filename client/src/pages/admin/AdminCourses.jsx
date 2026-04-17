@@ -226,8 +226,8 @@ const AdminCourses = () => {
 
             {/* Batch Management Modal */}
             {showBatchModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
-                    <div className="bg-white rounded-[40px] p-10 max-w-4xl w-full shadow-2xl my-8 animate-in zoom-in duration-200">
+                <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-10 pb-20 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
+                    <div className="bg-white rounded-[40px] p-10 max-w-4xl w-full shadow-2xl animate-in zoom-in duration-200">
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Batch Management</h2>
@@ -243,11 +243,11 @@ const AdminCourses = () => {
                                 <form onSubmit={handleBatchSubmit} className="space-y-4">
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Batch Name</label>
-                                        <input required type="text" value={batchFormData.name} onChange={e => setBatchFormData({ ...batchFormData, name: e.target.value })} className="form-input" placeholder="e.g. October 2024 Evening" />
+                                        <input required type="text" value={batchFormData.name} onChange={e => setBatchFormData({ ...batchFormData, name: e.target.value })} className="form-input text-slate-900" placeholder="e.g. October 2024 Evening" />
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Assign Trainer</label>
-                                        <select required value={batchFormData.trainer} onChange={e => setBatchFormData({ ...batchFormData, trainer: e.target.value })} className="form-input">
+                                        <select required value={batchFormData.trainer} onChange={e => setBatchFormData({ ...batchFormData, trainer: e.target.value })} className="form-input text-slate-900">
                                             <option value="">Select Trainer</option>
                                             {trainers.map(t => <option key={t._id} value={t._id}>{t.name}</option>)}
                                         </select>
@@ -255,16 +255,16 @@ const AdminCourses = () => {
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Start Date</label>
-                                            <input required type="date" value={batchFormData.startDate} onChange={e => setBatchFormData({ ...batchFormData, startDate: e.target.value })} className="form-input" />
+                                            <input required type="date" value={batchFormData.startDate} onChange={e => setBatchFormData({ ...batchFormData, startDate: e.target.value })} className="form-input text-slate-900" />
                                         </div>
                                         <div>
                                             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">End Date</label>
-                                            <input required type="date" value={batchFormData.endDate} onChange={e => setBatchFormData({ ...batchFormData, endDate: e.target.value })} className="form-input" />
+                                            <input required type="date" value={batchFormData.endDate} onChange={e => setBatchFormData({ ...batchFormData, endDate: e.target.value })} className="form-input text-slate-900" />
                                         </div>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Max Seats</label>
-                                        <input required type="number" value={batchFormData.maxSeats} onChange={e => setBatchFormData({ ...batchFormData, maxSeats: e.target.value })} className="form-input" />
+                                        <input required type="number" value={batchFormData.maxSeats} onChange={e => setBatchFormData({ ...batchFormData, maxSeats: e.target.value })} className="form-input text-slate-900" />
                                     </div>
                                     <button type="submit" className="w-full py-4 bg-primary-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-primary-700 shadow-xl shadow-primary-200 active:scale-95 transition-all text-xs">
                                         Publish Batch
@@ -306,8 +306,8 @@ const AdminCourses = () => {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
-                    <div className="bg-white rounded-[40px] p-8 md:p-12 max-w-3xl w-full shadow-2xl my-8 animate-in zoom-in duration-300 border border-slate-100">
+                <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-10 pb-20 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
+                    <div className="bg-white rounded-[40px] p-8 md:p-12 max-w-3xl w-full shadow-2xl animate-in zoom-in duration-300 border border-slate-100">
                         <div className="flex justify-between items-center mb-10 pb-6 border-b border-slate-100">
                             <div>
                                 <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight leading-none mb-2">{editingCourse ? 'Refine Program' : 'Architect New Program'}</h2>
@@ -322,11 +322,11 @@ const AdminCourses = () => {
                                 <div className="md:col-span-2 space-y-6">
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Program Title</label>
-                                        <input required type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="e.g. Master Full Stack Development" />
+                                        <input required type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="e.g. Master Full Stack Development" />
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Description</label>
-                                        <textarea required rows="4" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none resize-none" placeholder="High-level overview of the program objectives and outcomes..."></textarea>
+                                        <textarea required rows="4" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none resize-none" placeholder="High-level overview of the program objectives and outcomes..."></textarea>
                                     </div>
                                 </div>
 
@@ -335,26 +335,26 @@ const AdminCourses = () => {
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Domain Category</label>
                                         <div className="relative group">
-                                            <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none appearance-none cursor-pointer">
-                                                <option>Development</option>
-                                                <option>Data Science</option>
-                                                <option>Cloud</option>
-                                                <option>Security</option>
-                                                <option>Design</option>
-                                                <option>Marketing</option>
-                                                <option>Business</option>
-                                                <option>Web3</option>
+                                            <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none appearance-none cursor-pointer">
+                                                <option className="text-slate-900">Development</option>
+                                                <option className="text-slate-900">Data Science</option>
+                                                <option className="text-slate-900">Cloud</option>
+                                                <option className="text-slate-900">Security</option>
+                                                <option className="text-slate-900">Design</option>
+                                                <option className="text-slate-900">Marketing</option>
+                                                <option className="text-slate-900">Business</option>
+                                                <option className="text-slate-900">Web3</option>
                                             </select>
                                             <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><Layers size={16} /></div>
                                         </div>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Difficulty Level</label>
-                                        <select value={formData.level} onChange={e => setFormData({ ...formData, level: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none appearance-none cursor-pointer">
-                                            <option>Beginner</option>
-                                            <option>Intermediate</option>
-                                            <option>Advanced</option>
-                                            <option>Professional</option>
+                                        <select value={formData.level} onChange={e => setFormData({ ...formData, level: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none appearance-none cursor-pointer">
+                                            <option className="text-slate-900">Beginner</option>
+                                            <option className="text-slate-900">Intermediate</option>
+                                            <option className="text-slate-900">Advanced</option>
+                                            <option className="text-slate-900">Professional</option>
                                         </select>
                                     </div>
                                 </div>
@@ -364,13 +364,13 @@ const AdminCourses = () => {
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Tuition (INR)</label>
                                         <div className="relative">
                                             <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</div>
-                                            <input required type="number" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full pl-10 pr-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="0" />
+                                            <input required type="number" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full pl-10 pr-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="0" />
                                         </div>
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Program Duration</label>
                                         <div className="relative">
-                                            <input required type="text" value={formData.duration} onChange={e => setFormData({ ...formData, duration: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="e.g. 24 Weeks" />
+                                            <input required type="text" value={formData.duration} onChange={e => setFormData({ ...formData, duration: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="e.g. 24 Weeks" />
                                             <div className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400"><BookOpen size={16} /></div>
                                         </div>
                                     </div>
@@ -379,7 +379,7 @@ const AdminCourses = () => {
                                 {/* Section 3: Visuals */}
                                 <div className="md:col-span-2">
                                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1">Banner / Thumbnail Hosting URL</label>
-                                    <input type="text" value={formData.thumbnail} onChange={e => setFormData({ ...formData, thumbnail: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="https://unsplash.com/your-image-url" />
+                                    <input type="text" value={formData.thumbnail} onChange={e => setFormData({ ...formData, thumbnail: e.target.value })} className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm font-bold text-slate-900 focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-50 transition-all outline-none" placeholder="https://unsplash.com/your-image-url" />
                                 </div>
 
                                 <div className="md:col-span-2 bg-slate-50 p-6 rounded-3xl border border-slate-100 flex items-center justify-between">

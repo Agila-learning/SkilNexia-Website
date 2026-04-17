@@ -18,14 +18,14 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         let isMounted = true;
         const initAuth = async () => {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('skilnexia_auth_token');
             if (token) {
                 try {
                     const res = await api.get('/auth/me');
                     if (isMounted) setUser(res.data);
                 } catch (error) {
                     console.error("AuthContext: Token verification failed:", error.message);
-                    localStorage.removeItem('token');
+                    localStorage.removeItem('skilnexia_auth_token');
                 }
             }
             if (isMounted) setLoading(false);
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const res = await api.post('/auth/login', { email, password });
-            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('skilnexia_auth_token', res.data.token);
             setUser(res.data);
             return { success: true, role: res.data.role };
         } catch (error) {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     const register = async (name, email, password, role) => {
         try {
             const res = await api.post('/auth/register', { name, email, password, role });
-            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('skilnexia_auth_token', res.data.token);
             setUser(res.data);
             return { success: true, role: res.data.role };
         } catch (error) {
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('skilnexia_auth_token');
         setUser(null);
     };
 
