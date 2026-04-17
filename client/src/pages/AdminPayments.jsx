@@ -37,74 +37,77 @@ const AdminPayments = () => {
     }
 
     return (
-        <div className="animate-fade-in space-y-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="animate-fade-in space-y-12 pb-20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 mb-2">Payment Ledgers</h1>
-                    <p className="text-slate-500 font-medium">System-wide transaction history and financial records.</p>
+                    <h1 className="text-4xl font-black text-white tracking-tight uppercase">Revenue Stream</h1>
+                    <p className="text-slate-400 font-medium">Audit platform-wide transaction nodes and verified financial credits.</p>
                 </div>
-                <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <div className="relative w-full md:w-96 group">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-accent-500 transition-colors" size={20} />
                     <input
                         type="text"
                         placeholder="Search student, email, course..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 pr-4 py-2 w-full md:w-80 border border-slate-200 rounded-xl focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                        className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-[22px] text-white font-bold placeholder-slate-700 focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500 transition-all outline-none text-sm"
                     />
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="glass-card-premium border border-white/5 rounded-[48px] bg-slate-900/40 overflow-hidden shadow-2xl">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse whitespace-nowrap">
+                    <table className="w-full text-left whitespace-nowrap">
                         <thead>
-                            <tr className="bg-slate-50 border-b border-slate-200">
-                                <th className="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Transaction ID</th>
-                                <th className="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Candidate</th>
-                                <th className="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Course</th>
-                                <th className="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Date</th>
-                                <th className="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Amount</th>
-                                <th className="p-4 text-xs font-bold text-slate-600 uppercase tracking-wider">Status</th>
+                            <tr className="bg-white/5 border-b border-white/5 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <th className="py-6 px-10">Transaction ID</th>
+                                <th className="py-6 px-10">Entity Node</th>
+                                <th className="py-6 px-10">Program</th>
+                                <th className="py-6 px-10">Timestamp</th>
+                                <th className="py-6 px-10">Value</th>
+                                <th className="py-6 px-10 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-white/5">
                             {filteredPayments.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" className="p-8 text-center text-slate-500 font-medium">
-                                        No payment records found.
+                                    <td colSpan="6" className="py-24 text-center">
+                                        <div className="space-y-4 opacity-20">
+                                            <CreditCard size={48} className="mx-auto" />
+                                            <p className="text-[10px] font-black uppercase tracking-[0.4em]">Zero Transactions Vaulted</p>
+                                        </div>
                                     </td>
                                 </tr>
                             ) : (
                                 filteredPayments.map((payment) => (
-                                    <tr key={payment._id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                        <td className="p-4 text-sm font-bold text-slate-800">
+                                    <tr key={payment._id} className="hover:bg-white/5 transition-colors group">
+                                        <td className="py-8 px-10 text-[10px] font-mono font-bold text-slate-500 tracking-wider group-hover:text-accent-500 transition-colors">
                                             {payment.razorpayOrderId || payment._id}
                                         </td>
-                                        <td className="p-4">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs">
+                                        <td className="py-8 px-10">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center font-black text-white text-xs shadow-lg border border-white/10">
                                                     {payment.student?.name?.charAt(0) || <User size={14} />}
                                                 </div>
                                                 <div>
-                                                    <p className="text-sm font-bold text-slate-900">{payment.student?.name || 'Unknown'}</p>
-                                                    <p className="text-xs text-slate-500">{payment.student?.email}</p>
+                                                    <p className="text-sm font-black text-white uppercase tracking-tight leading-none mb-1.5">{payment.student?.name || 'Unknown'}</p>
+                                                    <p className="text-[10px] text-slate-500 font-bold">{payment.student?.email}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="p-4 text-sm font-bold text-slate-700">
-                                            {payment.enrollment?.batch?.course?.title || 'Unknown Course'}
+                                        <td className="py-8 px-10 text-xs font-black text-slate-300 uppercase tracking-tight">
+                                            {payment.enrollment?.batch?.course?.title || 'System Core'}
                                         </td>
-                                        <td className="p-4 text-sm text-slate-600 font-medium">
+                                        <td className="py-8 px-10 text-[10px] font-black text-slate-500 uppercase tracking-widest">
                                             {new Date(payment.createdAt).toLocaleDateString()}
                                         </td>
-                                        <td className="p-4 text-sm font-black text-slate-900">
+                                        <td className="py-8 px-10 text-base font-black text-white tracking-tighter">
                                             ₹{payment.amount.toLocaleString()}
                                         </td>
-                                        <td className="p-4">
-                                            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${payment.status === 'captured' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-700'
+                                        <td className="py-8 px-10 text-right">
+                                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] border ${payment.status === 'captured' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-lg shadow-emerald-500/5' : 'bg-slate-500/10 text-slate-500 border-white/5'
                                                 }`}>
-                                                {payment.status === 'captured' && <CheckCircle size={10} />}
+                                                {payment.status === 'captured' && <CheckCircle size={14} />}
                                                 {payment.status}
                                             </div>
                                         </td>

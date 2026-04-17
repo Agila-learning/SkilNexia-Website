@@ -56,38 +56,39 @@ const CertificateManager = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
         </div>
     );
-
     return (
-        <div className="animate-fade-in space-y-8">
+        <div className="animate-fade-in space-y-12 pb-20">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase">Certificate Manager</h1>
-                    <p className="text-slate-500 font-medium mt-1">Mark enrollments complete and issue certificates via email.</p>
+                    <h1 className="text-4xl font-black text-white tracking-tight uppercase">Credential Pipeline</h1>
+                    <p className="text-slate-400 font-medium mt-1">Issue secure academic certificates and verify cohort completions.</p>
                 </div>
-                <div className="flex items-center gap-3">
-                    <button onClick={() => setShowPreview(true)} className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors shadow-sm">
-                        <Eye size={16} /> Preview Template
+                <div className="flex items-center gap-4">
+                    <button onClick={() => setShowPreview(true)} className="flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-[22px] font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all shadow-2xl active:scale-95">
+                        <Eye size={18} className="text-accent-500" /> Preview Template
                     </button>
-                    <button onClick={fetchEnrollments} className="flex items-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-primary-600 transition-colors shadow-lg">
-                        <RefreshCw size={16} /> Refresh
+                    <button onClick={fetchEnrollments} className="flex items-center gap-3 px-8 py-4 bg-white text-slate-950 rounded-[22px] font-black text-[10px] uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95">
+                        <RefreshCw size={18} /> Re-sync Node
                     </button>
                 </div>
             </div>
 
             {/* Certificate Preview Modal */}
             {showPreview && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md overflow-y-auto">
-                    <div className="relative w-full max-w-5xl animate-in zoom-in duration-300">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-6 bg-slate-950/90 backdrop-blur-xl overflow-y-auto">
+                    <div className="relative w-full max-w-5xl animate-in zoom-in duration-300 my-auto">
                         <button
                             onClick={() => setShowPreview(false)}
-                            className="absolute -top-12 right-0 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+                            className="absolute -top-16 right-0 p-4 bg-white/10 hover:bg-accent-500 text-white rounded-full transition-all shadow-2xl active:scale-95"
                         >
-                            <X size={24} />
+                            <X size={28} />
                         </button>
-                        <CertificatePreview />
+                        <div className="glass-card-premium border border-white/10 rounded-[48px] overflow-hidden shadow-2xl">
+                            <CertificatePreview />
+                        </div>
                         <div className="mt-8 text-center">
-                            <p className="text-white/60 text-sm font-medium">This is a live preview of the Skilnexia Premium Certificate.</p>
+                            <p className="text-accent-500 font-black text-[10px] uppercase tracking-[0.4em]">Skilnexia Sovereign Credential Schema v1.0</p>
                         </div>
                     </div>
                 </div>
@@ -95,124 +96,145 @@ const CertificateManager = () => {
 
             {/* Success Toast */}
             {successMsg && (
-                <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold rounded-2xl px-6 py-4">
-                    <CheckCircle size={20} className="text-emerald-500 shrink-0" />
-                    {successMsg}
+                <div className="flex items-center gap-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-black rounded-[24px] px-8 py-5 animate-in slide-in-from-top-4 duration-500">
+                    <CheckCircle size={24} className="text-emerald-500 shrink-0" />
+                    <span className="text-sm uppercase tracking-tight">{successMsg}</span>
                 </div>
             )}
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4">
-                    <div className="p-3 bg-slate-100 rounded-xl"><Clock size={20} className="text-slate-600" /></div>
-                    <div>
-                        <h3 className="text-2xl font-black text-slate-900">{enrollments.filter(e => e.progress < 100).length}</h3>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">In Progress</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="glass-card-premium border border-white/5 rounded-[40px] p-10 bg-slate-900/40 relative overflow-hidden group hover:border-white/10 transition-all">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-slate-400/5 rounded-bl-full pointer-events-none group-hover:bg-slate-400/10 transition-all"></div>
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 bg-white/5 rounded-2xl text-slate-400 group-hover:scale-110 transition-transform"><Clock size={28} /></div>
+                        <div>
+                            <h3 className="text-4xl font-black text-white tracking-tighter">{enrollments.filter(e => e.progress < 100).length}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mt-1">Pending Sync</p>
+                        </div>
                     </div>
                 </div>
-                <div className="bg-white border border-emerald-200 rounded-2xl p-5 flex items-center gap-4">
-                    <div className="p-3 bg-emerald-50 rounded-xl"><Award size={20} className="text-emerald-600" /></div>
-                    <div>
-                        <h3 className="text-2xl font-black text-slate-900">{enrollments.filter(e => e.progress === 100).length}</h3>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Certified</p>
+                <div className="glass-card-premium border border-white/5 rounded-[40px] p-10 bg-slate-900/40 relative overflow-hidden group hover:border-accent-500/20 transition-all">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent-500/5 rounded-bl-full pointer-events-none group-hover:bg-accent-500/10 transition-all"></div>
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 bg-accent-500/10 rounded-2xl text-accent-500 group-hover:scale-110 transition-transform"><Award size={28} /></div>
+                        <div>
+                            <h3 className="text-4xl font-black text-white tracking-tighter">{enrollments.filter(e => e.progress === 100).length}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent-500 mt-1">Authorized</p>
+                        </div>
                     </div>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4">
-                    <div className="p-3 bg-blue-50 rounded-xl"><Mail size={20} className="text-blue-600" /></div>
-                    <div>
-                        <h3 className="text-2xl font-black text-slate-900">{enrollments.length}</h3>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Total</p>
+                <div className="glass-card-premium border border-white/5 rounded-[40px] p-10 bg-slate-900/40 relative overflow-hidden group hover:border-blue-500/20 transition-all">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full pointer-events-none group-hover:bg-blue-500/10 transition-all"></div>
+                    <div className="flex items-center gap-6 relative z-10">
+                        <div className="p-5 bg-blue-500/10 rounded-2xl text-blue-400 group-hover:scale-110 transition-transform"><Mail size={28} /></div>
+                        <div>
+                            <h3 className="text-4xl font-black text-white tracking-tighter">{enrollments.length}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mt-1">Total Nodes</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Search */}
-            <div className="relative">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                    type="text"
-                    placeholder="Search by student, email, or course..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl font-medium focus:outline-none focus:border-primary-500 transition-colors"
-                />
-            </div>
+            {/* Search and Table */}
+            <div className="glass-card-premium border border-white/5 rounded-[48px] bg-slate-900/40 overflow-hidden shadow-2xl">
+                <div className="p-10 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <h3 className="text-xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
+                        <Search size={24} className="text-accent-500" />
+                        Audit Interface
+                    </h3>
+                    <div className="relative w-full md:w-96">
+                        <Search size={16} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-600" />
+                        <input
+                            type="text"
+                            placeholder="Filter by node identity..."
+                            value={search}
+                            onChange={e => setSearch(e.target.value)}
+                            className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-[22px] font-bold text-white placeholder-slate-700 focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/30 transition-all outline-none text-sm"
+                        />
+                    </div>
+                </div>
 
-            {/* Table */}
-            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-                <table className="w-full">
-                    <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50">
-                            <th className="py-4 px-6 text-left text-[10px] font-black uppercase tracking-widest text-slate-500">Student</th>
-                            <th className="py-4 px-6 text-left text-[10px] font-black uppercase tracking-widest text-slate-500">Course</th>
-                            <th className="py-4 px-6 text-left text-[10px] font-black uppercase tracking-widest text-slate-500">Progress</th>
-                            <th className="py-4 px-6 text-left text-[10px] font-black uppercase tracking-widest text-slate-500">Status</th>
-                            <th className="py-4 px-6 text-right text-[10px] font-black uppercase tracking-widest text-slate-500">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                        {filtered.map(enr => (
-                            <tr key={enr._id} className="hover:bg-slate-50/70 transition-colors group">
-                                <td className="py-4 px-6">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center font-black text-sm border border-primary-100">
-                                            {enr.student?.name?.charAt(0)?.toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <p className="font-bold text-slate-900 text-sm">{enr.student?.name}</p>
-                                            <p className="text-[11px] text-slate-400">{enr.student?.email}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="py-4 px-6">
-                                    <p className="font-bold text-slate-700 text-sm">{enr.batch?.course?.title || '—'}</p>
-                                    <p className="text-[11px] text-slate-400">{enr.batch?.name}</p>
-                                </td>
-                                <td className="py-4 px-6">
-                                    <div className="w-24 bg-slate-200 rounded-full h-2">
-                                        <div className={`h-2 rounded-full transition-all ${enr.progress === 100 ? 'bg-emerald-500' : 'bg-primary-500'}`} style={{ width: `${enr.progress || 0}%` }}></div>
-                                    </div>
-                                    <span className="text-[10px] font-bold text-slate-500 mt-1 block">{enr.progress || 0}%</span>
-                                </td>
-                                <td className="py-4 px-6">
-                                    {enr.progress === 100 ? (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest border border-emerald-100">
-                                            <Award size={12} /> Certified
-                                        </span>
-                                    ) : (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 text-[10px] font-black uppercase tracking-widest border border-amber-100">
-                                            <Clock size={12} /> In Progress
-                                        </span>
-                                    )}
-                                </td>
-                                <td className="py-4 px-6 text-right">
-                                    {enr.progress !== 100 ? (
-                                        <button
-                                            onClick={() => handleIssueCertificate(enr._id, enr.student?.name)}
-                                            disabled={issuing === enr._id}
-                                            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-600 transition-all disabled:opacity-60"
-                                        >
-                                            {issuing === enr._id ? (
-                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                            ) : (
-                                                <><Mail size={12} /> Issue &amp; Email</>
-                                            )}
-                                        </button>
-                                    ) : (
-                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Done</span>
-                                    )}
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead>
+                            <tr className="border-b border-white/5 bg-white/5">
+                                <th className="py-6 px-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Learner Node</th>
+                                <th className="py-6 px-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Program Designation</th>
+                                <th className="py-6 px-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Completion</th>
+                                <th className="py-6 px-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Status</th>
+                                <th className="py-6 px-10 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Directive</th>
                             </tr>
-                        ))}
-                        {filtered.length === 0 && (
-                            <tr>
-                                <td colSpan="5" className="py-16 text-center text-slate-400 text-sm font-bold uppercase tracking-widest">
-                                    No enrollments found
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                            {filtered.map(enr => (
+                                <tr key={enr._id} className="hover:bg-white/5 transition-colors group">
+                                    <td className="py-8 px-10">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center font-black text-white shadow-lg border border-white/10 group-hover:scale-110 transition-transform">
+                                                {enr.student?.name?.charAt(0)?.toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <p className="font-black text-white text-sm uppercase tracking-tight">{enr.student?.name}</p>
+                                                <p className="text-[10px] text-slate-500 font-bold mt-0.5">{enr.student?.email}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="py-8 px-10">
+                                        <p className="font-black text-slate-300 text-sm uppercase tracking-tight">{enr.batch?.course?.title || '—'}</p>
+                                        <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest mt-1">{enr.batch?.name}</p>
+                                    </td>
+                                    <td className="py-8 px-10">
+                                        <div className="w-32 bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                            <div className={`h-full transition-all duration-1000 ${enr.progress === 100 ? 'bg-emerald-500' : 'bg-accent-500'}`} style={{ width: `${enr.progress || 0}%` }}></div>
+                                        </div>
+                                        <span className="text-[9px] font-black text-slate-500 mt-2 block uppercase tracking-widest">{enr.progress || 0}% Finalized</span>
+                                    </td>
+                                    <td className="py-8 px-10">
+                                        {enr.progress === 100 ? (
+                                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase tracking-[0.15em] border border-emerald-500/20">
+                                                <Award size={14} /> Certified
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-500/10 text-slate-500 text-[9px] font-black uppercase tracking-[0.15em] border border-white/5">
+                                                <Clock size={14} /> Syncing
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td className="py-8 px-10 text-right">
+                                        {enr.progress !== 100 ? (
+                                            <button
+                                                onClick={() => handleIssueCertificate(enr._id, enr.student?.name)}
+                                                disabled={issuing === enr._id}
+                                                className="inline-flex items-center gap-3 px-6 py-3 bg-white text-slate-950 rounded-2xl text-[9px] font-black uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95 disabled:opacity-50"
+                                            >
+                                                {issuing === enr._id ? (
+                                                    <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <><Mail size={14} /> Authorize</>
+                                                )}
+                                            </button>
+                                        ) : (
+                                            <div className="flex items-center justify-end gap-2 text-emerald-500/60 font-black text-[9px] uppercase tracking-[0.2em]">
+                                                <CheckCircle size={14} /> Vaulted
+                                            </div>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                            {filtered.length === 0 && (
+                                <tr>
+                                    <td colSpan="5" className="py-24 text-center">
+                                        <div className="space-y-4 opacity-20">
+                                            <RefreshCw size={48} className="mx-auto" />
+                                            <p className="text-[10px] font-black uppercase tracking-[0.4em]">Zero Results in Pipeline</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

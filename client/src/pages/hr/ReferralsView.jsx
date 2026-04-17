@@ -57,61 +57,63 @@ const ReferralsView = () => {
     if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div></div>;
 
     return (
-        <div className="animate-fade-in space-y-8">
-            <div className="flex justify-between items-end">
+        <div className="animate-fade-in space-y-12 pb-20">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 mb-1 tracking-tight uppercase">Candidate Referrals</h1>
-                    <p className="text-slate-500 font-medium">Verify incoming applications and manage referral quality.</p>
+                    <h1 className="text-4xl font-black text-white mb-1 tracking-tight uppercase">Legacy Referrals</h1>
+                    <p className="text-slate-400 font-medium">Verify incoming candidate nodes and audit referral signal quality.</p>
                 </div>
-                <button onClick={exportToCSV} className="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-600 transition-all shadow-lg text-[10px] uppercase tracking-widest">
-                    <Download size={18} /> Export List
+                <button onClick={exportToCSV} className="px-8 py-4 bg-white text-slate-950 rounded-[22px] font-black flex items-center gap-3 hover:bg-accent-500 hover:text-white transition-all shadow-2xl text-[10px] uppercase tracking-widest active:scale-95">
+                    <Download size={18} /> Export Payload
                 </button>
             </div>
 
-            <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden">
+            <div className="glass-card-premium border border-white/5 rounded-[48px] bg-slate-900/40 overflow-hidden shadow-2xl">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left">
                         <thead>
-                            <tr className="bg-slate-50 border-b border-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-widest">
-                                <th className="py-5 px-8">Candidate</th>
-                                <th className="py-5 px-8">Program</th>
-                                <th className="py-5 px-8">Source</th>
-                                <th className="py-5 px-8">Date</th>
-                                <th className="py-5 px-8 text-right">Action</th>
+                            <tr className="bg-white/5 border-b border-white/5 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <th className="py-6 px-10">Candidate Node</th>
+                                <th className="py-6 px-10">Program Designation</th>
+                                <th className="py-6 px-10">Origin Hub</th>
+                                <th className="py-6 px-10">Sync Date</th>
+                                <th className="py-6 px-10 text-right">Directive</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-white/5">
                             {referrals.map((lead) => (
-                                <tr key={lead._id} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="py-6 px-8">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-xs font-black text-slate-600 uppercase">
-                                                {lead.name?.charAt(0)}
+                                <tr key={lead._id} className="hover:bg-white/5 transition-colors group">
+                                    <td className="py-8 px-10">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center text-sm font-black text-white shadow-xl border border-white/10 group-hover:scale-110 transition-transform">
+                                                {lead.fullName?.charAt(0) || lead.name?.charAt(0)}
                                             </div>
                                             <div>
-                                                <p className="text-sm font-black text-slate-900 uppercase tracking-tight">{lead.name}</p>
-                                                <p className="text-[10px] font-bold text-slate-400 mt-0.5">{lead.email}</p>
+                                                <p className="text-base font-black text-white uppercase tracking-tight leading-none mb-1.5">{lead.fullName || lead.name}</p>
+                                                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{lead.email}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="py-6 px-8">
-                                        <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest bg-primary-50 px-3 py-1 rounded-full border border-primary-100">
-                                            {lead.courseId?.title || 'General Inquiry'}
+                                    <td className="py-8 px-10">
+                                        <span className="text-[9px] font-black text-accent-500 uppercase tracking-widest bg-accent-500/10 px-4 py-2 rounded-xl border border-accent-500/20 shadow-lg shadow-accent-500/5">
+                                            {lead.courseId?.title || 'General Pipeline'}
                                         </span>
                                     </td>
-                                    <td className="py-6 px-8 text-xs font-bold text-slate-500 uppercase tracking-tighter">
-                                        {lead.referralSource || 'Direct Search'}
+                                    <td className="py-8 px-10 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                                        {lead.referralSource || 'Direct Entry'}
                                     </td>
-                                    <td className="py-6 px-8 text-xs font-bold text-slate-400 uppercase">
+                                    <td className="py-8 px-10 text-[10px] font-black text-slate-500 uppercase tracking-widest">
                                         {new Date(lead.createdAt).toLocaleDateString()}
                                     </td>
-                                    <td className="py-6 px-8 text-right">
+                                    <td className="py-8 px-10 text-right">
                                         {lead.status === 'New' ? (
-                                            <button onClick={() => handleReview(lead._id)} className="px-4 py-2 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 text-slate-600 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all border border-transparent hover:border-emerald-100">
-                                                Review
+                                            <button onClick={() => handleReview(lead._id)} className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all border border-white/10 active:scale-95 shadow-2xl">
+                                                Review Node
                                             </button>
                                         ) : (
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{lead.status}</span>
+                                            <div className="flex items-center justify-end gap-2 text-slate-500 font-black text-[9px] uppercase tracking-[0.2em]">
+                                                <CheckCircle size={14} className="text-emerald-500/50" /> {lead.status}
+                                            </div>
                                         )}
                                     </td>
                                 </tr>
