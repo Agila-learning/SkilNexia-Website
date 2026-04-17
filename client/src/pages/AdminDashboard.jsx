@@ -102,49 +102,86 @@ const AdminDashboard = () => {
 
             {/* 3. ACTIVITY & CONTROL HUB */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-2 glass-card-premium border border-white/5 rounded-[40px] p-10 bg-slate-900/40">
-                    <div className="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
-                        <h3 className="text-xl font-black text-white uppercase tracking-tighter flex items-center gap-3"><Activity size={24} className="text-accent-500" /> Pipeline Activity</h3>
-                        <button onClick={() => navigate('/admin/payments')} className="text-accent-500 font-black text-xs uppercase tracking-widest hover:underline">Full Audit</button>
+                <div className="lg:col-span-2 space-y-12">
+                    {/* Pipeline Activity */}
+                    <div className="glass-card-premium border border-white/5 rounded-[40px] p-10 bg-slate-900/40">
+                        <div className="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
+                            <h3 className="text-xl font-black text-white uppercase tracking-tighter flex items-center gap-3"><Activity size={24} className="text-accent-500" /> Enrollment Activity</h3>
+                            <button onClick={() => navigate('/admin/payments')} className="text-accent-500 font-black text-xs uppercase tracking-widest hover:underline">Full Audit</button>
+                        </div>
+
+                        <div className="overflow-hidden">
+                            <table className="w-full text-left order-collapse">
+                                <thead>
+                                    <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
+                                        <th className="pb-4 px-4">Entity</th>
+                                        <th className="pb-4 px-4">Program</th>
+                                        <th className="pb-4 px-4">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {recentEnrollments.map((enr) => (
+                                        <tr key={enr._id} className="group hover:bg-white/5 transition-colors">
+                                            <td className="py-6 px-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center text-xs font-black text-white shadow-lg border border-white/10 group-hover:scale-110 transition-transform">
+                                                        {enr.student?.name?.charAt(0)}
+                                                    </div>
+                                                    <div className="overflow-hidden">
+                                                        <p className="text-sm font-bold text-white uppercase tracking-tight truncate">{enr.student?.name}</p>
+                                                        <p className="text-[10px] text-slate-400 font-medium">Node ID: {enr._id.slice(-6)}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="py-6 px-4">
+                                                <p className="text-xs font-bold text-slate-300 uppercase tracking-tight">{enr.batch?.course?.title}</p>
+                                            </td>
+                                            <td className="py-6 px-4 text-right">
+                                                <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                                                    enr.status === 'active' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-400 border-white/10'
+                                                }`}>
+                                                    {enr.status}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div className="overflow-hidden">
-                        <table className="w-full text-left order-collapse">
-                            <thead>
-                                <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
-                                    <th className="pb-4 px-4">Entity</th>
-                                    <th className="pb-4 px-4">Program</th>
-                                    <th className="pb-4 px-4">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-white/5">
-                                {recentEnrollments.map((enr) => (
-                                    <tr key={enr._id} className="group hover:bg-white/5 transition-colors">
-                                        <td className="py-6 px-4">
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-800 to-slate-700 flex items-center justify-center text-xs font-black text-white shadow-lg border border-white/10 group-hover:scale-110 transition-transform">
-                                                    {enr.student?.name?.charAt(0)}
-                                                </div>
-                                                <div className="overflow-hidden">
-                                                    <p className="text-sm font-bold text-white uppercase tracking-tight truncate">{enr.student?.name}</p>
-                                                    <p className="text-[10px] text-slate-400 font-medium">Node ID: {enr._id.slice(-6)}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="py-6 px-4">
-                                            <p className="text-xs font-bold text-slate-300 uppercase tracking-tight">{enr.batch?.course?.title}</p>
-                                        </td>
-                                        <td className="py-6 px-4 text-right">
-                                            <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                                                enr.status === 'active' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-400 border-white/10'
-                                            }`}>
-                                                {enr.status}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    {/* Lead Conversion Pipeline */}
+                    <div className="glass-card-premium border border-white/5 rounded-[40px] p-10 bg-slate-900/40 relative overflow-hidden">
+                         <div className="absolute top-0 right-0 w-48 h-48 bg-accent-500/5 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                         <div className="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
+                            <h3 className="text-xl font-black text-white uppercase tracking-tighter flex items-center gap-3"><Zap size={24} className="text-emerald-500" /> Conversion Hub</h3>
+                            <button onClick={() => navigate('/hr')} className="text-accent-500 font-black text-xs uppercase tracking-widest hover:underline">Manage Leads</button>
+                        </div>
+                        <div className="space-y-6">
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Centralized payment link deployment for candidate onboarding.</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="p-8 rounded-[32px] bg-slate-950/50 border border-white/5 space-y-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl"><DollarSign size={20} /></div>
+                                        <div>
+                                            <p className="text-sm font-black text-white uppercase tracking-tight">Generate Payment Node</p>
+                                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Deploy unique links to candidates</p>
+                                        </div>
+                                    </div>
+                                    <button onClick={() => navigate('/hr')} className="w-full py-3 bg-white text-slate-950 rounded-xl font-black uppercase text-[9px] tracking-widest hover:bg-accent-500 hover:text-white transition-all">Launch Lead Pipeline</button>
+                                </div>
+                                <div className="p-8 rounded-[32px] bg-slate-950/50 border border-white/5 space-y-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-3 bg-blue-500/10 text-blue-500 rounded-xl"><Users size={20} /></div>
+                                        <div>
+                                            <p className="text-sm font-black text-white uppercase tracking-tight">Node Verification</p>
+                                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Audit pending referral nodes</p>
+                                        </div>
+                                    </div>
+                                    <button onClick={() => navigate('/hr/referrals')} className="w-full py-3 bg-white/5 text-white border border-white/10 rounded-xl font-black uppercase text-[9px] tracking-widest hover:bg-white hover:text-slate-950 transition-all">Review Referrals</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

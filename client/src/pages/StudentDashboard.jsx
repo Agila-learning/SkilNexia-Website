@@ -217,9 +217,21 @@ const StudentDashboard = () => {
                                         <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-2xl relative">
                                             <img src={enr.batch?.course?.thumbnail || 'https://via.placeholder.com/150'} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Course" />
                                             <div className="absolute inset-0 bg-slate-900/40"></div>
+                                            <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                                                <span className={`px-2 py-0.5 rounded text-[7px] font-black uppercase tracking-widest ${enr.batch?.course?.trainingType === 'recorded' ? 'bg-amber-500 text-white shadow-lg' : 'bg-blue-500 text-white shadow-lg'}`}>
+                                                    {enr.batch?.course?.trainingType || 'live'}
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h4 className="font-bold text-white text-lg leading-tight mb-2 line-clamp-2 truncate">{enr.batch?.course?.title}</h4>
+                                            <div className="flex justify-between items-start mb-1">
+                                                <h4 className="font-bold text-white text-lg leading-tight line-clamp-2 truncate">{enr.batch?.course?.title}</h4>
+                                            </div>
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className={`px-2 py-0.5 rounded-[4px] text-[7px] font-black uppercase tracking-widest ${enr.batch?.course?.courseType === 'free' ? 'bg-slate-500/20 text-slate-400' : 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/20'}`}>
+                                                    {enr.batch?.course?.courseType || 'Paid'}
+                                                </span>
+                                            </div>
                                             <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Mentor: {enr.batch?.trainer?.name || 'Assigned soon'}</p>
                                         </div>
                                     </div>

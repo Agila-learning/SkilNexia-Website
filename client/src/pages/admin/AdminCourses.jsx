@@ -16,7 +16,9 @@ const AdminCourses = () => {
         level: 'Beginner',
         duration: '',
         thumbnail: '',
-        isPublished: true
+        isPublished: true,
+        trainingType: 'live',
+        courseType: 'paid'
     });
 
     useEffect(() => {
@@ -60,7 +62,9 @@ const AdminCourses = () => {
             level: 'Beginner',
             duration: '',
             thumbnail: '',
-            isPublished: true
+            isPublished: true,
+            trainingType: 'live',
+            courseType: 'paid'
         });
     };
 
@@ -74,7 +78,9 @@ const AdminCourses = () => {
             level: course.level,
             duration: course.duration,
             thumbnail: course.thumbnail || '',
-            isPublished: course.isPublished
+            isPublished: course.isPublished,
+            trainingType: course.trainingType || 'live',
+            courseType: course.courseType || 'paid'
         });
         setShowModal(true);
     };
@@ -184,9 +190,12 @@ const AdminCourses = () => {
                             ) : (
                                 <div className="w-full h-full bg-slate-900 flex items-center justify-center text-slate-700"><Layers size={64} /></div>
                             )}
-                            <div className="absolute top-6 right-6">
+                             <div className="absolute top-6 right-6 flex flex-col items-end gap-2">
                                 <span className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest border ${course.isPublished ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-500 border-white/10'}`}>
                                     {course.isPublished ? 'Live' : 'Draft Node'}
+                                </span>
+                                <span className={`px-3 py-1.5 rounded-xl text-[8px] font-black uppercase tracking-widest border ${course.trainingType === 'recorded' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-blue-500/10 text-blue-500 border-blue-500/20'}`}>
+                                    {course.trainingType || 'live'}
                                 </span>
                             </div>
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60"></div>
@@ -399,6 +408,26 @@ const AdminCourses = () => {
                                 <div className="md:col-span-2">
                                     <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-1">Media Payload URL (Thumbnail)</label>
                                     <input type="text" value={formData.thumbnail} onChange={e => setFormData({ ...formData, thumbnail: e.target.value })} className="w-full px-8 py-5 bg-white/5 border border-white/10 rounded-[24px] text-base font-bold text-white placeholder-slate-700 focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/30 transition-all outline-none" placeholder="https://unsplash.com/your-image-url" />
+                                </div>
+
+                                <div className="space-y-8">
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-1">Delivery Protocol</label>
+                                        <select value={formData.trainingType} onChange={e => setFormData({ ...formData, trainingType: e.target.value })} className="w-full px-8 py-5 bg-white/5 border border-white/10 rounded-[24px] text-base font-bold text-white focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/30 transition-all outline-none appearance-none cursor-pointer">
+                                            <option value="live" className="bg-slate-900">Live Session Hub</option>
+                                            <option value="recorded" className="bg-slate-900">Asynchronous Recording</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-8">
+                                    <div>
+                                        <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-1">Economic Model</label>
+                                        <select value={formData.courseType} onChange={e => setFormData({ ...formData, courseType: e.target.value })} className="w-full px-8 py-5 bg-white/5 border border-white/10 rounded-[24px] text-base font-bold text-white focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/30 transition-all outline-none appearance-none cursor-pointer">
+                                            <option value="paid" className="bg-slate-900">Premium (Paid)</option>
+                                            <option value="free" className="bg-slate-900">Open Access (Free)</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div className="md:col-span-2 bg-white/5 p-8 rounded-[32px] border border-white/10 flex items-center justify-between group">

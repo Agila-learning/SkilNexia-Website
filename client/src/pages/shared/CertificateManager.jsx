@@ -76,19 +76,31 @@ const CertificateManager = () => {
 
             {/* Certificate Preview Modal */}
             {showPreview && (
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-6 bg-slate-950/90 backdrop-blur-xl overflow-y-auto">
-                    <div className="relative w-full max-w-5xl animate-in zoom-in duration-300 my-auto">
-                        <button
-                            onClick={() => setShowPreview(false)}
-                            className="absolute -top-16 right-0 p-4 bg-white/10 hover:bg-accent-500 text-white rounded-full transition-all shadow-2xl active:scale-95"
-                        >
-                            <X size={28} />
-                        </button>
-                        <div className="glass-card-premium border border-white/10 rounded-[48px] overflow-hidden shadow-2xl">
-                            <CertificatePreview />
+                <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center p-4 md:p-10 bg-slate-950/95 backdrop-blur-2xl overflow-y-auto">
+                    <div className="relative w-full max-w-6xl animate-in zoom-in duration-300 my-auto">
+                        <div className="flex justify-between items-center mb-6 px-4">
+                            <div className="flex flex-col">
+                                <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Credential Preview</h2>
+                                <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Skilnexia Sovereign Schema v1.0</p>
+                            </div>
+                            <button
+                                onClick={() => setShowPreview(false)}
+                                className="p-4 bg-white/10 hover:bg-rose-500 text-white rounded-2xl transition-all shadow-2xl active:scale-95 border border-white/5"
+                            >
+                                <X size={24} />
+                            </button>
                         </div>
-                        <div className="mt-8 text-center">
-                            <p className="text-accent-500 font-black text-[10px] uppercase tracking-[0.4em]">Skilnexia Sovereign Credential Schema v1.0</p>
+                        
+                        <div className="glass-card-premium border border-white/10 rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] bg-white">
+                            <div className="max-h-[75vh] overflow-y-auto custom-scrollbar">
+                                <CertificatePreview />
+                            </div>
+                        </div>
+                        
+                        <div className="mt-8 flex justify-center">
+                            <div className="px-6 py-2 bg-accent-500/10 border border-accent-500/20 rounded-full">
+                                <p className="text-accent-500 font-black text-[9px] uppercase tracking-[0.4em]">Verified Academic Node Artifact</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -182,7 +194,12 @@ const CertificateManager = () => {
                                     </td>
                                     <td className="py-8 px-10">
                                         <p className="font-black text-slate-300 text-sm uppercase tracking-tight">{enr.batch?.course?.title || '—'}</p>
-                                        <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest mt-1">{enr.batch?.name}</p>
+                                        <div className="flex items-center gap-2 mt-2">
+                                            <span className="text-[8px] text-slate-600 font-black uppercase tracking-widest">{enr.batch?.name}</span>
+                                            <span className={`px-2 py-0.5 rounded text-[7px] font-black uppercase tracking-widest ${enr.batch?.course?.trainingType === 'recorded' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'bg-blue-500/10 text-blue-500 border border-blue-500/20'}`}>
+                                                {enr.batch?.course?.trainingType || 'Live'}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td className="py-8 px-10">
                                         <div className="w-32 bg-white/5 rounded-full h-1.5 overflow-hidden">
