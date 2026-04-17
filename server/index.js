@@ -135,11 +135,8 @@ io.on('connection', (socket) => {
 if (process.env.NODE_ENV === 'production' || true) { 
   app.use(express.static(path.join(__dirname, '../client/dist')));
 
-  app.get('/:path*', (req, res, next) => {
-    // Only handle routes that don't start with /api/
-    if (req.url.startsWith('/api/')) {
-      return next();
-    }
+  // Catch-all route for SPA - Using Regex to avoid path-to-regexp v8 issues on Render
+  app.get(/^(?!\/api).+/, (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
   });
 }
