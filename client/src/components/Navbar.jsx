@@ -223,12 +223,22 @@ const Navbar = () => {
                     </div>
 
                     {/* Mobile Menu Toggle */}
-                    <button
-                        className="lg:hidden p-2 text-white bg-white/10 rounded-xl transition-all hover:bg-white/20"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    >
-                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                    <div className="flex items-center gap-3 lg:hidden">
+                        {!user && (
+                            <Link 
+                                to="/login" 
+                                className="px-4 py-2 bg-white/10 text-white rounded-xl text-[10px] font-black uppercase tracking-widest border border-white/10"
+                            >
+                                Login
+                            </Link>
+                        )}
+                        <button
+                            className="p-2 text-white bg-white/10 rounded-xl transition-all hover:bg-white/20"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
                 </nav>
             </div>
 

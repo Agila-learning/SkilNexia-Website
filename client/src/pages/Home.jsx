@@ -271,7 +271,10 @@ const Home = () => {
                             >
                                 Explore Courses <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </button>
-                            <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline">
+                            <Link to="/login" className="btn-premium-outline flex items-center gap-2">
+                                Login to Node <Shield size={16} />
+                            </Link>
+                            <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline hidden sm:block">
                                 Book Free Demo
                             </button>
                         </div>
