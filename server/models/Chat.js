@@ -21,6 +21,11 @@ const chatSchema = new mongoose.Schema({
     topic: {
         type: String, // e.g., 'Course Support', 'Placement', 'Other'
         default: 'General'
+    },
+    platform: {
+        type: String,
+        default: 'skilnexia',
+        index: true
     }
 }, { timestamps: true });
 

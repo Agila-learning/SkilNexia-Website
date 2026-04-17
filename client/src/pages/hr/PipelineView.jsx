@@ -79,6 +79,15 @@ const PipelineView = () => {
                                             >
                                                 Advance Node
                                             </button>
+                                            {col.id === 'Offer Extended' && (
+                                                <button 
+                                                    onClick={() => alert(`Payment Link Generated for ${lead.fullName}: https://skilnexia.com/pay/${lead._id}`)}
+                                                    className="p-3 bg-emerald-500/20 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20"
+                                                    title="Generate Payment Link"
+                                                >
+                                                    <CreditCard size={16} />
+                                                </button>
+                                            )}
                                             <button className="p-2 text-slate-600 hover:text-white transition-colors"><AlertCircle size={16} /></button>
                                         </div>
                                     </div>

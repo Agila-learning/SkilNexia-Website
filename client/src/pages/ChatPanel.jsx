@@ -13,6 +13,8 @@ const ChatPanel = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [availableUsers, setAvailableUsers] = useState([]);
+    const [showUserList, setShowUserList] = useState(false);
 
     const socket = useRef(null);
     const scrollRef = useRef(null);
@@ -62,6 +64,30 @@ const ChatPanel = () => {
         }
     };
 
+    const fetchAvailableUsers = async () => {
+        try {
+            const res = await api.get('/chats/users');
+            setAvailableUsers(res.data.data || []);
+            setShowUserList(true);
+        } catch (error) {
+            console.error("Failed to fetch users", error);
+        }
+    };
+
+    const startNewChat = async (participantId) => {
+        try {
+            const res = await api.post('/chats', { participantId });
+            const newChat = res.data.data;
+            if (!chats.find(c => c._id === newChat._id)) {
+                setChats([newChat, ...chats]);
+            }
+            setSelectedChat(newChat);
+            setShowUserList(false);
+        } catch (error) {
+            console.error("Failed to start chat", error);
+        }
+    };
+
     const fetchMessages = async (chatId) => {
         try {
             const res = await api.get(`/chats/${chatId}/messages`);
@@ -107,6 +133,12 @@ const ChatPanel = () => {
                             className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-xs font-bold text-white placeholder-slate-600 focus:ring-2 focus:ring-accent-500/50 transition-all outline-none"
                         />
                     </div>
+                    <button 
+                        onClick={fetchAvailableUsers}
+                        className="w-full mt-4 py-3 bg-white text-slate-950 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-lg"
+                    >
+                        Initialize New Link
+                    </button>
                 </div>
                 <div className="flex-grow overflow-y-auto p-3 space-y-2 no-scrollbar">
                     {loading ? (
@@ -122,7 +154,7 @@ const ChatPanel = () => {
                         filteredChats.map(chat => {
                             const student = chat.participants.find(p => p._id !== user._id);
                             const isActive = selectedChat?._id === chat._id;
-                            const displayName = student ? student.name : (chat.guestId ? `GUEST-${chat.guestId.slice(-4)}` : 'System Node');
+                            const displayName = (student && student.name) ? student.name : (chat.guestId ? `GUEST-${chat.guestId.slice(-4)}` : 'System Node');
                             
                             return (
                                 <button
@@ -162,7 +194,7 @@ const ChatPanel = () => {
                                 </div>
                                 <div>
                                     <h3 className="text-base font-black text-white uppercase tracking-tight">
-                                        {selectedChat.participants.find(p => p._id !== user._id)?.name || `Guest Node ${selectedChat.guestId?.slice(-4)}`}
+                                        {selectedChat.participants.find(p => p._id !== user._id)?.name || (selectedChat.guestId ? `GUEST NODE ${selectedChat.guestId.slice(-4)}` : 'ACTIVE TRANSMISSION')}
                                     </h3>
                                     <div className="flex items-center gap-2 mt-1">
                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -170,9 +202,21 @@ const ChatPanel = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex gap-3">
-                                <button title="Session Log" className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-slate-500 hover:text-white hover:bg-white/10 transition-all"><Clock size={18} /></button>
-                                <button title="Resolve Thread" className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"><CheckCircle size={18} /></button>
+                             <div className="flex gap-3">
+                                <button 
+                                    onClick={() => alert('Session log history is being compiled...')}
+                                    title="Session Log" 
+                                    className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-slate-500 hover:text-white hover:bg-white/10 transition-all"
+                                >
+                                    <Clock size={18} />
+                                </button>
+                                <button 
+                                    onClick={() => alert('Marking thread as resolved...')}
+                                    title="Resolve Thread" 
+                                    className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
+                                >
+                                    <CheckCircle size={18} />
+                                </button>
                             </div>
                         </div>
 
@@ -229,6 +273,40 @@ const ChatPanel = () => {
                     </div>
                 )}
             </div>
+
+            {/* User Selection Modal */}
+            {showUserList && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                    <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={() => setShowUserList(false)}></div>
+                    <div className="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[40px] shadow-3xl overflow-hidden flex flex-col max-h-[80vh]">
+                        <div className="p-8 border-b border-white/5 flex items-center justify-between">
+                            <div>
+                                <h3 className="text-xl font-black text-white uppercase tracking-tight">Select Transmission Node</h3>
+                                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Initialize secure communication channel</p>
+                            </div>
+                            <button onClick={() => setShowUserList(false)} className="p-3 bg-white/5 rounded-2xl text-slate-400 hover:text-white transition-all"><X size={20} /></button>
+                        </div>
+                        <div className="flex-grow overflow-y-auto p-6 space-y-3 no-scrollbar">
+                            {availableUsers.map(u => (
+                                <button
+                                    key={u._id}
+                                    onClick={() => startNewChat(u._id)}
+                                    className="w-full p-4 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 flex items-center gap-4 transition-all group"
+                                >
+                                    <div className="w-12 h-12 rounded-2xl bg-accent-500 flex items-center justify-center text-white font-black group-hover:scale-105 transition-transform">
+                                        {u.name?.charAt(0)}
+                                    </div>
+                                    <div className="text-left">
+                                        <h4 className="text-xs font-black text-white uppercase tracking-tight">{u.name}</h4>
+                                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{u.role}</p>
+                                    </div>
+                                    <ChevronRight size={16} className="ml-auto text-slate-600 group-hover:text-white transition-colors" />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

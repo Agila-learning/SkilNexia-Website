@@ -11,7 +11,9 @@ exports.getChats = async (req, res) => {
 
         // Admins and HR can see all chats
         if (req.user.role === 'admin' || req.user.role === 'hr') {
-            query = {};
+            query = { platform: 'skilnexia' };
+        } else {
+            query.platform = 'skilnexia';
         }
 
         const chats = await Chat.find(query)
@@ -74,13 +76,14 @@ exports.createChat = async (req, res) => {
             return res.status(400).json({ success: false, message: 'User or Guest ID required' });
         }
 
-        let chat = await Chat.findOne({ ...query, status: 'active' });
+        let chat = await Chat.findOne({ ...query, status: 'active', platform: 'skilnexia' });
 
         if (!chat) {
             chat = await Chat.create({
                 participants: req.user ? [req.user.id, participantId] : [participantId],
                 guestId: req.user ? undefined : guestId,
-                topic: topic || 'General'
+                topic: topic || 'General',
+                platform: 'skilnexia'
             });
         }
 
@@ -127,6 +130,22 @@ exports.sendMessage = async (req, res) => {
         res.status(201).json({
             success: true,
             data: populatedMessage
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+};
+
+exports.getAvailableUsers = async (req, res) => {
+    try {
+        const users = await User.find({ 
+            _id: { $ne: req.user.id },
+            platform: 'skilnexia'
+        }).select('name role email');
+
+        res.status(200).json({
+            success: true,
+            data: users
         });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
