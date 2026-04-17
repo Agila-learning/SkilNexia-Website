@@ -132,13 +132,20 @@ io.on('connection', (socket) => {
 });
 
 // Serve Static Assets in Production
-if (process.env.NODE_ENV === 'production' || true) { 
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+const distPath = path.join(__dirname, '../client/dist');
+const indexPath = path.resolve(__dirname, '../client', 'dist', 'index.html');
+const fs = require('fs');
+
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
 
   // Catch-all route for SPA - Using Regex to avoid path-to-regexp v8 issues on Render
   app.get(/^(?!\/api).+/, (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+    res.sendFile(indexPath);
   });
+  console.log('Serving static client build from:', distPath);
+} else {
+  console.warn('WARNING: client/dist not found. Frontend not built yet. Only API routes available.');
 }
 
 // Basic Route
