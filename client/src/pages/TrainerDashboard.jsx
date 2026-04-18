@@ -187,42 +187,52 @@ const TrainerDashboard = () => {
         <div className="space-y-12 animate-fade-in pb-20 font-sans">
             
             {/* 1. OPERATIONS HEADER */}
-            <div className="premium-reveal relative p-12 rounded-[40px] bg-slate-900 border border-white/5 overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-slate-900 to-slate-900 pointer-events-none"></div>
-                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-10">
-                    <div className="space-y-4">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                            <Shield className="text-emerald-500" size={12} />
-                            <span className="text-emerald-500 text-[10px] font-black uppercase tracking-widest">Faculty Protocol Active</span>
+            <div className="premium-reveal relative p-12 lg:p-16 rounded-[48px] bg-slate-900 border border-white/5 overflow-hidden shadow-2xl group">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-slate-900 to-slate-900 pointer-events-none transition-all duration-700 group-hover:opacity-80"></div>
+                <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+                
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-12">
+                    <div className="space-y-6">
+                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full animate-pulse">
+                            <Shield className="text-emerald-500" size={14} />
+                            <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em]">Faculty Protocol Active</span>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none">Lecture Hub <br /><span className="text-accent-500">Node Sigma.</span></h1>
-                        <p className="text-slate-400 font-medium max-w-lg">Manage elite academic transition streams, session links, and curriculum velocity from a unified terminal.</p>
+                        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-[0.85]">Lecture Hub <br /><span className="text-accent-500">Node Sigma.</span></h1>
+                        <p className="text-slate-400 font-medium max-w-xl text-lg leading-relaxed">Manage elite academic transition streams, session links, and curriculum velocity from a unified terminal.</p>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-5">
                         <button
                             onClick={() => {
                                 if (batches.length > 0) {
-                                    setSelectedCourseId(batches[0].course._id);
+                                    if (!selectedCourseId) setSelectedCourseId(batches[0].course?._id || batches[0].course);
                                     setShowAssignmentModal(true);
+                                } else {
+                                    alert("No active batches found to assign tasks.");
                                 }
                             }}
-                            className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-slate-950 transition-all shadow-2xl flex items-center gap-3 backdrop-blur-xl"
+                            className="btn-premium-outline group/btn"
                         >
-                            <FilePlus size={16} /> New Task
+                            <FilePlus size={18} className="group-hover/btn:rotate-12 transition-transform" /> New Task
                         </button>
                         <button
-                            onClick={() => setShowLectureModal(true)}
-                            className="px-8 py-4 bg-accent-500 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-slate-950 transition-all shadow-2xl flex items-center gap-3"
+                            onClick={() => {
+                                if (batches.length > 0) {
+                                    setShowLectureModal(true);
+                                } else {
+                                    alert("No active batches found to stream lectures.");
+                                }
+                            }}
+                            className="btn-premium"
                         >
-                            <Monitor size={16} /> Stream Lecture
+                            <Monitor size={18} /> Stream Lecture
                         </button>
                     </div>
                 </div>
             </div>
 
             {/* 2. CORE METRICS */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <StatCard title="Active Cohorts" value={stats.activeBatches ?? '0'} icon={Monitor} color="text-indigo-500" bg="bg-indigo-500/10" />
                 <StatCard title="Learners Managed" value={stats.totalStudents ?? '0'} icon={Users} color="text-emerald-500" bg="bg-emerald-500/10" />
                 <StatCard title="Streams Recorded" value={stats.totalLectures ?? '0'} icon={Video} color="text-accent-500" bg="bg-accent-500/10" />
@@ -248,7 +258,7 @@ const TrainerDashboard = () => {
                                 <div 
                                     key={batch._id} 
                                     onClick={() => { fetchAssignments(batch.course._id); setSelectedBatchId(batch._id); setSelectedCourseId(batch.course._id); }}
-                                    className={`p-6 rounded-[32px] border transition-all cursor-pointer group relative overflow-hidden ${selectedBatchId === batch._id ? 'bg-slate-900 border-accent-500 shadow-2xl shadow-accent-500/20' : 'bg-slate-900/40 border-white/5 hover:border-white/20'}`}
+                                    className={`p-8 rounded-[40px] border transition-all cursor-pointer group relative overflow-hidden ${selectedBatchId === batch._id ? 'bg-slate-900 border-accent-500 shadow-2xl shadow-accent-500/20 scale-[1.02]' : 'bg-slate-900/40 border-white/5 hover:border-white/20'}`}
                                 >
                                     <div className="relative z-10 space-y-6">
                                         <div className="flex items-center gap-4">
@@ -320,7 +330,7 @@ const TrainerDashboard = () => {
                             </div>
                         ) : (
                             assignments.map((assignment) => (
-                                <div key={assignment._id} className="p-8 glass-card-premium border border-white/5 rounded-[40px] bg-slate-900/40 relative group overflow-hidden hover:-translate-y-1 transition-all shadow-2xl">
+                                <div key={assignment._id} className="p-10 glass-card-premium group">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
                                     
                                     <div className="relative z-10 flex flex-col h-full">
@@ -341,7 +351,7 @@ const TrainerDashboard = () => {
                                                 onClick={() => { setViewingAssignment(assignment); setShowSubmissionsModal(true); }}
                                                 className="px-6 py-3 bg-white text-slate-950 rounded-2xl font-black uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-2"
                                             >
-                                                Grade Stream <ChevronRight size={14} />
+                                                Grade Stream <ChevronRight size={16} />
                                             </button>
                                         </div>
                                     </div>

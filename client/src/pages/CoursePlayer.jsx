@@ -98,34 +98,39 @@ const CoursePlayer = () => {
             
             {/* Badge Popup Notification */}
             {showBadgePopup && (
-                <div className="fixed top-20 right-8 z-[100] animate-in slide-in-from-right duration-500">
-                    <div className="glass-card-premium p-6 border border-accent-500/30 bg-slate-900/90 backdrop-blur-xl flex items-center gap-6 shadow-2xl rounded-[24px]">
-                        <div className="w-16 h-16 bg-gradient-to-tr from-accent-500 to-primary-600 rounded-2xl flex items-center justify-center text-white shadow-lg rotate-3">
-                            <Award size={32} fill="currentColor" />
+                <div className="fixed top-24 right-8 z-[100] animate-in slide-in-from-right duration-500">
+                    <div className="glass-card-premium p-8 border border-accent-500/40 bg-slate-950/90 backdrop-blur-3xl flex items-center gap-8 shadow-[0_0_50px_rgba(var(--accent-rgb),0.2)]">
+                        <div className="w-20 h-20 bg-gradient-to-tr from-accent-500 to-primary-600 rounded-[20px] flex items-center justify-center text-white shadow-2xl rotate-6 animate-bounce">
+                            <Award size={40} fill="currentColor" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-accent-500 uppercase tracking-[0.2em] mb-1">New Badge Earned!</p>
-                            <h4 className="text-lg font-black text-white uppercase tracking-tight">{showBadgePopup.title}</h4>
+                            <p className="premium-subtitle tracking-[0.5em] mb-2">Architectural Milestone</p>
+                            <h4 className="text-2xl font-black text-white uppercase tracking-tighter">Achievement: {showBadgePopup.title}</h4>
                         </div>
                     </div>
                 </div>
             )}
 
             {/* Header */}
-            <nav className="w-full bg-[#111318] border-b border-white/5 h-16 flex items-center justify-between px-6 sticky top-0 z-50">
-                <div className="flex items-center gap-6">
-                    <Link to="/" className="flex items-center gap-2">
-                        <BookOpen className="text-primary-500 w-6 h-6" />
-                        <span className="font-black text-xl text-white tracking-tight">Skilnexia</span>
+            <nav className="w-full bg-slate-950/50 backdrop-blur-3xl border-b border-white/5 h-20 lg:h-24 flex items-center justify-between px-8 lg:px-12 sticky top-0 z-50">
+                <div className="flex items-center gap-8">
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <div className="w-10 h-10 bg-accent-500 rounded-xl flex items-center justify-center text-white group-hover:rotate-12 transition-all">
+                            <BookOpen size={24} />
+                        </div>
+                        <span className="font-black text-2xl text-white tracking-tighter uppercase">Nexus <span className="text-accent-500">SIGMA</span></span>
                     </Link>
-                    <div className="h-6 w-px bg-white/10 hidden md:block"></div>
-                    <h1 className="text-sm font-bold text-slate-400 hidden md:block truncate max-w-xs">{course.title}</h1>
+                    <div className="h-8 w-px bg-white/10 hidden lg:block"></div>
+                    <div className="hidden lg:block">
+                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] mb-1">Active Curriculum</p>
+                        <h1 className="text-sm font-black text-white uppercase tracking-widest truncate max-w-sm">{course.title}</h1>
+                    </div>
                 </div>
-                <div className="flex items-center gap-4">
-                    <Link to={`/courses/${courseId}`} className="text-xs font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors">Exit Course</Link>
+                <div className="flex items-center gap-8">
+                    <Link to={`/courses/${courseId}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-colors">Abort Terminal</Link>
                     {progressPercent >= 95 && (
-                        <Link to="/student" className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg active:scale-95">
-                            Claim Certificate
+                        <Link to="/student" className="btn-premium py-3 px-8">
+                            Claim Credentials
                         </Link>
                     )}
                 </div>

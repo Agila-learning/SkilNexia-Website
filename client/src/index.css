@@ -54,7 +54,20 @@ html.light-theme .lottie-animation {
   }
 
   .glass-card-premium {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl transition-all duration-300;
+    @apply bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[40px] shadow-2xl transition-all duration-500 relative overflow-hidden;
+  }
+
+  .glass-card-premium::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-500;
+  }
+
+  .glass-card-premium:hover {
+    @apply border-white/20 -translate-y-2 shadow-white/5 bg-slate-900/60;
+  }
+
+  .glass-card-premium:hover::before {
+    @apply opacity-100;
   }
 
   .glass-card-hover {
@@ -63,6 +76,15 @@ html.light-theme .lottie-animation {
 
   .glass-surface {
     @apply bg-slate-900/40 backdrop-blur-2xl border border-white/5;
+  }
+
+  /* Professional Headings & Text */
+  .premium-title {
+    @apply font-poppins font-black text-white uppercase tracking-tighter leading-[0.9] filter drop-shadow-2xl;
+  }
+
+  .premium-subtitle {
+    @apply text-slate-500 font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block;
   }
 
   /* New Utility Tokens */
@@ -75,11 +97,11 @@ html.light-theme .lottie-animation {
   }
 
   .btn-premium {
-    @apply px-8 py-4 bg-white text-slate-950 rounded-xl font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-white/10;
+    @apply px-10 py-5 bg-white text-slate-950 rounded-[22px] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 hover:bg-accent-500 hover:text-white shadow-2xl active:scale-95 flex items-center justify-center gap-3;
   }
 
   .btn-premium-outline {
-    @apply px-8 py-4 bg-transparent text-white border border-white/20 rounded-xl font-bold transition-all duration-300 hover:bg-white/5 hover:border-white/40;
+    @apply px-10 py-5 bg-white/5 text-white border border-white/10 rounded-[22px] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 hover:bg-white hover:text-slate-950 shadow-2xl active:scale-95 flex items-center justify-center gap-3 backdrop-blur-xl;
   }
 
   .hero-search-container {
@@ -92,11 +114,11 @@ html.light-theme .lottie-animation {
 
   /* Advanced Form Styling */
   .input-premium {
-    @apply w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all backdrop-blur-md font-medium;
+    @apply w-full bg-slate-950 border border-white/5 rounded-[22px] px-8 py-5 text-white font-bold outline-none focus:border-accent-500/50 focus:ring-4 focus:ring-accent-500/5 transition-all shadow-inner placeholder:text-slate-800;
   }
 
   .label-premium {
-    @apply block text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 mb-2 ml-1;
+    @apply block text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 mb-3 ml-2;
   }
 
   .form-group-premium {
@@ -118,16 +140,25 @@ html.light-theme .lottie-animation {
 
   /* Professional Stats styling */
   .stat-badge {
-    @apply flex flex-col items-center md:items-start p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-lg;
+    @apply flex flex-col items-center md:items-start p-10 bg-slate-900 border border-white/5 rounded-[32px] backdrop-blur-lg shadow-2xl hover:-translate-y-1 transition-all duration-500;
   }
 
   /* Animations - Minimal & Smooth */
   .fade-up {
-    animation: fadeUp 0.8s ease-out forwards;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-in-scale {
+    animation: inScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes inScale {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
   }
 

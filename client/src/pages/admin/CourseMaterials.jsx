@@ -50,7 +50,8 @@ const CourseMaterials = () => {
                 materialName = form.materialFile.name;
             }
 
-            await api.post(`/courses/dummy/batches/${selectedBatch._id}/lectures`, {
+            const courseId = selectedBatch.course?._id || selectedBatch.course;
+            await api.post(`/courses/${courseId}/batches/${selectedBatch._id}/lectures`, {
                 title: form.title,
                 videoUrl: form.videoUrl,
                 duration: form.duration,

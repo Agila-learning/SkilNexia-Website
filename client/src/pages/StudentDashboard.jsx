@@ -104,10 +104,10 @@ const StudentDashboard = () => {
             {/* 1. HERO SECTION */}
             {currentCourse ? (
                 <div className="premium-reveal relative w-full rounded-[40px] overflow-hidden bg-slate-900 border border-white/5 shadow-2xl">
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/60 to-transparent z-10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-transparent z-10"></div>
                     <img 
                         src={currentCourse.batch?.course?.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200'} 
-                        className="absolute right-0 top-0 w-2/3 h-full object-cover opacity-50"
+                        className="absolute right-0 top-0 w-2/3 h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
                         alt="Hero"
                     />
                     <div className="relative z-20 p-12 md:p-16 flex flex-col justify-center max-w-2xl space-y-6">
@@ -121,7 +121,7 @@ const StudentDashboard = () => {
                             {currentCourse.batch?.course?.title}
                         </h1>
                         <div className="pt-4 flex items-center gap-6">
-                            <Link to={`/course-player/${currentCourse.batch?.course?._id}`} className="px-10 py-4 bg-white text-slate-950 rounded-2xl font-black uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-xl active:scale-95 flex items-center gap-3 group">
+                            <Link to={`/course-player/${currentCourse.batch?.course?._id}`} className="btn-premium">
                                 <PlayCircle size={20} className="group-hover:fill-current" /> Continue Class
                             </Link>
                         </div>
@@ -145,13 +145,13 @@ const StudentDashboard = () => {
                     { label: 'Hours Learned', value: stats.time, icon: Clock, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
                     { label: 'Avg Progress', value: stats.avgScore, icon: BarChart, color: 'text-purple-500', bg: 'bg-purple-500/10' },
                 ].map((stat, i) => (
-                    <div key={i} className="premium-reveal glass-card-premium p-6 flex items-center gap-5 border border-white/5">
-                        <div className={`p-4 rounded-2xl ${stat.bg} ${stat.color} shrink-0`}>
-                            <stat.icon size={24} />
+                    <div key={i} className="premium-reveal stat-badge">
+                        <div className={`p-5 rounded-[22px] ${stat.bg} ${stat.color} mb-6 shadow-xl`}>
+                            <stat.icon size={28} />
                         </div>
                         <div>
-                            <p className="text-2xl font-black text-white tracking-tighter">{stat.value}</p>
-                            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">{stat.label}</p>
+                            <p className="text-4xl font-black text-white tracking-tighter leading-none mb-2">{stat.value}</p>
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">{stat.label}</p>
                         </div>
                     </div>
                 ))}
