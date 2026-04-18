@@ -121,7 +121,7 @@ const ChatPanel = () => {
 
     const filteredChats = chats.filter(c => {
         const otherParticipant = c.participants.find(p => p._id !== user._id);
-        const nameToSearch = otherParticipant ? otherParticipant.name : (c.guestId ? `Guest ${c.guestId.slice(-4)}` : 'Unknown');
+        const nameToSearch = otherParticipant?.name || (c.guestId ? `Guest ${c.guestId.slice(-4)}` : 'Unknown');
         return nameToSearch.toLowerCase().includes(search.toLowerCase());
     });
 

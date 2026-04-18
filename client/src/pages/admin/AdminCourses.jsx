@@ -149,7 +149,7 @@ const AdminCourses = () => {
     };
 
     const filteredCourses = courses.filter(c =>
-        c.title?.toLowerCase().includes(search.toLowerCase())
+        (c.title || '').toLowerCase().includes(search.toLowerCase())
     );
 
     if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div></div>;

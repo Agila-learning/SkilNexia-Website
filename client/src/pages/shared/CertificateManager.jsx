@@ -45,9 +45,9 @@ const CertificateManager = () => {
     const filtered = enrollments.filter(e => {
         const q = search.toLowerCase();
         return (
-            e.student?.name?.toLowerCase().includes(q) ||
-            e.student?.email?.toLowerCase().includes(q) ||
-            e.batch?.course?.title?.toLowerCase().includes(q)
+            (e.student?.name || '').toLowerCase().includes(q) ||
+            (e.student?.email || '').toLowerCase().includes(q) ||
+            (e.batch?.course?.title || '').toLowerCase().includes(q)
         );
     });
 

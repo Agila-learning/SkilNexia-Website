@@ -81,8 +81,8 @@ const HRDashboard = () => {
     };
 
     const filteredLeads = leads.filter(l => {
-        const matchesSearch = l.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            l.email?.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesSearch = (l.fullName || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            (l.email || '').toLowerCase().includes(searchQuery.toLowerCase());
         const matchesTab = activeTab === 'all' || 
                          (activeTab === 'pipeline' && ['Interview Scheduled', 'Offer Extended', 'Converted'].includes(l.status)) ||
                          (activeTab === 'referrals' && l.source === 'Referral');

@@ -22,10 +22,10 @@ const AdminPayments = () => {
     }, []);
 
     const filteredPayments = payments.filter(p =>
-        p.student?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.student?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.enrollment?.batch?.course?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.razorpayOrderId?.toLowerCase().includes(searchTerm.toLowerCase())
+        (p.student?.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (p.student?.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (p.enrollment?.batch?.course?.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (p.razorpayOrderId || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading) {

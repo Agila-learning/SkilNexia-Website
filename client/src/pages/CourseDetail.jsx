@@ -42,7 +42,9 @@ const CourseDetail = () => {
                 }
             } catch (error) {
                 console.error("Failed to fetch course detail from API, trying static fallback:", error);
-                const staticCourse = COURSE_CATEGORIES.find(c => c.id.toLowerCase() === courseId.toLowerCase());
+                const staticCourse = COURSE_CATEGORIES.find(c => 
+                    (c.id || '').toLowerCase() === (courseId || '').toLowerCase()
+                );
                 if (staticCourse) {
                     setCourse(staticCourse);
                 } else {
