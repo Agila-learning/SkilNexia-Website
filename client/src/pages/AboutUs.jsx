@@ -93,12 +93,15 @@ const AboutUs = () => {
             {/* 1. ULTRA PREMIUM HERO SECTION */}
             <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-slate-950">
                 <div className="absolute inset-0 z-0">
-                    <img src={HERO_IMG} className="w-full h-full object-cover opacity-90 scale-105" alt="Skilnexia Tech Lab" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                    <img src={HERO_IMG} className="w-full h-full object-cover opacity-60 scale-105" alt="Skilnexia Tech Lab" />
+                    {/* Multi-layered atmospheric glows */}
+                    <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-600/20 blur-[180px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                    <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-500/10 blur-[150px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/80 to-slate-950"></div>
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 relative z-10 text-center hero-content">
-                    <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent-500/20 border border-accent-500/50 text-white text-[11px] font-black uppercase tracking-[0.4em] mb-12 backdrop-blur-xl">
+                    <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.4em] mb-12 backdrop-blur-2xl shadow-2xl">
                         <Zap size={14} className="animate-pulse text-accent-400" /> The Skilnexia Identity
                     </div>
                     <h1 className="text-5xl md:text-9xl font-black text-white mb-10 leading-[0.9] tracking-tighter uppercase">
@@ -108,7 +111,7 @@ const AboutUs = () => {
                         We don't just teach code; we engineer the cognitive infrastructure required to lead in the global tech hierarchy. Welcome to the elite tier of career evolution.
                     </p>
                     <div className="flex flex-wrap justify-center gap-8">
-                        <button onClick={() => setIsRegisterOpen(true)} className="px-14 py-6 bg-white text-slate-950 rounded-[32px] font-black text-lg uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-3xl active:scale-95">Enter Ecosystem</button>
+                        <button onClick={() => setIsRegisterOpen(true)} className="px-14 py-6 bg-white text-slate-950 rounded-[32px] font-black text-lg uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-[0_20px_60px_-15px_rgba(255,255,255,0.2)] active:scale-95">Enter Ecosystem</button>
                         <Link to="/contact" className="px-14 py-6 bg-white/5 border border-white/20 text-white rounded-[32px] font-black text-lg uppercase tracking-widest hover:bg-white/10 transition-all backdrop-blur-xl">Talk to Visionaries</Link>
                     </div>
                 </div>

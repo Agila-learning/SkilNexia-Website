@@ -249,9 +249,8 @@ const TrainerDashboard = () => {
                     </div>
                     
                     <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                        {batches.length === 0 ? (
                             <div className="p-12 text-center border border-white/5 bg-slate-900 rounded-[32px]">
-                                <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">No active stream nodes detected.</p>
+                                <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No active batches detected.</p>
                             </div>
                         ) : (
                             batches.map((batch) => (
@@ -268,7 +267,7 @@ const TrainerDashboard = () => {
                                             </div>
                                             <div className="overflow-hidden">
                                                 <h4 className="text-white font-black text-base truncate uppercase tracking-tight">{batch.course?.title}</h4>
-                                                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">{batch.name}</p>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{batch.name}</p>
                                             </div>
                                         </div>
 

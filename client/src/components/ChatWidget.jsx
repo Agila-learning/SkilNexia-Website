@@ -87,18 +87,28 @@ const ChatWidget = () => {
         }
     }, [messages]);
 
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-        if (!input.trim() || !activeChat) return;
+    const handleSendMessage = (e, customContent) => {
+        if (e) e.preventDefault();
+        const content = customContent || input;
+        if (!content.trim() || !activeChat) return;
 
         const messageData = {
             chatId: activeChat._id,
             senderId: currentUserId,
-            content: input
+            content: content,
+            createdAt: new Date().toISOString()
         };
 
+        // Optimistic UI Update
+        const optimisticMessage = {
+            ...messageData,
+            _id: Date.now().toString(),
+            sender: currentUserId
+        };
+        setMessages(prev => [...prev, optimisticMessage]);
+
         socket.current.emit('send_message', messageData);
-        setInput('');
+        if (!customContent) setInput('');
     };
 
     const handleFileUpload = async (e) => {
@@ -297,16 +307,10 @@ const ChatWidget = () => {
                                         <Send size={24} className="-mr-1 -mt-1" />
                                     </button>
                                 </form>
-                                <div className="flex items-center gap-4 mt-4">
-                                    <button type="button" onClick={() => {
-                                        if (activeChat) socket.current.emit('send_message', { chatId: activeChat._id, senderId: currentUserId, content: 'Course Help' });
-                                    }} className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-primary-900 transition-colors">Course Help</button>
-                                    <button type="button" onClick={() => {
-                                        if (activeChat) socket.current.emit('send_message', { chatId: activeChat._id, senderId: currentUserId, content: 'Technical Issue' });
-                                    }} className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-primary-900 transition-colors">Technical Issue</button>
-                                    <button type="button" onClick={() => {
-                                        if (activeChat) socket.current.emit('send_message', { chatId: activeChat._id, senderId: currentUserId, content: 'Pricing' });
-                                    }} className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-primary-900 transition-colors">Pricing</button>
+                                <div className="flex flex-wrap items-center gap-3 mt-4">
+                                    <button type="button" onClick={() => handleSendMessage(null, 'Course Help')} className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-black text-slate-500 uppercase tracking-widest hover:bg-primary-900 hover:text-white hover:border-primary-900 transition-all">Course Help</button>
+                                    <button type="button" onClick={() => handleSendMessage(null, 'Technical Issue')} className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-black text-slate-500 uppercase tracking-widest hover:bg-primary-900 hover:text-white hover:border-primary-900 transition-all">Technical Issue</button>
+                                    <button type="button" onClick={() => handleSendMessage(null, 'Pricing')} className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-black text-slate-500 uppercase tracking-widest hover:bg-primary-900 hover:text-white hover:border-primary-900 transition-all">Pricing</button>
                                 </div>
                             </div>
                         </>

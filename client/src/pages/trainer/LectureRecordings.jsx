@@ -82,8 +82,8 @@ const LectureRecordings = () => {
         <div className="animate-fade-in space-y-8">
             <div className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 mb-1 tracking-tight uppercase">Lecture Recordings</h1>
-                    <p className="text-slate-500 font-medium">Review and manage session recordings for all your active cohorts.</p>
+                    <h1 className="text-3xl font-black text-white mb-1 tracking-tight uppercase">Lecture Recordings</h1>
+                    <p className="text-slate-400 font-medium">Review and manage session recordings for all your active cohorts.</p>
                 </div>
             </div>
 
@@ -149,11 +149,9 @@ const LectureRecordings = () => {
                     </div>
                 ))}
 
-                {batches.length === 0 && (
-                    <div className="text-center py-20 bg-slate-50 rounded-[40px] border border-slate-200 border-dashed">
+                    <div className="text-center py-20 bg-slate-900/50 rounded-[40px] border border-white/5 border-dashed">
                         <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No batches found currently</p>
                     </div>
-                )}
             </div>
 
             {/* Upload Modal */}

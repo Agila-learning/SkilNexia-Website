@@ -25,8 +25,8 @@ const MyBatches = () => {
     return (
         <div className="animate-fade-in space-y-8">
             <div>
-                <h1 className="text-3xl font-black text-slate-900 mb-1 tracking-tight uppercase">My active Batches</h1>
-                <p className="text-slate-500 font-medium">Manage your cohorts, monitor student performance and track curriculum coverage.</p>
+                <h1 className="text-3xl font-black text-white mb-1 tracking-tight uppercase">My active Batches</h1>
+                <p className="text-slate-400 font-medium">Manage your cohorts, monitor student performance and track curriculum coverage.</p>
             </div>
 
             <div className="grid grid-cols-1 gap-6">
