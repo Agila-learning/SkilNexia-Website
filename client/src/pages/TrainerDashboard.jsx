@@ -249,6 +249,7 @@ const TrainerDashboard = () => {
                     </div>
                     
                     <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                        {batches.length === 0 ? (
                             <div className="p-12 text-center border border-white/5 bg-slate-900 rounded-[32px]">
                                 <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No active batches detected.</p>
                             </div>

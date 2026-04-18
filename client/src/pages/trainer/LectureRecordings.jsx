@@ -149,9 +149,11 @@ const LectureRecordings = () => {
                     </div>
                 ))}
 
+                {batches.length === 0 && (
                     <div className="text-center py-20 bg-slate-900/50 rounded-[40px] border border-white/5 border-dashed">
                         <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No batches found currently</p>
                     </div>
+                )}
             </div>
 
             {/* Upload Modal */}
