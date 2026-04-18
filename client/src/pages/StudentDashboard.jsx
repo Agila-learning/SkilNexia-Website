@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
     PlayCircle, Clock, Trophy, BarChart, BookOpen, ChevronRight, 
     CreditCard, Download, FileText, Send, ExternalLink, Award, 
-    Zap, CheckCircle, Bell, Target, Users, Layout, Medal, Crown 
+    Zap, CheckCircle, Bell, Target, Users, Layout, Medal, Crown, Shield, Globe, Rocket, Share2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
@@ -66,19 +66,27 @@ const StudentDashboard = () => {
                 const lbRes = await api.get(`/enrollments/leaderboard/${enrData[0].batch.course._id}`);
                 setLeaderboard(lbRes.data);
             }
-
-            // Animation
-            gsap.fromTo('.premium-reveal',
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power4.out' }
-            );
-
         } catch (error) {
             console.error("Dashboard fetch error:", error);
         } finally {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (!loading) {
+            const ctx = gsap.context(() => {
+                const targets = gsap.utils.toArray('.premium-reveal');
+                if (targets.length > 0) {
+                    gsap.fromTo(targets,
+                        { opacity: 0, y: 30 },
+                        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power4.out' }
+                    );
+                }
+            });
+            return () => ctx.revert();
+        }
+    }, [loading]);
 
     const markRead = async (id) => {
         try {
@@ -103,7 +111,7 @@ const StudentDashboard = () => {
             
             {/* 1. HERO SECTION */}
             {currentCourse ? (
-                <div className="premium-reveal relative w-full rounded-[40px] overflow-hidden bg-slate-900 border border-white/5 shadow-2xl">
+                <div className="premium-reveal relative w-full rounded-[40px] overflow-hidden bg-slate-900 border border-white/5 shadow-2xl group">
                     <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-transparent z-10"></div>
                     <img 
                         src={currentCourse.batch?.course?.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200'} 
@@ -128,12 +136,28 @@ const StudentDashboard = () => {
                     </div>
                 </div>
             ) : (
-                <div className="premium-reveal p-16 rounded-[40px] bg-white/5 border border-white/5 text-center space-y-6">
-                    <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto text-slate-500">
-                        <BookOpen size={40} />
+                <div className="premium-reveal relative overflow-hidden p-12 md:p-20 rounded-[40px] bg-slate-900 border border-white/10 text-center space-y-8 group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent-500/10 via-transparent to-blue-500/10 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative z-10 max-w-3xl mx-auto space-y-8">
+                        <div className="w-24 h-24 bg-gradient-to-tr from-accent-500 to-primary-600 rounded-3xl flex items-center justify-center mx-auto text-white shadow-2xl rotate-3 group-hover:rotate-6 transition-transform">
+                            <Rocket size={44} />
+                        </div>
+                        <div className="space-y-4">
+                            <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">Initiate Your <span className="text-accent-500">Evolution</span></h2>
+                            <p className="text-slate-400 text-lg font-medium leading-relaxed">
+                                Explore our <span className="text-white">Elite Free Programs</span>. Learn high-value skills, earn verified certificates, and showcase your mastery across global professional networks.
+                            </p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <Link to="/courses" className="px-10 py-5 bg-white text-slate-950 rounded-2xl font-black uppercase tracking-widest hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95 flex items-center gap-3">
+                                <Globe size={18} /> Explore Nodes
+                            </Link>
+                            <div className="flex items-center gap-4 text-slate-500">
+                                <Share2 size={18} className="animate-bounce" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em]">Share Your Mastery</span>
+                            </div>
+                        </div>
                     </div>
-                    <h2 className="text-2xl font-black text-white uppercase tracking-tight">Begin Your Evolution</h2>
-                    <Link to="/courses" className="inline-flex px-8 py-3 bg-accent-500 text-white rounded-xl font-bold uppercase text-xs tracking-widest">Browse Programs</Link>
                 </div>
             )}
 

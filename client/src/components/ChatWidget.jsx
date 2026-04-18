@@ -50,9 +50,9 @@ const ChatWidget = () => {
             // Initial call to get/create chat
             const initChat = async () => {
                 try {
-                    // Students chat with support (automatically assigned admin in backend)
                     const res = await api.post('/chats', {
-                        topic: 'Course Support'
+                        topic: 'Course Support',
+                        guestId: guestId // Send guestId for unauthenticated users
                     });
                     setActiveChat(res.data.data);
 
