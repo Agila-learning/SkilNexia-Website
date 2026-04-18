@@ -71,17 +71,19 @@ const Courses = () => {
                 );
             });
 
-            gsap.utils.toArray('.course-card').forEach(el => {
+            gsap.utils.toArray('.course-card').forEach((el, i) => {
                 gsap.fromTo(el,
-                    { opacity: 0, y: 30 },
+                    { opacity: 0, y: 50, scale: 0.95, rotationX: -10 },
                     {
                         opacity: 1,
                         y: 0,
-                        duration: 0.6,
-                        ease: 'power2.out',
+                        scale: 1,
+                        rotationX: 0,
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
                         scrollTrigger: {
                             trigger: el,
-                            start: 'top 95%'
+                            start: 'top 90%'
                         }
                     }
                 );
@@ -137,15 +139,15 @@ const Courses = () => {
                 <div className="glass-card-premium p-6 flex flex-col lg:flex-row gap-8 items-center justify-between border-t-4 border-t-blue-500/30">
                     
                     {/* Category Filter - Glassmorphism Aesthetic */}
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto no-scrollbar">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-4 lg:pb-0 w-full lg:w-auto scrollbar-hide md:flex-wrap">
                         {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 whitespace-nowrap ${
+                                className={`px-4 md:px-6 py-2.5 md:py-3.5 rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 shrink-0 ${
                                     activeCategory === cat 
                                     ? 'bg-white text-slate-950 shadow-xl' 
-                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
                             >
                                 {cat}

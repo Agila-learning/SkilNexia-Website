@@ -13,6 +13,8 @@ const createTransporter = () => nodemailer.createTransport({
     }
 });
 
+const PDFDocument = require('pdfkit');
+
 const sendCertificateEmail = async (toEmail, studentName, courseTitle, certificateId) => {
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
         console.warn('[Email] EMAIL_USER or EMAIL_PASS not set. Skipping certificate email.');
@@ -20,6 +22,50 @@ const sendCertificateEmail = async (toEmail, studentName, courseTitle, certifica
     }
     try {
         const transporter = createTransporter();
+
+        // Generate PDF in memory
+        const doc = new PDFDocument({
+            layout: 'landscape',
+            size: 'A4',
+        });
+
+        let buffers = [];
+        doc.on('data', buffers.push.bind(buffers));
+        
+        // Simple PDF Design
+        doc.rect(0, 0, doc.page.width, doc.page.height).fill('#f8fafc');
+        doc.rect(20, 20, doc.page.width - 40, doc.page.height - 40).stroke('#1e293b').lineWidth(10);
+        
+        doc.fillColor('#0f172a').fontSize(40).text('SkilNexia', { align: 'center' }, 80);
+        doc.fontSize(15).fillColor('#64748b').text('Academy of Advanced Engineering', { align: 'center' });
+        doc.moveDown(2);
+        
+        doc.fontSize(30).fillColor('#334155').text('Certificate of Completion', { align: 'center' });
+        doc.moveDown(1);
+        
+        doc.fontSize(15).fillColor('#64748b').text('This is to certify that', { align: 'center' });
+        doc.moveDown(0.5);
+        
+        doc.fontSize(35).fillColor('#0f172a').text(studentName, { align: 'center' });
+        doc.moveDown(0.5);
+        
+        doc.fontSize(15).fillColor('#64748b').text('has successfully completed the program in', { align: 'center' });
+        doc.moveDown(0.5);
+        
+        doc.fontSize(25).fillColor('#2563eb').text(courseTitle, { align: 'center' });
+        doc.moveDown(3);
+        
+        doc.fontSize(12).fillColor('#94a3b8').text(`Certificate ID: ${certificateId}`, 50, doc.page.height - 80);
+        doc.text(`Issue Date: ${new Date().toLocaleDateString()}`, doc.page.width - 200, doc.page.height - 80);
+        
+        doc.end();
+
+        const pdfBuffer = await new Promise((resolve) => {
+            doc.on('end', () => {
+                resolve(Buffer.concat(buffers));
+            });
+        });
+
         await transporter.sendMail({
             from: `"SkilNexia" <${process.env.EMAIL_USER}>`,
             to: toEmail,
@@ -32,6 +78,7 @@ const sendCertificateEmail = async (toEmail, studentName, courseTitle, certifica
                         </div>
                         <div style="padding:40px;">
                             <p style="color:#334155; font-size:16px; line-height:1.6;">You have successfully completed <strong>${courseTitle}</strong> on <strong>SkilNexia</strong>.</p>
+                            <p style="color:#334155; font-size:16px; line-height:1.6;">Please find your official certificate attached to this email.</p>
                             <div style="background:#f1f5f9; border-radius:16px; padding:24px; margin:24px 0; text-align:center;">
                                 <p style="color:#64748b; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin:0 0 8px;">Certificate ID</p>
                                 <p style="color:#1e293b; font-size:24px; font-weight:900; margin:0; font-family:monospace;">${certificateId}</p>
@@ -41,7 +88,14 @@ const sendCertificateEmail = async (toEmail, studentName, courseTitle, certifica
                         </div>
                     </div>
                 </div>
-            `
+            `,
+            attachments: [
+                {
+                    filename: `${studentName.replace(/\s+/g, '_')}_Certificate.pdf`,
+                    content: pdfBuffer,
+                    contentType: 'application/pdf'
+                }
+            ]
         });
         console.log(`[Email] Certificate email sent to ${toEmail}`);
     } catch (err) {

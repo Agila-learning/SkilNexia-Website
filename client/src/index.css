@@ -10,8 +10,21 @@ html {
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-50 font-sans antialiased selection:bg-primary-500/30;
+    @apply bg-slate-950 text-slate-50 font-sans antialiased selection:bg-primary-500/30 transition-colors duration-500;
   }
+}
+
+/* Light Theme Toggle via CSS Filter */
+html.light-theme {
+  filter: invert(1) hue-rotate(180deg);
+  background-color: #f8fafc; /* Inverted slate-950 is close to this */
+}
+
+html.light-theme img,
+html.light-theme video,
+html.light-theme iframe,
+html.light-theme .lottie-animation {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 @layer components {

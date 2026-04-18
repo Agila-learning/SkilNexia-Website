@@ -12,6 +12,14 @@ const Contact = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        if (window.location.hash === '#contact-form') {
+            setTimeout(() => {
+                const element = document.getElementById('contact-form');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 500);
+        }
         const ctx = gsap.context(() => {
             gsap.utils.toArray('.reveal-up').forEach((elem) => {
                 gsap.fromTo(elem,

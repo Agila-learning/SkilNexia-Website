@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
-import { Search, Send, User, MessageCircle, Clock, CheckCircle, ChevronRight, X } from 'lucide-react';
+import { Search, Send, User, MessageCircle, Clock, CheckCircle, ChevronRight, X, ArrowLeft } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import gsap from 'gsap';
@@ -15,6 +15,7 @@ const ChatPanel = () => {
     const [search, setSearch] = useState('');
     const [availableUsers, setAvailableUsers] = useState([]);
     const [showUserList, setShowUserList] = useState(false);
+    const [isMobileListVisible, setIsMobileListVisible] = useState(true);
 
     const socket = useRef(null);
     const scrollRef = useRef(null);
@@ -32,9 +33,12 @@ const ChatPanel = () => {
         socket.current = io(socketUrl);
 
         socket.current.on('receive_message', (message) => {
-            if (selectedChat && message.chatId === selectedChat._id) {
-                setMessages((prev) => [...prev, message]);
-            }
+            setMessages((prev) => {
+                // Prevent duplicate messages
+                if (prev.find(m => m._id === message._id)) return prev;
+                return [...prev, message];
+            });
+            
             // Update latest message in chat list
             setChats(prev => prev.map(c =>
                 c._id === message.chatId ? { ...c, latestMessage: message } : c
@@ -52,12 +56,18 @@ const ChatPanel = () => {
         if (selectedChat) {
             socket.current.emit('join_chat', selectedChat._id);
             fetchMessages(selectedChat._id);
+            if (window.innerWidth < 768) {
+                setIsMobileListVisible(false);
+            }
         }
     }, [selectedChat]);
 
     useEffect(() => {
         if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+            scrollRef.current.scrollTo({
+                top: scrollRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
         }
     }, [messages]);
 
@@ -112,24 +122,36 @@ const ChatPanel = () => {
         const messageData = {
             chatId: selectedChat._id,
             senderId: user._id,
-            content: input
+            content: input,
+            createdAt: new Date().toISOString()
         };
+
+        // Optimistic UI update
+        const tempId = Date.now().toString();
+        const optimisticMessage = { ...messageData, _id: tempId, sender: { _id: user._id, name: user.name } };
+        setMessages(prev => [...prev, optimisticMessage]);
 
         socket.current.emit('send_message', messageData);
         setInput('');
+
+        // Update latest message in list
+        setChats(prev => prev.map(c =>
+            c._id === selectedChat._id ? { ...c, latestMessage: optimisticMessage } : c
+        ));
     };
 
     const filteredChats = chats.filter(c => {
         const otherParticipant = c.participants.find(p => p._id !== user._id);
         const nameToSearch = otherParticipant?.name || (c.guestId ? `Guest ${c.guestId.slice(-4)}` : 'Unknown');
-        return nameToSearch.toLowerCase().includes(search.toLowerCase());
+        return (nameToSearch || '').toLowerCase().includes(search.toLowerCase());
     });
 
     return (
-        <div className="flex h-[calc(100vh-180px)] glass-card-premium border border-white/5 rounded-[40px] overflow-hidden shadow-2xl animate-fade-in bg-slate-900/40">
+        <div className="flex h-[calc(100vh-120px)] md:h-[calc(100vh-180px)] glass-card-premium border border-white/5 rounded-[24px] md:rounded-[40px] overflow-hidden shadow-2xl animate-fade-in bg-slate-900/40 relative">
+            
             {/* Left Column: Chat List */}
-            <div className="w-80 border-r border-white/5 flex flex-col bg-slate-950/20">
-                <div className="p-8 border-b border-white/5 bg-slate-900/40">
+            <div className={`w-full md:w-80 border-r border-white/5 flex flex-col bg-slate-950/20 absolute md:relative z-30 h-full transition-transform duration-300 ${isMobileListVisible ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+                <div className="p-6 md:p-8 border-b border-white/5 bg-slate-900/40">
                     <h2 className="text-xl font-black text-white uppercase tracking-tight mb-6">Support Inbox</h2>
                     <div className="relative">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
@@ -168,13 +190,13 @@ const ChatPanel = () => {
                                 <button
                                     key={chat._id}
                                     onClick={() => setSelectedChat(chat)}
-                                    className={`w-full p-5 rounded-3xl flex items-center gap-4 transition-all group ${isActive ? 'bg-white/10 shadow-xl border border-white/10' : 'hover:bg-white/5 border border-transparent'}`}
+                                    className={`w-full p-4 md:p-5 rounded-2xl md:rounded-3xl flex items-center gap-4 transition-all group ${isActive ? 'bg-white/10 shadow-xl border border-white/10' : 'hover:bg-white/5 border border-transparent'}`}
                                 >
                                     <div className="relative shrink-0">
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white shadow-lg border border-white/10 group-hover:scale-105 transition-transform ${isActive ? 'bg-accent-500' : 'bg-slate-800'}`}>
+                                        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center font-black text-white shadow-lg border border-white/10 group-hover:scale-105 transition-transform ${isActive ? 'bg-accent-500' : 'bg-slate-800'}`}>
                                             {displayName.charAt(0).toUpperCase()}
                                         </div>
-                                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-[3px] border-slate-900"></div>
+                                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900"></div>
                                     </div>
                                     <div className="flex-grow text-left overflow-hidden">
                                         <div className="flex justify-between items-center mb-1">
@@ -191,52 +213,54 @@ const ChatPanel = () => {
             </div>
 
             {/* Right Column: Chat Window */}
-            <div className="flex-grow flex flex-col bg-slate-950/20">
+            <div className={`flex-grow flex flex-col bg-slate-950/20 absolute md:relative inset-0 z-20 transition-transform duration-300 ${!isMobileListVisible ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}`}>
                 {selectedChat ? (
                     <>
                         {/* Chat Header */}
-                        <div className="p-8 border-b border-white/5 flex items-center justify-between bg-slate-900/40">
-                            <div className="flex items-center gap-5">
-                                <div className="w-14 h-14 rounded-[20px] bg-white text-slate-950 flex items-center justify-center font-black text-xl shadow-2xl shadow-white/5">
+                        <div className="p-4 md:p-8 border-b border-white/5 flex items-center justify-between bg-slate-900/40">
+                            <div className="flex items-center gap-3 md:gap-5">
+                                <button 
+                                    onClick={() => setIsMobileListVisible(true)}
+                                    className="p-2 -ml-2 md:hidden text-slate-400 hover:text-white"
+                                >
+                                    <ArrowLeft size={20} />
+                                </button>
+                                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-[20px] bg-white text-slate-950 flex items-center justify-center font-black text-lg md:text-xl shadow-2xl shadow-white/5">
                                     {selectedChat.participants.find(p => p._id !== user._id)?.name?.charAt(0) || 'G'}
                                 </div>
-                                <div>
-                                    <h3 className="text-base font-black text-white uppercase tracking-tight">
+                                <div className="overflow-hidden">
+                                    <h3 className="text-sm md:text-base font-black text-white uppercase tracking-tight truncate">
                                         {selectedChat.participants.find(p => p._id !== user._id)?.name || (selectedChat.guestId ? `GUEST NODE ${selectedChat.guestId.slice(-4)}` : 'ACTIVE TRANSMISSION')}
                                     </h3>
                                     <div className="flex items-center gap-2 mt-1">
                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                                        <p className="text-[9px] font-black text-emerald-500 uppercase tracking-[0.2em]">Operational · Secure Link</p>
+                                        <p className="text-[8px] md:text-[9px] font-black text-emerald-500 uppercase tracking-[0.2em]">Operational · Secure Link</p>
                                     </div>
                                 </div>
                             </div>
-                             <div className="flex gap-3">
+                             <div className="flex gap-2 md:gap-3">
                                 <button 
-                                    onClick={() => alert('Session log history is being compiled...')}
-                                    title="Session Log" 
-                                    className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-slate-500 hover:text-white hover:bg-white/10 transition-all"
+                                    className="p-2 md:p-3.5 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 text-slate-500 hover:text-white hover:bg-white/10 transition-all"
                                 >
-                                    <Clock size={18} />
+                                    <Clock size={16} md:size={18} />
                                 </button>
                                 <button 
-                                    onClick={() => alert('Marking thread as resolved...')}
-                                    title="Resolve Thread" 
-                                    className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
+                                    className="p-2 md:p-3.5 rounded-xl md:rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
                                 >
-                                    <CheckCircle size={18} />
+                                    <CheckCircle size={16} md:size={18} />
                                 </button>
                             </div>
                         </div>
 
                         {/* Messages Area */}
-                        <div ref={scrollRef} className="flex-grow overflow-y-auto p-10 space-y-8 no-scrollbar bg-slate-950/40">
+                        <div ref={scrollRef} className="flex-grow overflow-y-auto p-4 md:p-10 space-y-6 md:space-y-8 no-scrollbar bg-slate-950/40">
                             {messages.map((m, i) => {
                                 const senderId = m.sender?._id || m.sender;
                                 const isMe = senderId === user._id;
                                 return (
                                     <div key={m._id || i} className={`flex ${isMe ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}>
-                                        <div className={`max-w-[75%] space-y-2 ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
-                                            <div className={`p-5 rounded-[24px] text-sm font-medium shadow-2xl ${isMe ? 'bg-white text-slate-950 rounded-br-none' : 'bg-slate-800 text-slate-100 border border-white/5 rounded-bl-none'}`}>
+                                        <div className={`max-w-[85%] md:max-w-[75%] space-y-2 ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
+                                            <div className={`p-4 md:p-5 rounded-[20px] md:rounded-[24px] text-sm font-medium shadow-2xl ${isMe ? 'bg-white text-slate-950 rounded-br-none' : 'bg-slate-800 text-slate-100 border border-white/5 rounded-bl-none'}`}>
                                                 {m.content}
                                             </div>
                                             <p className="text-[8px] font-black text-slate-600 uppercase tracking-[0.2em] px-2">
@@ -249,21 +273,21 @@ const ChatPanel = () => {
                         </div>
 
                         {/* Chat Input */}
-                        <div className="p-8 border-t border-white/5 bg-slate-900/40">
-                            <form onSubmit={handleSendMessage} className="flex gap-4">
+                        <div className="p-4 md:p-8 border-t border-white/5 bg-slate-900/40">
+                            <form onSubmit={handleSendMessage} className="flex gap-3 md:gap-4">
                                 <input
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Transmit response node..."
-                                    className="flex-grow px-8 py-5 bg-white/5 border border-white/10 rounded-[22px] text-sm font-bold text-white placeholder-slate-700 focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/30 transition-all outline-none"
+                                    placeholder="Transmit response..."
+                                    className="flex-grow px-4 md:px-8 py-4 md:py-5 bg-white/5 border border-white/10 rounded-[18px] md:rounded-[22px] text-sm font-bold text-white placeholder-slate-700 focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/30 transition-all outline-none"
                                 />
                                 <button
                                     type="submit"
                                     disabled={!input.trim()}
-                                    className="px-10 bg-white text-slate-950 rounded-[22px] flex items-center justify-center font-black uppercase text-[10px] tracking-[0.2em] hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95 disabled:opacity-30"
+                                    className="px-6 md:px-10 bg-white text-slate-950 rounded-[18px] md:rounded-[22px] flex items-center justify-center font-black uppercase text-[10px] tracking-[0.2em] hover:bg-accent-500 hover:text-white transition-all shadow-2xl active:scale-95 disabled:opacity-30"
                                 >
-                                    <Send size={16} className="mr-3" /> Execute
+                                    <Send size={16} className="md:mr-3" /> <span className="hidden md:inline">Execute</span>
                                 </button>
                             </form>
                         </div>
@@ -272,36 +296,42 @@ const ChatPanel = () => {
                     <div className="flex-grow flex flex-col items-center justify-center p-12 text-center">
                         <div className="relative mb-10">
                             <div className="absolute inset-0 bg-accent-500/20 blur-[60px] rounded-full animate-pulse"></div>
-                            <div className="relative w-28 h-28 bg-slate-900 rounded-[44px] shadow-2xl border border-white/10 flex items-center justify-center text-slate-700">
-                                <MessageCircle size={56} className="text-accent-500/50" />
+                            <div className="relative w-20 h-20 md:w-28 md:h-28 bg-slate-900 rounded-[32px] md:rounded-[44px] shadow-2xl border border-white/10 flex items-center justify-center text-slate-700">
+                                <MessageCircle size={40} md:size={56} className="text-accent-500/50" />
                             </div>
                         </div>
-                        <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Initialize Link</h3>
+                        <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter mb-4">Initialize Link</h3>
                         <p className="text-slate-500 font-bold uppercase tracking-[0.3em] text-[10px] max-w-sm leading-relaxed">Select an active transmission node from the payload list to establish a secure support link.</p>
+                        <button 
+                            onClick={() => setIsMobileListVisible(true)}
+                            className="mt-8 px-8 py-3 bg-white/5 border border-white/10 text-white rounded-xl text-[10px] font-black uppercase tracking-widest md:hidden"
+                        >
+                            Show Node List
+                        </button>
                     </div>
                 )}
             </div>
 
             {/* User Selection Modal */}
             {showUserList && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
                     <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={() => setShowUserList(false)}></div>
-                    <div className="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[40px] shadow-3xl overflow-hidden flex flex-col max-h-[80vh]">
-                        <div className="p-8 border-b border-white/5 flex items-center justify-between">
+                    <div className="relative w-full max-w-lg bg-slate-900 border border-white/10 rounded-[30px] md:rounded-[40px] shadow-3xl overflow-hidden flex flex-col max-h-[80vh]">
+                        <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between">
                             <div>
-                                <h3 className="text-xl font-black text-white uppercase tracking-tight">Select Transmission Node</h3>
+                                <h3 className="text-lg md:text-xl font-black text-white uppercase tracking-tight">Select Transmission Node</h3>
                                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Initialize secure communication channel</p>
                             </div>
-                            <button onClick={() => setShowUserList(false)} className="p-3 bg-white/5 rounded-2xl text-slate-400 hover:text-white transition-all"><X size={20} /></button>
+                            <button onClick={() => setShowUserList(false)} className="p-2 bg-white/5 rounded-xl text-slate-400 hover:text-white transition-all"><X size={20} /></button>
                         </div>
-                        <div className="flex-grow overflow-y-auto p-6 space-y-3 no-scrollbar">
+                        <div className="flex-grow overflow-y-auto p-4 md:p-6 space-y-3 no-scrollbar">
                             {availableUsers.map(u => (
                                 <button
                                     key={u._id}
                                     onClick={() => startNewChat(u._id)}
-                                    className="w-full p-4 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 flex items-center gap-4 transition-all group"
+                                    className="w-full p-4 rounded-2xl md:rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 flex items-center gap-4 transition-all group"
                                 >
-                                    <div className="w-12 h-12 rounded-2xl bg-accent-500 flex items-center justify-center text-white font-black group-hover:scale-105 transition-transform">
+                                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-accent-500 flex items-center justify-center text-white font-black group-hover:scale-105 transition-transform">
                                         {u.name?.charAt(0)}
                                     </div>
                                     <div className="text-left">
@@ -320,3 +350,4 @@ const ChatPanel = () => {
 };
 
 export default ChatPanel;
+

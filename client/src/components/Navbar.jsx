@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, BookOpen, Code, Database, Cpu, Globe, Shield, Zap, Search, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Code, Database, Cpu, Globe, Shield, Zap, Search, ArrowRight, LayoutDashboard, Sun, Moon } from 'lucide-react';
 import { COURSE_CATEGORIES } from '../data/coursesData.jsx';
 import { useAuth } from '../context/AuthContext';
 import gsap from 'gsap';
@@ -9,11 +9,25 @@ const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [showCoursesMenu, setShowCoursesMenu] = useState(false);
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
     const { user, logout } = useAuth();
+
+    useEffect(() => {
+        if (theme === 'light') {
+            document.documentElement.classList.add('light-theme');
+        } else {
+            document.documentElement.classList.remove('light-theme');
+        }
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    };
 
     // Group categories for Mega Menu
     const categories = Array.from(new Set(COURSE_CATEGORIES.map(c => c.category))).slice(0, 6);
@@ -197,6 +211,15 @@ const Navbar = () => {
                             </button>
                         </div>
 
+                        {/* Theme Toggle Button */}
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-colors border border-white/5"
+                            aria-label="Toggle Theme"
+                        >
+                            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                        </button>
+
                         {user ? (
                             <Link
                                 to={`/${user.role === 'admin' ? 'admin' : user.role === 'trainer' ? 'trainer' : user.role === 'hr' ? 'hr' : 'student'}`}
@@ -232,6 +255,13 @@ const Navbar = () => {
                                 Login
                             </Link>
                         )}
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 text-slate-400 bg-white/5 rounded-xl transition-all"
+                            aria-label="Toggle Theme"
+                        >
+                            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                        </button>
                         <button
                             className="p-2 text-white bg-white/10 rounded-xl transition-all hover:bg-white/20"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

@@ -274,9 +274,9 @@ const Home = () => {
                             <Link to="/login" className="btn-premium-outline flex items-center gap-2">
                                 Login to Node <Shield size={16} />
                             </Link>
-                            <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline hidden sm:block">
+                            <Link to="/contact#contact-form" className="btn-premium-outline hidden sm:block">
                                 Book Free Demo
-                            </button>
+                            </Link>
                         </div>
 
                         {/* Trust Indicators in Hero */}
@@ -584,9 +584,9 @@ const Home = () => {
                             <button onClick={() => setIsRegisterOpen(true)} className="btn-premium px-12 py-5 text-xl">
                                 Join Now
                             </button>
-                            <button onClick={() => setIsExpertOpen(true)} className="btn-premium-outline px-12 py-5 text-xl">
+                            <Link to="/contact#contact-form" className="btn-premium-outline px-12 py-5 text-xl">
                                 Talk to Career Expert
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
