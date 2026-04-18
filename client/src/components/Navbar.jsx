@@ -98,9 +98,11 @@ const Navbar = () => {
     return (
         <header
             className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-                (isScrolled || !isHomePage)
-                ? 'bg-slate-950/90 backdrop-blur-md border-b border-white/10 py-3 shadow-2xl' 
-                : 'bg-transparent py-5'
+                isScrolled
+                ? 'bg-slate-950/95 backdrop-blur-xl border-b border-white/10 py-3 shadow-2xl shadow-black/30'
+                : isHomePage
+                    ? 'bg-gradient-to-b from-slate-950/75 via-slate-950/30 to-transparent backdrop-blur-sm border-b border-white/[0.08] py-5'
+                    : 'bg-slate-950/90 backdrop-blur-md border-b border-white/10 py-4'
             }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,7 +131,7 @@ const Navbar = () => {
                                 key={link.name}
                                 to={link.path}
                                 className={`nav-link-item text-[13px] font-semibold tracking-wide transition-all duration-300 relative group py-2 ${
-                                    isActive(link.path) ? 'text-white' : 'text-slate-400 hover:text-white'
+                                    isActive(link.path) ? 'text-white' : 'text-slate-200 hover:text-white'
                                 }`}
                             >
                                 {link.name}
@@ -146,7 +148,7 @@ const Navbar = () => {
                             onMouseLeave={() => setShowCoursesMenu(false)}
                         >
                             <button className={`flex items-center gap-1.5 text-[13px] font-semibold tracking-wide transition-all duration-300 ${
-                                isActive('/courses') ? 'text-white' : 'text-slate-400 hover:text-white'
+                                isActive('/courses') ? 'text-white' : 'text-slate-200 hover:text-white'
                             }`}>
                                 Categories <ChevronDown size={14} className={`transition-transform duration-500 ${showCoursesMenu ? 'rotate-180' : ''}`} />
                             </button>
