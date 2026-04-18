@@ -106,7 +106,7 @@ const Navbar = () => {
 
                     {/* Brand/Logo - Circular Update */}
                     <Link to="/" className="flex items-center gap-3 group nav-brand-reveal perspective-1000">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 logo-circle bg-white p-2">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 logo-circle p-1.5 md:p-2">
                             <img 
                                 id="navbar-logo"
                                 src="/images/logo.png" 
@@ -114,9 +114,12 @@ const Navbar = () => {
                                 className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
                             />
                         </div>
-                        <span className="text-xl lg:text-2xl font-poppins font-bold tracking-tighter text-white">
-                            Skil<span className="text-blue-500">Nexia</span>
-                        </span>
+                        <div className="flex flex-col">
+                            <span className="text-lg lg:text-xl font-poppins font-bold tracking-tighter text-white leading-none">
+                                Skil<span className="text-blue-500">Nexia</span>
+                            </span>
+                            <span className="text-[7px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Vocational Excellence</span>
+                        </div>
                     </Link>
 
                     {/* Desktop Navigation */}

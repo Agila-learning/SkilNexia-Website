@@ -10,7 +10,7 @@ html {
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-50 font-sans antialiased selection:bg-primary-500/30 transition-colors duration-500;
+    @apply bg-slate-950 text-slate-50 font-sans antialiased selection:bg-primary-500/30 transition-colors duration-500 text-[13px] md:text-sm;
   }
 }
 
@@ -32,23 +32,23 @@ html.light-theme .no-invert {
 
 @layer components {
   h1, .h1 {
-    @apply font-poppins font-extrabold text-4xl md:text-6xl lg:text-7xl tracking-tight;
+    @apply font-poppins font-extrabold text-3xl md:text-5xl lg:text-6xl tracking-tight;
   }
 
   h2, .h2 {
-    @apply font-poppins font-bold text-3xl md:text-5xl lg:text-6xl tracking-tight;
+    @apply font-poppins font-bold text-2xl md:text-4xl lg:text-5xl tracking-tight;
   }
 
   h3, .h3 {
-    @apply font-poppins font-semibold text-2xl md:text-3xl lg:text-4xl;
+    @apply font-poppins font-semibold text-xl md:text-2xl lg:text-3xl;
   }
 
   .section-title {
-    @apply text-4xl md:text-6xl font-black text-white tracking-tighter mb-6 uppercase;
+    @apply text-3xl md:text-5xl font-black text-white tracking-tighter mb-4 uppercase;
   }
 
   .section-subtitle {
-    @apply text-slate-400 font-bold text-sm uppercase tracking-[0.3em] mb-4 block;
+    @apply text-slate-400 font-bold text-[10px] uppercase tracking-[0.3em] mb-3 block;
   }
 
   /* Premium Glassmorphism */
@@ -57,7 +57,7 @@ html.light-theme .no-invert {
   }
 
   .glass-card-premium {
-    @apply bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[40px] shadow-2xl transition-all duration-500 relative overflow-hidden;
+    @apply bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[32px] shadow-2xl transition-all duration-500 relative overflow-hidden;
   }
 
   .glass-card-premium::before {
@@ -66,7 +66,7 @@ html.light-theme .no-invert {
   }
 
   .glass-card-premium:hover {
-    @apply border-white/20 -translate-y-2 shadow-white/5 bg-slate-900/60;
+    @apply border-white/20 -translate-y-1 shadow-white/5 bg-slate-900/60;
   }
 
   .glass-card-premium:hover::before {
@@ -74,7 +74,7 @@ html.light-theme .no-invert {
   }
 
   .glass-card-hover {
-    @apply hover:bg-white/10 hover:border-white/20 hover:-translate-y-1 hover:shadow-white/5;
+    @apply hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5 hover:shadow-white/5;
   }
 
   .glass-surface {
@@ -83,11 +83,11 @@ html.light-theme .no-invert {
 
   /* Professional Headings & Text */
   .premium-title {
-    @apply font-poppins font-black text-white uppercase tracking-tighter leading-[0.9] filter drop-shadow-2xl;
+    @apply font-poppins font-black text-white uppercase tracking-tighter leading-[0.9] filter drop-shadow-2xl text-2xl md:text-4xl lg:text-5xl;
   }
 
   .premium-subtitle {
-    @apply text-slate-500 font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block;
+    @apply text-slate-500 font-bold text-[8px] uppercase tracking-[0.3em] mb-3 block;
   }
 
   /* New Utility Tokens */
@@ -100,45 +100,45 @@ html.light-theme .no-invert {
   }
 
   .btn-premium {
-    @apply px-10 py-5 bg-white text-slate-950 rounded-[22px] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 hover:bg-accent-500 hover:text-white shadow-2xl active:scale-95 flex items-center justify-center gap-3;
+    @apply px-8 py-4 bg-white text-slate-950 rounded-2xl font-black text-[9px] uppercase tracking-[0.15em] transition-all duration-500 hover:bg-accent-500 hover:text-white shadow-2xl active:scale-95 flex items-center justify-center gap-2;
   }
 
   .btn-premium-outline {
-    @apply px-10 py-5 bg-white/5 text-white border border-white/10 rounded-[22px] font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 hover:bg-white hover:text-slate-950 shadow-2xl active:scale-95 flex items-center justify-center gap-3 backdrop-blur-xl;
+    @apply px-8 py-4 bg-white/5 text-white border border-white/10 rounded-2xl font-black text-[9px] uppercase tracking-[0.15em] transition-all duration-500 hover:bg-white hover:text-slate-950 shadow-2xl active:scale-95 flex items-center justify-center gap-2 backdrop-blur-xl;
   }
 
   .hero-search-container {
-    @apply relative w-full max-w-2xl mx-auto md:mx-0;
+    @apply relative w-full max-w-xl mx-auto md:mx-0;
   }
 
   .hero-search-input {
-    @apply w-full pl-14 pr-32 py-5 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500/50 backdrop-blur-xl transition-all;
+    @apply w-full pl-12 pr-28 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500/50 backdrop-blur-xl transition-all text-xs;
   }
 
   /* Advanced Form Styling */
   .input-premium {
-    @apply w-full bg-slate-950 border border-white/5 rounded-[22px] px-8 py-5 text-white font-bold outline-none focus:border-accent-500/50 focus:ring-4 focus:ring-accent-500/5 transition-all shadow-inner placeholder:text-slate-800;
+    @apply w-full bg-slate-950 border border-white/5 rounded-2xl px-6 py-4 text-white font-bold outline-none focus:border-accent-500/50 focus:ring-4 focus:ring-accent-500/5 transition-all shadow-inner placeholder:text-slate-800 text-xs;
   }
 
   .label-premium {
-    @apply block text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 mb-3 ml-2;
+    @apply block text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-2 ml-2;
   }
 
   .form-group-premium {
-    @apply relative space-y-2;
+    @apply relative space-y-1.5;
   }
 
   .form-icon-premium {
-    @apply absolute left-5 top-[3.2rem] -translate-y-1/2 text-slate-500 transition-colors pointer-events-none;
+    @apply absolute left-5 top-[2.8rem] -translate-y-1/2 text-slate-500 transition-colors pointer-events-none;
   }
 
   .input-with-icon {
-    @apply pl-14;
+    @apply pl-12;
   }
 
   /* Redefined Logo Styling */
   .logo-circle {
-    @apply relative flex items-center justify-center overflow-hidden rounded-full border-2 border-white/10 shadow-xl;
+    @apply relative flex items-center justify-center overflow-hidden rounded-full border border-white/10 shadow-xl bg-white;
   }
 
   /* Professional Stats styling */
