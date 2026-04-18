@@ -38,13 +38,13 @@ const CertificatePreview = ({ studentName = "John Doe", courseName = "Full Stack
                 </div>
 
                 {/* Body */}
-                <div className="space-y-2 md:space-y-6 max-w-[90%] md:max-w-2xl">
+                <div className="space-y-1 md:space-y-4 max-w-[90%] md:max-w-2xl">
                     <p className="text-[10px] md:text-base text-slate-500 font-medium italic">This is to certify that</p>
                     <h3 className="text-xl md:text-5xl font-black text-slate-900 tracking-tight uppercase border-b border-slate-100 pb-1 md:pb-2 px-4 md:px-8 inline-block">{studentName}</h3>
-                    <p className="text-[8px] md:text-base text-slate-500 font-medium leading-relaxed mt-2 md:mt-4">
+                    <p className="text-[8px] md:text-sm text-slate-500 font-medium leading-relaxed mt-1 md:mt-2">
                         has successfully completed all requirements and mastered the curriculum for the intensive program in
                     </p>
-                    <h4 className="text-[10px] md:text-2xl font-bold text-primary-600 uppercase tracking-wide">{courseName}</h4>
+                    <h4 className="text-[10px] md:text-2xl font-bold text-primary-600 uppercase tracking-wide leading-tight">{courseName}</h4>
                 </div>
 
                 {/* Footer / Signatures */}
@@ -56,12 +56,12 @@ const CertificatePreview = ({ studentName = "John Doe", courseName = "Full Stack
 
                     <div className="flex flex-col items-center relative">
                         {/* Seal */}
-                        <div className="absolute -top-8 md:-top-16 left-1/2 -translate-x-1/2 w-12 h-12 md:w-32 md:h-32 bg-amber-400 rounded-full flex items-center justify-center shadow-xl border-2 md:border-4 border-white">
+                        <div className="absolute -top-10 md:-top-20 left-1/2 -translate-x-1/2 w-10 h-10 md:w-28 md:h-28 bg-amber-400 rounded-full flex items-center justify-center shadow-xl border-2 md:border-4 border-white z-10">
                             <div className="w-full h-full rounded-full border border-dashed border-amber-600 flex items-center justify-center">
-                                <ShieldCheck size={20} className="md:w-12 md:h-12 text-amber-800" strokeWidth={1.5} />
+                                <ShieldCheck size={18} className="md:w-10 md:h-10 text-amber-800" strokeWidth={1.5} />
                             </div>
                         </div>
-                        <p className="text-[5px] md:text-[9px] font-black uppercase text-slate-900 mt-4 md:mt-6 tracking-widest text-center">Official Seal</p>
+                        <p className="text-[5px] md:text-[9px] font-black uppercase text-slate-900 mt-2 md:mt-4 tracking-widest text-center">Official Seal</p>
                     </div>
 
                     <div className="flex flex-col items-center">

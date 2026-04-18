@@ -23,7 +23,10 @@ html.light-theme {
 html.light-theme img,
 html.light-theme video,
 html.light-theme iframe,
-html.light-theme .lottie-animation {
+html.light-theme .lottie-animation,
+html.light-theme .logo-circle,
+html.light-theme footer,
+html.light-theme .no-invert {
   filter: invert(1) hue-rotate(180deg);
 }
 

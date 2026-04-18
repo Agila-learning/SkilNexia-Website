@@ -21,20 +21,40 @@ const Programs = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        fetchCourses();
+    }, []);
+
+    const fetchCourses = async () => {
+        try {
+            const res = await api.get('/courses');
+            if (res.data && res.data.length > 0) {
+                setCoursesList(res.data);
+            } else {
+                setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
+            }
+        } catch (error) {
+            console.error("Failed to fetch courses:", error);
+            setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (loading) return;
+
         const ctx = gsap.context(() => {
-            // Card stagger
             const cards = gsap.utils.toArray('.program-card');
             if (cards.length > 0) {
                 gsap.fromTo(cards,
-                    { y: 60, opacity: 0, scale: 0.95, rotationX: 10 },
+                    { y: 40, opacity: 0, scale: 0.98 },
                     {
                         y: 0,
                         opacity: 1,
                         scale: 1,
-                        rotationX: 0,
-                        duration: 1,
-                        stagger: 0.15,
-                        ease: 'back.out(1.5)',
+                        duration: 0.6,
+                        stagger: 0.1,
+                        ease: 'power2.out',
                         scrollTrigger: {
                             trigger: '.programs-grid',
                             start: 'top 85%',
@@ -45,25 +65,8 @@ const Programs = () => {
             }
         });
 
-        const fetchCourses = async () => {
-            try {
-                const res = await api.get('/courses');
-                if (res.data && res.data.length > 0) {
-                    setCoursesList(res.data);
-                } else {
-                    setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
-                }
-            } catch (error) {
-                console.error("Failed to fetch courses:", error);
-                setCoursesList(COURSE_CATEGORIES.map(c => ({ ...c, _id: c.id })));
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCourses();
-
         return () => ctx.revert();
-    }, []);
+    }, [loading, viewMode, coursesList]);
 
     // Show all courses as roadmaps
     const placementPrograms = coursesList;
