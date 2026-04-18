@@ -13,6 +13,12 @@ const PARTNER_COMPANIES = [
     { name: 'Netflix', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
     { name: 'Meta', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg' },
     { name: 'Tesla', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png' },
+    { name: 'IBM', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg' },
+    { name: 'Intel', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/85/Intel_logo_2023.svg' },
+    { name: 'Spotify', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg' },
+    { name: 'Uber', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' },
+    { name: 'Nvidia', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg' },
+    { name: 'Salesforce', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg' },
 ];
 
 const Placements = () => {
@@ -135,15 +141,22 @@ const Placements = () => {
                         <h2 className="section-title">Hiring <span className="text-brand-gradient">Partners</span></h2>
                     </div>
 
-                    {/* Fades for smooth edges */}
-                    <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none"></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none"></div>
+                    {/* Edge fades - dark bg matching */}
+                    <div className="absolute left-0 top-24 bottom-0 w-32 bg-gradient-to-r from-slate-950/90 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute right-0 top-24 bottom-0 w-32 bg-gradient-to-l from-slate-950/90 to-transparent z-10 pointer-events-none"></div>
 
                     <div className="relative group overflow-hidden">
-                        <div className="flex w-max gap-24 animate-scroll-left hover:[animation-play-state:paused] items-center py-10 pr-24">
-                            {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, i) => (
-                                <div key={i} className="shrink-0 grayscale hover:grayscale-0 transition-all opacity-20 hover:opacity-100 hover:scale-110 invert brightness-200">
-                                    <img src={company.logo} alt={company.name} className="h-10 md:h-12 w-auto object-contain" />
+                        <div className="flex w-max gap-8 animate-marquee hover:[animation-play-state:paused] items-center py-8 pr-8">
+                            {[...PARTNER_COMPANIES, ...PARTNER_COMPANIES, ...PARTNER_COMPANIES].map((company, i) => (
+                                <div
+                                    key={i}
+                                    className="shrink-0 flex items-center justify-center px-6 py-4 bg-white/10 hover:bg-white border border-white/10 hover:border-white/40 rounded-2xl transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] group/card min-w-[140px] h-16"
+                                >
+                                    <img
+                                        src={company.logo}
+                                        alt={company.name}
+                                        className="h-7 md:h-8 w-auto object-contain brightness-0 invert opacity-60 group-hover/card:brightness-100 group-hover/card:invert-0 group-hover/card:opacity-100 transition-all duration-300"
+                                    />
                                 </div>
                             ))}
                         </div>

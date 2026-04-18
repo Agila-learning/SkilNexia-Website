@@ -205,7 +205,7 @@ const Programs = () => {
 
                     {/* Animated dual-axis horizontal logo marquees */}
                     <div className="relative overflow-hidden py-10 before:absolute before:left-0 before:top-0 before:z-10 before:w-24 before:h-full before:bg-gradient-to-r before:from-slate-950 before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:w-24 after:h-full after:bg-gradient-to-l after:from-slate-950 after:to-transparent">
-                        <div className="flex gap-16 items-center animate-marquee whitespace-nowrap mb-12">
+                        <div className="flex gap-6 items-center animate-marquee whitespace-nowrap mb-6">
                             {[
                                 { name: 'Google', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
                                 { name: 'Amazon', src: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
@@ -215,18 +215,17 @@ const Programs = () => {
                                 { name: 'IBM', src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg' },
                                 { name: 'Intel', src: 'https://upload.wikimedia.org/wikipedia/commons/8/85/Intel_logo_2023.svg' },
                                 { name: 'Salesforce', src: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg' },
-                                // Duplicated for seamless loop
-                                { name: 'Google2', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
-                                { name: 'Amazon2', src: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
-                                { name: 'Microsoft2', src: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg' },
-                                { name: 'Netflix2', src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
+                                { name: 'Google_', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
+                                { name: 'Amazon_', src: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
+                                { name: 'Microsoft_', src: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg' },
+                                { name: 'Netflix_', src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
                             ].map(({ name, src }) => (
-                                <div key={name} className="inline-flex items-center justify-center h-16 px-6 transition-all duration-300 brightness-0 invert opacity-40 hover:filter-none hover:opacity-100 hover:bg-white/10 rounded-2xl hover:scale-110 shrink-0">
-                                    <img src={src} alt={name.replace(/[0-9]/g, '')} className="h-10 max-w-[140px] object-contain" />
+                                <div key={name} className="inline-flex items-center justify-center h-16 px-6 min-w-[140px] bg-white/8 hover:bg-white border border-white/10 hover:border-white/30 rounded-2xl transition-all duration-300 hover:scale-110 hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)] shrink-0 group/logo">
+                                    <img src={src} alt={name.replace(/_/g, '')} className="h-8 max-w-[120px] object-contain brightness-0 invert opacity-60 group-hover/logo:brightness-100 group-hover/logo:invert-0 group-hover/logo:opacity-100 transition-all duration-300" />
                                 </div>
                             ))}
                         </div>
-                        <div className="flex gap-16 items-center animate-[marquee_30s_linear_infinite_reverse] whitespace-nowrap pb-4">
+                        <div className="flex gap-6 items-center animate-[marquee_35s_linear_infinite_reverse] whitespace-nowrap pb-4">
                             {[
                                 { name: 'Apple', src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
                                 { name: 'Nvidia', src: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg' },
@@ -235,14 +234,13 @@ const Programs = () => {
                                 { name: 'OpenAI', src: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg' },
                                 { name: 'Spotify', src: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg' },
                                 { name: 'Uber', src: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png' },
-                                // Duplicated for seamless loop
-                                { name: 'Apple2', src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
-                                { name: 'Nvidia2', src: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg' },
-                                { name: 'Tesla2', src: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png' },
-                                { name: 'SpaceX2', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/SpaceX_logo_black.svg' },
+                                { name: 'Apple_', src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
+                                { name: 'Nvidia_', src: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg' },
+                                { name: 'Tesla_', src: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png' },
+                                { name: 'SpaceX_', src: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/SpaceX_logo_black.svg' },
                             ].map(({ name, src }) => (
-                                <div key={name} className="inline-flex items-center justify-center h-16 px-6 transition-all duration-300 brightness-0 invert opacity-40 hover:filter-none hover:opacity-100 hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-2xl hover:scale-110 shrink-0">
-                                    <img src={src} alt={name.replace(/[0-9]/g, '')} className="h-10 max-w-[140px] object-contain" />
+                                <div key={name} className="inline-flex items-center justify-center h-16 px-6 min-w-[140px] bg-white/8 hover:bg-white border border-white/10 hover:border-white/30 rounded-2xl transition-all duration-300 hover:scale-110 hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)] shrink-0 group/logo">
+                                    <img src={src} alt={name.replace(/_/g, '')} className="h-8 max-w-[120px] object-contain brightness-0 invert opacity-60 group-hover/logo:brightness-100 group-hover/logo:invert-0 group-hover/logo:opacity-100 transition-all duration-300" />
                                 </div>
                             ))}
                         </div>
