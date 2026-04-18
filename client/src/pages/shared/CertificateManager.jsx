@@ -91,8 +91,8 @@ const CertificateManager = () => {
                             </button>
                         </div>
                         
-                        <div className="glass-card-premium border border-white/10 rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] bg-white">
-                            <div className="max-h-[75vh] overflow-y-auto custom-scrollbar">
+                        <div className="glass-card-premium border border-white/10 rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] bg-white flex items-center justify-center p-4 md:p-8">
+                            <div className="w-full max-h-[80vh] overflow-y-auto custom-scrollbar flex items-center justify-center">
                                 <CertificatePreview />
                             </div>
                         </div>

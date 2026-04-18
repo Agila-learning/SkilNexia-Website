@@ -90,9 +90,17 @@ const courseSchema = new mongoose.Schema(
         },
         courseType: {
             type: String,
-            enum: ['offline', 'paid'],
+            enum: ['offline', 'paid', 'free'],
             default: 'paid',
         },
+        milestones: [
+            {
+                moduleIndex: Number,
+                badgeTitle: String,
+                badgeIcon: String, // lucide icon name
+                description: String
+            }
+        ],
         trainingType: {
             type: String,
             enum: ['recorded', 'live'],

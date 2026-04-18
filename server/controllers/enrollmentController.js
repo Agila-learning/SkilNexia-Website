@@ -1,5 +1,7 @@
 const Enrollment = require('../models/Enrollment');
 const Certificate = require('../models/Certificate');
+const Course = require('../models/Course');
+const Notification = require('../models/Notification');
 const nodemailer = require('nodemailer');
 
 // Shared email transporter
@@ -168,10 +170,129 @@ const completeEnrollment = async (req, res) => {
     }
 };
 
+// @desc    Update enrollment progress and check for milestones/auto-complete
+// @route   PUT /api/enrollments/:id/progress
+// @access  Private
+const updateEnrollmentProgress = async (req, res) => {
+    try {
+        const { progress } = req.body;
+        const enrollment = await Enrollment.findById(req.params.id)
+            .populate('student', 'name email')
+            .populate({
+                path: 'batch',
+                populate: { path: 'course' }
+            });
+
+        if (!enrollment) return res.status(404).json({ message: 'Enrollment not found' });
+        if (enrollment.student._id.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        const oldProgress = enrollment.progress;
+        enrollment.progress = progress;
+        
+        // Update score (simple: progress * 10 + badges * 50)
+        enrollment.score = (progress * 10) + (enrollment.badges.length * 50);
+
+        // Check milestones for paid courses
+        if (enrollment.batch?.course?.courseType === 'paid') {
+            const milestones = enrollment.batch.course.milestones || [];
+            for (const milestone of milestones) {
+                // If progress just passed a milestone module (simulated here)
+                // For simplicity, we'll check if milestone.moduleIndex matches a logic or just award if progress > threshold
+                const threshold = (milestone.moduleIndex / (enrollment.batch.course.modules?.length || 1)) * 100;
+                
+                if (oldProgress < threshold && progress >= threshold) {
+                    // Check if badge already awarded
+                    const exists = enrollment.badges.find(b => b.title === milestone.badgeTitle);
+                    if (!exists) {
+                        enrollment.badges.push({
+                            title: milestone.badgeTitle,
+                            icon: milestone.badgeIcon
+                        });
+                        
+                        // Create notification
+                        await Notification.create({
+                            user: enrollment.student._id,
+                            message: `🏆 Congratulations! You earned the "${milestone.badgeTitle}" badge in ${enrollment.batch.course.title}.`,
+                            type: 'badge'
+                        });
+                    }
+                }
+            }
+        }
+
+        // Auto-complete for Free Courses (95% threshold)
+        if (enrollment.batch?.course?.courseType === 'free' && progress >= 95 && !enrollment.isCompleted) {
+            enrollment.isCompleted = true;
+            enrollment.progress = 100;
+
+            // Generate Certificate if not exists
+            let certificate = await Certificate.findOne({ user: enrollment.student._id, course: enrollment.batch.course._id });
+            if (!certificate) {
+                const certificateId = `SKLX-FREE-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                certificate = await Certificate.create({
+                    user: enrollment.student._id,
+                    course: enrollment.batch.course._id,
+                    certificateId,
+                    platform: 'skilnexia'
+                });
+
+                await sendCertificateEmail(
+                    enrollment.student.email,
+                    enrollment.student.name,
+                    enrollment.batch.course.title,
+                    certificateId
+                );
+            }
+        }
+
+        await enrollment.save();
+        res.json(enrollment);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get leaderboard for a course
+// @route   GET /api/enrollments/leaderboard/:courseId
+// @access  Private
+const getLeaderboard = async (req, res) => {
+    try {
+        const enrollments = await Enrollment.find({ platform: 'skilnexia' })
+            .populate('student', 'name email profileImage')
+            .populate({
+                path: 'batch',
+                match: { course: req.params.courseId }
+            });
+
+        // Filter out enrollments that don't match the course (due to populate match)
+        const filtered = enrollments.filter(e => e.batch !== null);
+
+        const leaderboard = filtered
+            .map(e => ({
+                name: e.student?.name,
+                email: e.student?.email,
+                progress: e.progress,
+                badges: e.badges.length,
+                score: e.score || 0,
+                userId: e.student?._id
+            }))
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10); // Top 10
+
+        res.json(leaderboard);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getMyEnrollments,
     getAllEnrollments,
     getEnrollmentById,
-    completeEnrollment
+    completeEnrollment,
+    updateEnrollmentProgress,
+    getLeaderboard
 };
 

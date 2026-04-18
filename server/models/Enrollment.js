@@ -21,6 +21,17 @@ const enrollmentSchema = new mongoose.Schema(
             type: Number,
             default: 0, // percentage completed
         },
+        badges: [
+            {
+                title: String,
+                icon: String,
+                awardedAt: { type: Date, default: Date.now }
+            }
+        ],
+        score: {
+            type: Number,
+            default: 0,
+        },
         isCompleted: {
             type: Boolean,
             default: false,

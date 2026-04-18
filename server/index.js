@@ -119,6 +119,7 @@ app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/enrollments', require('./routes/enrollmentRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/partners', require('./routes/partnerRoutes'));
 app.use('/api/assignments', require('./routes/assignmentRoutes'));
 app.use('/api/certificates', require('./routes/certificateRoutes'));
