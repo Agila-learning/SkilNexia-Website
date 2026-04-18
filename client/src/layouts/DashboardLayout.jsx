@@ -23,9 +23,9 @@ const DashboardLayout = () => {
 
             <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-            <div className="flex-1 flex flex-col overflow-hidden relative">
+            <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
                 {/* Fixed Premium Header */}
-                <header className="h-20 lg:h-24 border-b border-white/5 bg-slate-950/40 backdrop-blur-3xl flex items-center px-6 lg:px-12 z-20 sticky top-0 justify-between">
+                <header className="h-20 lg:h-24 border-b border-white/5 bg-slate-950/40 backdrop-blur-3xl flex items-center px-6 lg:px-12 z-30 sticky top-0 justify-between shrink-0">
                     <div className="flex items-center gap-6">
                         {/* Mobile Hamburger Toggle */}
                         <button
@@ -51,8 +51,8 @@ const DashboardLayout = () => {
                 </header>
 
                 {/* Main Content Area */}
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-transparent p-6 lg:p-14">
-                    <div className="max-w-[1600px] mx-auto">
+                <main className="flex-1 overflow-y-auto bg-transparent p-6 lg:p-14">
+                    <div className="max-w-[1600px] mx-auto w-full">
                         <Outlet />
                     </div>
                 </main>

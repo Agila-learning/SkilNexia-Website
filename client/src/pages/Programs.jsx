@@ -107,14 +107,20 @@ const Programs = () => {
             {/* View Mode Toggle & Premium Program Cards */}
             <div className="max-w-7xl mx-auto px-6 -mt-24 relative z-10 pb-32">
                 {/* Advanced Control Bar for Programs */}
-                <div className="mb-8 glass-card-premium p-3 md:p-5 rounded-[28px] flex flex-row items-center justify-between border-t border-white/10">
+                <div className="mb-8 glass-card-premium p-3 md:p-5 rounded-[28px] flex flex-row items-center justify-between border-t border-white/10 relative z-[60]">
                     <h2 className="text-base md:text-lg font-black uppercase tracking-tighter text-white ml-2">Elite Roadmaps</h2>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 relative z-[70]">
                         <div className="flex bg-white/5 rounded-xl p-1 border border-white/10">
-                            <button onClick={() => setViewMode('grid')} className={`p-1.5 md:p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-slate-950 shadow-sm no-invert' : 'text-slate-400 hover:text-white'}`}>
+                            <button 
+                                onClick={() => setViewMode('grid')} 
+                                className={`p-1.5 md:p-2 rounded-lg transition-all cursor-pointer relative z-[80] ${viewMode === 'grid' ? 'bg-white text-slate-950 shadow-sm no-invert' : 'text-slate-400 hover:text-white'}`}
+                            >
                                 <LayoutGrid size={16} />
                             </button>
-                            <button onClick={() => setViewMode('list')} className={`p-1.5 md:p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-slate-950 shadow-sm no-invert' : 'text-slate-400 hover:text-white'}`}>
+                            <button 
+                                onClick={() => setViewMode('list')} 
+                                className={`p-1.5 md:p-2 rounded-lg transition-all cursor-pointer relative z-[80] ${viewMode === 'list' ? 'bg-white text-slate-950 shadow-sm no-invert' : 'text-slate-400 hover:text-white'}`}
+                            >
                                 <List size={16} />
                             </button>
                         </div>

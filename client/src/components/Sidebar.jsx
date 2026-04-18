@@ -63,14 +63,19 @@ const Sidebar = ({ isOpen, onClose }) => {
                 {/* Logo + Close button row */}
                 <div className="mb-12 w-full px-6 flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3 group" onClick={onClose}>
-                        <img
-                            src="/images/logo.png"
-                            alt="Skilnexia Logo"
-                            className="h-9 w-auto object-contain group-hover:scale-105 transition-transform"
-                        />
-                        <span className="text-base font-black text-white tracking-tighter">
-                            Skil<span className="text-blue-500">Nexia</span>
-                        </span>
+                        <div className="w-10 h-10 logo-circle p-1.5 bg-white">
+                            <img 
+                                src="/images/logo.png" 
+                                alt="Skilnexia Logo" 
+                                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-black text-white tracking-tighter leading-none">
+                                Skil<span className="text-blue-500">Nexia</span>
+                            </span>
+                            <span className="text-[6px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Evolution</span>
+                        </div>
                     </Link>
                     {/* Close button - mobile only */}
                     <button

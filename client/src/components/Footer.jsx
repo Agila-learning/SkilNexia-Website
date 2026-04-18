@@ -12,12 +12,20 @@ const Footer = () => {
 
                     {/* Brand Section */}
                     <div className="space-y-8">
-                        <Link to="/" className="flex items-center gap-3 group">
-                            <img
-                                src="/images/logo.png"
-                                alt="Skilnexia Logo"
-                                className="h-12 w-auto object-contain brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500"
-                            />
+                        <Link to="/" className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 lg:w-14 lg:h-14 logo-circle p-1.5 md:p-2">
+                                <img 
+                                    src="/images/logo.png" 
+                                    alt="Skilnexia Logo" 
+                                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                                />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-lg font-poppins font-bold tracking-tighter text-white leading-none">
+                                    Skil<span className="text-blue-500">Nexia</span>
+                                </span>
+                                <span className="text-[7px] font-black text-slate-500 uppercase tracking-widest mt-0.5">Vocational Excellence</span>
+                            </div>
                         </Link>
                         <p className="text-slate-500 leading-relaxed font-medium">
                             The world's premier EdTech ecosystem for industry-ready evolution. We bridge the gap between ambition and enterprise mastery at global scale.
